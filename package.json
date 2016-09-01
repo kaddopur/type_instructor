@@ -13,6 +13,7 @@
     "react-router": "^2.7.0"
   },
   "scripts": {
+    "deploy": "git commit -am \"Save local changes\"; git checkout -B gh-pages; git add -f build; git commit -am \"Rebuild website\"; git filter-branch -f --prune-empty --subdirectory-filter build; git push -f origin gh-pages; git checkout -",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
