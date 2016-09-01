@@ -10,7 +10,7 @@ class Quiz extends Component {
   }
 
   state = {
-    timer: 60,
+    timer: 2,
     combo: 0,
     status: '',
     freeze: false,
@@ -24,6 +24,7 @@ class Quiz extends Component {
       }, () => {
         if (this.state.timer === 0) {
           clearInterval(this.timerInterval);
+          this.context.router.push(`${this.props.location.pathname}/result/${this.state.combo}`);
         }
       });
     }, 1000);

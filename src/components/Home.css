@@ -30,10 +30,9 @@
   border-radius: 1.6rem;
   box-shadow: 0 .24rem rgba(0, 0, 0, .2);
   text-shadow: 0 .24rem rgba(0, 0, 0, .2);
-  font-size: 1.6rem;
+  font-size: 1.2rem;
 }
 
 .Home footer {
   padding: 4rem;
-  font-size: .8rem;
 }
