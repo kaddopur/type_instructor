@@ -1,0 +1,54 @@
+.Bgc-normal {
+  background-color: #bbbbaa;
+}
+.Bgc-fighting {
+  background-color: #bb5544;
+}
+.Bgc-flying {
+  background-color: #6699ff;
+}
+.Bgc-poison {
+  background-color: #aa5599;
+}
+.Bgc-ground {
+  background-color: #ddbb55;
+}
+.Bgc-rock {
+  background-color: #bbaa66;
+}
+.Bgc-bug {
+  background-color: #aabb22;
+}
+.Bgc-ghost {
+  background-color: #6666bb;
+}
+.Bgc-steel {
+  background-color: #aaaabb;
+}
+.Bgc-fire {
+  background-color: #ff4422;
+}
+.Bgc-water {
+  background-color: #3399ff;
+}
+.Bgc-grass {
+  background-color: #77cc55;
+}
+.Bgc-electric {
+  background-color: #ffcc33;
+}
+.Bgc-psychic {
+  background-color: #ff5599;
+}
+.Bgc-ice {
+  background-color: #77ddff;
+}
+.Bgc-dragon {
+  background-color: #7766ee;
+}
+.Bgc-dark {
+  background-color: #775544;
+}
+.Bgc-fairy {
+  background-color: #ffaaff;
+}
