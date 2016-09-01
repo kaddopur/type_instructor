@@ -18,10 +18,21 @@
   justify-content: center;
 }
 
-.stemCombo,
+.stemTimer,
+.stemCombo {
+    font-size: .8rem;
+  line-height: 4;
+  width: 50%;
+}
+
 .stemStatus {
   font-size: .8rem;
   line-height: 4;
+}
+
+.stemHeader {
+    display: flex;
+    width: 100%;
 }
 
 .stemEnemy {
