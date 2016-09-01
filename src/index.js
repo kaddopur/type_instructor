@@ -9,8 +9,8 @@ import Quiz from './components/Quiz';
 
 ReactDOM.render(
   <Router history={browserHistory}>
-    <Route path="/" component={App} />
-    <Route path="/quizzes/:quizType" component={Quiz} />
+    <Route path="/type_instructor" component={App} />
+    <Route path="/type_instructor/quizzes/:quizType" component={Quiz} />
   </Router>,
   document.getElementById('root')
 );
