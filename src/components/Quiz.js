@@ -7,9 +7,9 @@ class Quiz extends Component {
   }
 
   state = {
-    timer: 5,
+    timer: 60,
     combo: 0,
-    status: 'super effective',
+    status: '',
     quiz: {
       emeny: {
         title: 'attack emeny',
@@ -33,8 +33,12 @@ class Quiz extends Component {
           value: 0.5
         }
       ],
-      answer: 2
+      answer: 'fairy'
     }
+  };
+
+  componentWillMount() {
+    this.handleOptionClick = this.handleOptionClick.bind(this);
   }
 
   componentDidMount() {
@@ -59,7 +63,7 @@ class Quiz extends Component {
 
     return (
       <div className="Quiz">
-        <div className="stemContainer Ta(c) C(white) Bgc-dragon">
+        <div className={'stemContainer Ta(c) C(white) Bgc-' + emeny.type}>
           <div className="stemHeader">
             <div className="stemTimer">timer: {timer}</div>
             <div className="stemCombo">combo: {combo}</div>
@@ -73,8 +77,9 @@ class Quiz extends Component {
           {options.map((option, index) => {
             const { type } = option;
             return (
-              <div className={"optionItem Ta(c) W(50%) C(white) Bgc-" + type}
-                key={type + index}>
+              <div className={'optionItem Ta(c) W(50%) C(white) Bgc-' + type}
+                key={type + index}
+                onClick={this.handleOptionClick}>
                 <div className="optionText">{type}</div>
               </div>
             );
@@ -82,6 +87,47 @@ class Quiz extends Component {
         </div>
       </div>
     );
+  }
+
+  handleOptionClick(e) {
+    const typeClicked = e.target.innerText;
+    const { combo, quiz } = this.state;
+    const value = quiz.options.filter(option => option.type === typeClicked)[0].value;
+    const maxValue = Math.max(...quiz.options.map(option => option.value));
+
+    this.setState({
+      quiz: this.getQuiz(this.props.params.quizType),
+      combo: typeClicked === quiz.answer ? (combo + 1) : 0,
+      status: value === maxValue ? 'super effective' : 'not very effective'
+    });
+  }
+
+  getQuiz(quizType) {
+    return {
+      emeny: {
+        title: 'attack emeny',
+        type: 'steel'
+      },
+      options: [
+        {
+          type: 'rock',
+          value: 0.5
+        },
+        {
+          type: 'fire',
+          value: 2
+        },
+        {
+          type: 'flying',
+          value: 0.5
+        },
+        {
+          type: 'bug',
+          value: 0.5
+        }
+      ],
+      answer: 'fire'
+    };
   }
 }
 
