@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './Attacker.css';
+import './Quiz.css';
 
-class Attacker extends Component {
+class Quiz extends Component {
   render() {
     return (
-      <div className="Attacker">
+      <div className="Quiz">
         <div className="stemContainer Ta(c) C(white) Bgc-dragon">
           <div className="stemCombo">combo: 18</div>
           <div className="stemEnemy">
@@ -31,4 +31,4 @@ class Attacker extends Component {
   }
 }
 
-export default Attacker;
+export default Quiz;

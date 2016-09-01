@@ -5,12 +5,12 @@ import './index.css';
 import './atomizer.css';
 
 import App from './App';
-import Attacker from './components/Attacker';
+import Quiz from './components/Quiz';
 
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App} />
-    <Route path="/attacker" component={Attacker} />
+    <Route path="/quizzes/:quizType" component={Quiz} />
   </Router>,
   document.getElementById('root')
 );
