@@ -18,7 +18,7 @@ class App extends Component {
 
   getChildContext() {
     return {
-      messages: getMessages('zh')
+      messages: getMessages('ja')
     }
   }
 
