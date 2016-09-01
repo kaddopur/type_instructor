@@ -10,6 +10,7 @@ class Quiz extends Component {
     timer: 60,
     combo: 0,
     status: '',
+    freeze: false,
     quiz: {
       emeny: {
         title: 'attack emeny',
@@ -90,19 +91,26 @@ class Quiz extends Component {
   }
 
   handleOptionClick(e) {
+    const { combo, quiz, freeze } = this.state;
+
+    if (freeze) {
+      return; // no-op
+    }
+
     const typeClicked = e.target.innerText;
-    const { combo, quiz } = this.state;
     const value = quiz.options.filter(option => option.type === typeClicked)[0].value;
     const maxValue = Math.max(...quiz.options.map(option => option.value));
 
     this.setState({
       status: value === maxValue ? 'super effective' : 'not very effective',
       combo: typeClicked === quiz.answer ? (combo + 1) : 0,
+      freeze: true
     }, () => {
       setTimeout(() => {
         this.setState({
           quiz: this.getQuiz(this.props.params.quizType),
-          status: ''
+          status: '',
+          freeze: false
         });
       }, 500);
     });
