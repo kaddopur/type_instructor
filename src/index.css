@@ -14,3 +14,7 @@ a {
   color: initial;
   text-decoration: none;
 }
+
+#root {
+  overflow: hidden;
+}
