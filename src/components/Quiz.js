@@ -96,9 +96,15 @@ class Quiz extends Component {
     const maxValue = Math.max(...quiz.options.map(option => option.value));
 
     this.setState({
-      quiz: this.getQuiz(this.props.params.quizType),
+      status: value === maxValue ? 'super effective' : 'not very effective',
       combo: typeClicked === quiz.answer ? (combo + 1) : 0,
-      status: value === maxValue ? 'super effective' : 'not very effective'
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          quiz: this.getQuiz(this.props.params.quizType),
+          status: ''
+        });
+      }, 500);
     });
   }
 
