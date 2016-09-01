@@ -5,7 +5,13 @@ class Attacker extends Component {
   render() {
     return (
       <div className="Attacker">
-        <div className="stemContainer Ta(c) C(white) Bgc-dragon">Enemy<br/>( dragon )</div>
+        <div className="stemContainer Ta(c) C(white) Bgc-dragon">
+          <div className="stemCombo">combo: 18</div>
+          <div className="stemEnemy">
+            <div className="stemEnemyText">attack enemy<br/>( dragon )</div>
+          </div>
+          <div className="stemStatus">super effective</div>
+        </div>
         <div className="optionContainer">
           <div className="optionItem Ta(c) W(50%) C(white) Bgc-normal">
             <div className="optionText">normal</div>
