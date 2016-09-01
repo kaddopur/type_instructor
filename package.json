@@ -9,10 +9,11 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "react-router": "^2.7.0"
   },
   "scripts": {
-    "atomizer": "atomizer -R ./src/*.js -o ./src/atomizer.css",
+    "atomizer": "atomizer -R ./src/* -o ./src/atomizer.css",
     "start": "npm run atomizer && react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"

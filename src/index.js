@@ -1,9 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { Router, Route , browserHistory } from 'react-router'
 import './index.css';
+import './atomizer.css';
+
+import App from './App';
+import Attacker from './components/Attacker';
 
 ReactDOM.render(
-  <App />,
+  <Router history={browserHistory}>
+    <Route path="/" component={App} />
+    <Route path="/attacker" component={Attacker} />
+  </Router>,
   document.getElementById('root')
 );

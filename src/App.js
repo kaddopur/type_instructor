@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
-import './atomizer.css';
+import { Link } from 'react-router'
 
+import './App.css';
+
+// eslint-disable-next-line
 const types = [
   'normal',
   'fighting',
@@ -26,10 +28,12 @@ const types = [
 class App extends Component {
   render() {
     return (
-      <div className="App C(white) Fz(1em)">
-        {types.map((type, index) => (
-          <div className={'Ta(c) Bgc-' + type} key={type + index}>{type}</div>
-        ))}
+      <div className="App C(white) ">
+        <ul>
+          <li>
+            <Link to="/attacker">As an Attacker</Link>
+          </li>
+        </ul>
       </div>
     );
   }
