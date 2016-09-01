@@ -10,7 +10,7 @@ class Quiz extends Component {
   }
 
   state = {
-    timer: 2,
+    timer: 60,
     combo: 0,
     status: '',
     freeze: false,
