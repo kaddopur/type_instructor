@@ -20,9 +20,9 @@
 
 .stemTimer,
 .stemCombo {
-    font-size: .8rem;
-  line-height: 4;
   width: 50%;
+  font-size: .8rem;
+  line-height: 4;
 }
 
 .stemStatus {
@@ -31,8 +31,8 @@
 }
 
 .stemHeader {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .stemEnemy {
@@ -60,7 +60,13 @@
   bottom: 0;
   left: 0;
   display: flex;
+  line-height: 2;
 
   align-items: center;
+  flex-flow: column;
   justify-content: center;
+}
+
+.optionValue {
+  font-size: .8rem;
 }
