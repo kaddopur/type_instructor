@@ -99,8 +99,11 @@ const quizFactory = (demageList, findAnswerDemage, emeny) => {
   }
 }
 
-const getQuiz = (quizType) => {
-  const emenyIndex = Math.floor(Math.random() * types.length);
+const getQuiz = (quizType, lastEmeny) => {
+  let emenyIndex = Math.floor(Math.random() * types.length);
+  while(types[emenyIndex] === lastEmeny) {
+    emenyIndex = Math.floor(Math.random() * types.length);
+  }
 
   if (quizType === 'attackSingle') {
     const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);

@@ -100,7 +100,7 @@ class Quiz extends Component {
       }, () => {
         setTimeout(() => {
           this.setState({
-            quiz: getQuiz(this.props.params.quizType),
+            quiz: getQuiz(this.props.params.quizType, quiz.emeny.type),
             status: '',
             freeze: false
           });
