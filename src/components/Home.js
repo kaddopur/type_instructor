@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import './App.css';
 
-class App extends Component {
+class Home extends Component {
   render() {
     return (
-      <div className="App C(white) ">
+      <div className="Home C(white) ">
         <ul>
           <li>
             <Link to="/quizzes/attackEmeny">As an Attacker</Link>
@@ -16,4 +15,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;
