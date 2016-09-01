@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
+import './Home.css';
 
 class Home extends Component {
   render() {
     return (
-      <div className="Home C(white) ">
-        <ul>
-          <li>
-            <Link to="/quizzes/attackEmeny">As an Attacker</Link>
-          </li>
-        </ul>
-      </div>
+      <article className="Home">
+        <h1>Type Instructor of Pokémon</h1>
+        <section className="start">
+          <Link to="/quizzes/attackEmeny">Start</Link>
+        </section>
+        <footer>
+          <a href="https://twitter.com/kaddopur" target="_blank">@kaddopur</a>
+        </footer>
+      </article>
     );
   }
 }

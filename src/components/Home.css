@@ -1,0 +1,39 @@
+.Home {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(135deg, #f7ae00 50%, transparent 0),
+  linear-gradient(45deg, #2db6eb 50%, transparent 0);
+
+  align-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.Home h1 {
+  box-sizing: border-box;
+  padding: 4rem;
+  text-shadow: 0 .3rem rgba(0, 0, 0, .2);
+  font-size: 2rem;
+  line-height: 1.4;
+
+  flex-grow: 3;
+}
+
+.Home .start {
+  flex-grow: 1;
+}
+
+.Home .start a {
+  padding: 1.6rem;
+  border: solid 4px black;
+  border-radius: 1.6rem;
+  box-shadow: 0 .24rem rgba(0, 0, 0, .2);
+  text-shadow: 0 .24rem rgba(0, 0, 0, .2);
+  font-size: 1.6rem;
+}
+
+.Home footer {
+  padding: 4rem;
+  font-size: .8rem;
+}
