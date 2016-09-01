@@ -91,9 +91,9 @@ const quizFactory = (demageList, findAnswerDemage, emeny) => {
 
   return {
     emeny,
-    options: shuffle(answerIndex.concat(otherIndice)).map(option => ({
-      type: types[option],
-      value: demageList[option]
+    options: shuffle(answerIndex.concat(otherIndice)).map(typeIndex => ({
+      type: types[typeIndex],
+      demage: demageList[typeIndex]
     })),
     answer: types[answerIndex]
   }

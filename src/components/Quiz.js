@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
+import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
 class Quiz extends Component {
@@ -50,7 +51,7 @@ class Quiz extends Component {
         </div>
         <div className="optionContainer">
           {options.map((option, index) => {
-            const { type, value, clicked, correct } = option;
+            const { type, demage, clicked, correct } = option;
             const optionClass = classnames('optionItem', {
               [`Bgc-${type}`]: !clicked || correct,
               'Bgc-wrong': clicked && !correct
@@ -61,7 +62,7 @@ class Quiz extends Component {
                 onClick={this.handleOptionClick.bind(this, index)}>
                 <div className="optionText">
                   {type}
-                  {clicked ? <div className="optionValue">{value}</div> : null}
+                  {clicked ? <div className="optionDemage">{demage}</div> : null}
                 </div>
               </div>
             );
@@ -78,11 +79,14 @@ class Quiz extends Component {
       return; // no-op
     }
 
-    const clickType = quiz.options[clickIndex].type;
+    const {
+      type: clickType,
+      demage: clickDemage
+    } = quiz.options[clickIndex];
 
     if (clickType === quiz.answer) {
       this.setState({
-        status: 'super effective',
+        status: getStatus(clickDemage),
         combo: combo + 1,
         freeze: true,
         quiz: {
@@ -110,7 +114,7 @@ class Quiz extends Component {
     }
 
     this.setState({
-      status: 'not very effective',
+      status: getStatus(clickDemage),
       combo: combo - 1,
       freeze: true,
       quiz: {
