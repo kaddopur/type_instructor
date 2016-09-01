@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-.stemContainer {
+.Quiz .stemContainer {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -20,35 +20,35 @@
   justify-content: center;
 }
 
-.stemTimer,
-.stemCombo {
+.Quiz .stemTimer,
+.Quiz .stemCombo {
   width: 50%;
   font-size: .8rem;
   line-height: 4;
 }
 
-.stemStatus {
+.Quiz .stemStatus {
   font-size: .8rem;
   line-height: 4;
 }
 
-.stemHeader {
+.Quiz .stemHeader {
   display: flex;
   width: 100%;
 }
 
-.stemEnemy {
+.Quiz .stemEnemy {
   flex-grow: 1;
 }
 
-.optionContainer {
+.Quiz .optionContainer {
   display: flex;
   width: 100%;
 
   flex-flow: row wrap;
 }
 
-.optionItem {
+.Quiz .optionItem {
   position: relative;
   padding-bottom: 37.5%;
   width: 50%;
@@ -56,8 +56,8 @@
   text-align: center;
 }
 
-.stemEnemyText,
-.optionText {
+.Quiz .stemEnemyText,
+.Quiz .optionText {
   position: absolute;
   top: 0;
   right: 0;
@@ -71,6 +71,6 @@
   justify-content: center;
 }
 
-.optionValue {
+.Quiz .optionValue {
   font-size: .8rem;
 }
