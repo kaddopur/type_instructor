@@ -8,7 +8,7 @@ class Home extends Component {
       <article className="Home">
         <h1>Type Instructor of Pokémon</h1>
         <section className="start">
-          <Link to="/quizzes/attackEmeny">Start</Link>
+          <Link to="/menu">Start</Link>
         </section>
         <footer>
           <a href="https://twitter.com/kaddopur" target="_blank">@kaddopur</a>

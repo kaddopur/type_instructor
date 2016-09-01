@@ -75,7 +75,7 @@ const getQuiz = (quizType) => {
   // const attackerIndex = Math.floor(Math.random() * types.length);
   const defenderIndex = Math.floor(Math.random() * types.length);
 
-  if (quizType === 'attackEmeny') {
+  if (quizType === 'attackSingle') {
     const defendList = demageMatrix.map(demage => demage[defenderIndex]);
     const maxDemage = Math.max(...defendList);
     let answers = [];

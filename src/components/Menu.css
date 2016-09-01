@@ -1,0 +1,46 @@
+.Menu {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+
+  align-items: center;
+  flex-flow: column;
+}
+
+.Menu section {
+  display: flex;
+
+  align-items: center;
+  flex-flow: column;
+  flex-grow: 5;
+}
+
+.Menu footer {
+  padding: 2rem;
+
+  flex-grow: 1;
+}
+
+.Menu h1 {
+  margin: 2rem 0 1rem;
+  text-shadow: 0 .18rem rgba(0, 0, 0, .2);
+  font-size: 1.2rem;
+}
+
+.Menu .menuItem a {
+  display: block;
+  margin: .5rem;
+  padding: 1.6rem;
+  border: solid 4px black;
+  border-radius: 1.6rem;
+  box-shadow: 0 .1rem rgba(0, 0, 0, .2);
+  text-shadow: 0 .1rem rgba(0, 0, 0, .2);
+  font-size: 1rem;
+}
+
+.Menu .working h1,
+.Menu .working .menuItem a {
+  border-color: lightgray;
+  color: lightgray;
+  text-decoration: line-through;
+}
