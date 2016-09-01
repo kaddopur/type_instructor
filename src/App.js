@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './atomizer.css';
 
 const types = [
   'normal',
@@ -25,9 +26,9 @@ const types = [
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App C(white) Fz(1em)">
         {types.map((type, index) => (
-          <div className={`Bgc-${type}`} key={type + index}>{type}</div>
+          <div className={'Ta(c) Bgc-' + type} key={type + index}>{type}</div>
         ))}
       </div>
     );
