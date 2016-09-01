@@ -8,7 +8,7 @@ class App extends Component {
       <div className="App C(white) ">
         <ul>
           <li>
-            <Link to="/quizzes/attacker">As an Attacker</Link>
+            <Link to="/quizzes/attackEmeny">As an Attacker</Link>
           </li>
         </ul>
       </div>
