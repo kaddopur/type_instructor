@@ -10,6 +10,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  color: white;
+  text-align: center;
   font-size: 1.4rem;
   line-height: 1.6;
 
@@ -48,8 +50,10 @@
 
 .optionItem {
   position: relative;
-  padding-bottom: 28.125%;
   padding-bottom: 37.5%;
+  width: 50%;
+  color: white;
+  text-align: center;
 }
 
 .stemEnemyText,

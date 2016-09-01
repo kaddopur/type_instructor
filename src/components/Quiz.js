@@ -38,7 +38,7 @@ class Quiz extends Component {
 
     return (
       <div className="Quiz">
-        <div className={'stemContainer Ta(c) C(white) Bgc-' + emeny.type}>
+        <div className={`stemContainer Bgc-${emeny.type}`}>
           <div className="stemHeader">
             <div className="stemTimer">timer: {timer}</div>
             <div className="stemCombo">combo: {combo}</div>
@@ -51,8 +51,9 @@ class Quiz extends Component {
         <div className="optionContainer">
           {options.map((option, index) => {
             const { type, value, clicked, correct } = option;
-            const optionClass = classnames('optionItem Ta(c) W(50%) C(white) Bgc-' + type, {
-              'Bgc-clicked': clicked && !correct
+            const optionClass = classnames('optionItem', {
+              [`Bgc-${type}`]: !clicked || correct,
+              'Bgc-wrong': clicked && !correct
             });
             return (
               <div key={type + index}

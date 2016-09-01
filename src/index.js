@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route , hashHistory } from 'react-router'
 import './index.css';
-import './atomizer.css';
 
 import App from './App';
 import Quiz from './components/Quiz';
