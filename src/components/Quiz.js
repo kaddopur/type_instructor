@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
 import './Quiz.css';
 
@@ -14,10 +15,6 @@ class Quiz extends Component {
     freeze: false,
     quiz: getQuiz(this.props.params.quizType)
   };
-
-  componentWillMount() {
-    this.handleOptionClick = this.handleOptionClick.bind(this);
-  }
 
   componentDidMount() {
     this.timerInterval = setInterval(() => {
@@ -53,12 +50,18 @@ class Quiz extends Component {
         </div>
         <div className="optionContainer">
           {options.map((option, index) => {
-            const { type } = option;
+            const { type, value, clicked, correct } = option;
+            const optionClass = classnames('optionItem Ta(c) W(50%) C(white) Bgc-' + type, {
+              'Bgc-clicked': clicked && !correct
+            });
             return (
-              <div className={'optionItem Ta(c) W(50%) C(white) Bgc-' + type}
-                key={type + index}
-                onClick={this.handleOptionClick}>
-                <div className="optionText">{type}</div>
+              <div key={type + index}
+                className={optionClass}
+                onClick={this.handleOptionClick.bind(this, index)}>
+                <div className="optionText">
+                  {type}
+                  {clicked ? <div className="optionValue">{value}</div> : null}
+                </div>
               </div>
             );
           })}
@@ -67,25 +70,62 @@ class Quiz extends Component {
     );
   }
 
-  handleOptionClick(e) {
+  handleOptionClick(clickIndex, e) {
     const { combo, quiz, freeze } = this.state;
 
     if (freeze) {
       return; // no-op
     }
 
-    const typeClicked = e.target.innerText;
-    const value = quiz.options.filter(option => option.type === typeClicked)[0].value;
-    const maxValue = Math.max(...quiz.options.map(option => option.value));
+    const clickType = quiz.options[clickIndex].type;
+
+    if (clickType === quiz.answer) {
+      this.setState({
+        status: 'super effective',
+        combo: combo + 1,
+        freeze: true,
+        quiz: {
+          ...quiz,
+          options: [
+            ...quiz.options.slice(0, clickIndex),
+            {
+              ...quiz.options[clickIndex],
+              clicked: true,
+              correct: true
+            },
+            ...quiz.options.slice(clickIndex + 1)
+          ]
+        }
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            quiz: getQuiz(this.props.params.quizType),
+            status: '',
+            freeze: false
+          });
+        }, 500);
+      });
+      return;
+    }
 
     this.setState({
-      status: value === maxValue ? 'super effective' : 'not very effective',
-      combo: typeClicked === quiz.answer ? (combo + 1) : 0,
-      freeze: true
+      status: 'not very effective',
+      combo: combo - 1,
+      freeze: true,
+      quiz: {
+        ...quiz,
+        options: [
+          ...quiz.options.slice(0, clickIndex),
+          {
+            ...quiz.options[clickIndex],
+            clicked: true
+          },
+          ...quiz.options.slice(clickIndex + 1)
+        ]
+      }
     }, () => {
       setTimeout(() => {
         this.setState({
-          quiz: getQuiz(this.props.params.quizType),
           status: '',
           freeze: false
         });
