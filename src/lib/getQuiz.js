@@ -1,5 +1,6 @@
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
+import max from 'lodash/max';
 
 const types = [
   'normal',
@@ -71,39 +72,42 @@ const demageMatrix = [
 //   }
 // ]
 
+const quizFactory = (type, demageList, findAnswerDemage) => {
+  const answerDemage = findAnswerDemage(demageList);
+  let answers = [];
+  let others = [];
+
+  demageList.forEach((demage, index) => {
+    if (demage === answerDemage) {
+      answers.push(index);
+    } else {
+      others.push(index);
+    }
+  });
+
+  const answerIndex = sampleSize(answers);
+  const otherIndice = sampleSize(others, 3);
+
+  return {
+    emeny: {
+      title: 'attack enemy',
+      type
+    },
+    options: shuffle(answerIndex.concat(otherIndice)).map(option => ({
+      type: types[option],
+      value: demageList[option]
+    })),
+    answer: types[answerIndex]
+  }
+}
+
 const getQuiz = (quizType) => {
   // const attackerIndex = Math.floor(Math.random() * types.length);
   const defenderIndex = Math.floor(Math.random() * types.length);
 
   if (quizType === 'attackSingle') {
     const defendList = demageMatrix.map(demage => demage[defenderIndex]);
-    const maxDemage = Math.max(...defendList);
-    let answers = [];
-    let others = [];
-
-    defendList.forEach((demage, index) => {
-      if (demage === maxDemage) {
-        answers.push(index);
-      } else {
-        others.push(index);
-      }
-    });
-
-    const answerIndex = sampleSize(answers);
-    const otherIndice = sampleSize(others, 3);
-
-    const quiz = {
-      emeny: {
-        title: 'attack enemy',
-        type: types[defenderIndex]
-      },
-      options: shuffle(answerIndex.concat(otherIndice)).map(option => ({
-        type: types[option],
-        value: defendList[option]
-      })),
-      answer: types[answerIndex]
-    }
-    return quiz;
+    return quizFactory(types[defenderIndex], defendList, max);
   }
 };
 
