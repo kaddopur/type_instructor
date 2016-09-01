@@ -8,7 +8,7 @@ class Quiz extends Component {
   static contextTypes = {
     router: PropTypes.object,
     messages: PropTypes.object
-  }
+  };
 
   state = {
     timer: 60,

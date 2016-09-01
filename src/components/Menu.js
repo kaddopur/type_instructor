@@ -5,7 +5,7 @@ import './Menu.css';
 class Menu extends Component {
   static contextTypes = {
     messages: PropTypes.object
-  }
+  };
 
   render() {
     const {

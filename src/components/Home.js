@@ -5,7 +5,7 @@ import './Home.css';
 class Home extends Component {
   static contextTypes = {
     messages: PropTypes.object
-  }
+  };
 
   render() {
     return (

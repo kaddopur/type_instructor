@@ -14,11 +14,11 @@ import Result from './components/Result';
 class App extends Component {
   static childContextTypes = {
     messages: PropTypes.object
-  }
+  };
 
   getChildContext() {
     return {
-      messages: getMessages('zh-Hant-TW')
+      messages: getMessages('zh')
     }
   }
 
@@ -28,7 +28,7 @@ class App extends Component {
 }
 
 ReactDOM.render(
-  <App>
+  <App style={{fontSize: 20}}>
     <Router history={hashHistory}>
       <Route path="/" component={Home} />
       <Route path="/menu" component={Menu} />
