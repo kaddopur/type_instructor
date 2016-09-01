@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import getQuiz from '../lib/getQuiz';
 import './Quiz.css';
 
 class Quiz extends Component {
@@ -11,31 +12,7 @@ class Quiz extends Component {
     combo: 0,
     status: '',
     freeze: false,
-    quiz: {
-      emeny: {
-        title: 'attack emeny',
-        type: 'dragon'
-      },
-      options: [
-        {
-          type: 'normal',
-          value: 1
-        },
-        {
-          type: 'poison',
-          value: 1
-        },
-        {
-          type: 'fairy',
-          value: 2
-        },
-        {
-          type: 'electric',
-          value: 0.5
-        }
-      ],
-      answer: 'fairy'
-    }
+    quiz: getQuiz(this.props.params.quizType)
   };
 
   componentWillMount() {
@@ -108,40 +85,12 @@ class Quiz extends Component {
     }, () => {
       setTimeout(() => {
         this.setState({
-          quiz: this.getQuiz(this.props.params.quizType),
+          quiz: getQuiz(this.props.params.quizType),
           status: '',
           freeze: false
         });
       }, 500);
     });
-  }
-
-  getQuiz(quizType) {
-    return {
-      emeny: {
-        title: 'attack emeny',
-        type: 'steel'
-      },
-      options: [
-        {
-          type: 'rock',
-          value: 0.5
-        },
-        {
-          type: 'fire',
-          value: 2
-        },
-        {
-          type: 'flying',
-          value: 0.5
-        },
-        {
-          type: 'bug',
-          value: 0.5
-        }
-      ],
-      answer: 'fire'
-    };
   }
 }
 
