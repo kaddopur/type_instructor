@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
@@ -6,7 +6,8 @@ import './Quiz.css';
 
 class Quiz extends Component {
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object,
+    messages: PropTypes.object
   }
 
   state = {
@@ -37,6 +38,7 @@ class Quiz extends Component {
   render() {
     const { timer, combo, status, quiz } = this.state;
     const { emeny, options } = quiz;
+    const { messages } = this.context;
 
     return (
       <div className="Quiz">
@@ -46,9 +48,9 @@ class Quiz extends Component {
             <div className="stemCombo">combo: {combo}</div>
           </div>
           <div className="stemEnemy">
-            <div className="stemEnemyText">{emeny.title}<br/>( {emeny.type} )</div>
+            <div className="stemEnemyText">{messages[emeny.title]}<br/>( {messages[emeny.type.toUpperCase()]} )</div>
           </div>
-          <div className="stemStatus">{status}</div>
+          <div className="stemStatus">{messages[status]}</div>
         </div>
         <div className="optionContainer">
           {options.map((option, index) => {
@@ -62,7 +64,7 @@ class Quiz extends Component {
                 className={optionClass}
                 onClick={this.handleOptionClick.bind(this, index)}>
                 <div className="optionText">
-                  {type}
+                  {messages[type.toUpperCase()]}
                   {clicked ? <div className="optionDemage">{demage}</div> : null}
                 </div>
               </div>
