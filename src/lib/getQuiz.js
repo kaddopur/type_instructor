@@ -1,6 +1,7 @@
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
 import max from 'lodash/max';
+import min from 'lodash/min';
 
 const types = [
   'normal',
@@ -72,7 +73,7 @@ const demageMatrix = [
 //   }
 // ]
 
-const quizFactory = (type, demageList, findAnswerDemage) => {
+const quizFactory = (demageList, findAnswerDemage, emeny) => {
   const answerDemage = findAnswerDemage(demageList);
   let answers = [];
   let others = [];
@@ -89,10 +90,7 @@ const quizFactory = (type, demageList, findAnswerDemage) => {
   const otherIndice = sampleSize(others, 3);
 
   return {
-    emeny: {
-      title: 'attack enemy',
-      type
-    },
+    emeny,
     options: shuffle(answerIndex.concat(otherIndice)).map(option => ({
       type: types[option],
       value: demageList[option]
@@ -102,12 +100,22 @@ const quizFactory = (type, demageList, findAnswerDemage) => {
 }
 
 const getQuiz = (quizType) => {
-  // const attackerIndex = Math.floor(Math.random() * types.length);
-  const defenderIndex = Math.floor(Math.random() * types.length);
+  const emenyIndex = Math.floor(Math.random() * types.length);
 
   if (quizType === 'attackSingle') {
-    const defendList = demageMatrix.map(demage => demage[defenderIndex]);
-    return quizFactory(types[defenderIndex], defendList, max);
+    const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);
+    return quizFactory(enemyDefendList, max, {
+      title: 'attack enemy',
+      type: types[emenyIndex]
+    });
+  }
+
+  if (quizType === 'defendSingle') {
+    const emenyAttackList = demageMatrix[emenyIndex];
+    return quizFactory(emenyAttackList, min, {
+      title: 'defend against enemy',
+      type: types[emenyIndex]
+    });
   }
 };
 
