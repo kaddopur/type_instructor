@@ -1,33 +1,45 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router'
 import './Menu.css';
 
 class Menu extends Component {
+  static contextTypes = {
+    messages: PropTypes.object
+  }
+
   render() {
+    const {
+      SINGLE_TYPED,
+      DOUBLE_TYPED,
+      HOME,
+      ATTACK,
+      DEFEND
+    } = this.context.messages;
+
     return (
       <nav className="Menu">
         <section>
-          <h1>Single-typed</h1>
+          <h1>{SINGLE_TYPED}</h1>
           <div className="menuItem">
-            <Link to="/quizzes/attackSingle">Attack</Link>
+            <Link to="/quizzes/attackSingle">{ATTACK}</Link>
           </div>
           <div className="menuItem">
-            <Link to="/quizzes/defendSingle">Defend</Link>
+            <Link to="/quizzes/defendSingle">{DEFEND}</Link>
           </div>
         </section>
 
         <section className="working">
-          <h1>Double-typed</h1>
+          <h1>{DOUBLE_TYPED}</h1>
           <div className="menuItem">
-            <Link to="/Menu">Attack</Link>
+            <Link to="/Menu">{ATTACK}</Link>
           </div>
           <div className="menuItem">
-            <Link to="/Menu">Defend</Link>
+            <Link to="/Menu">{DEFEND}</Link>
           </div>
         </section>
 
         <footer>
-          <Link to="/">home</Link>
+          <Link to="/">{HOME}</Link>
         </footer>
       </nav>
     );

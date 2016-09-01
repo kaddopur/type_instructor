@@ -25,10 +25,13 @@
 }
 
 .Home .start a {
-  padding: 1.6rem;
+  display: block;
+  padding: 1.6rem 0;
+  width: 120px;
   border: solid 4px black;
   border-radius: 1.6rem;
   box-shadow: 0 .24rem rgba(0, 0, 0, .2);
+  text-align: center;
   text-shadow: 0 .24rem rgba(0, 0, 0, .2);
   font-size: 1.2rem;
 }
