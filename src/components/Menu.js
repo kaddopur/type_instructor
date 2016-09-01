@@ -27,7 +27,7 @@ class Menu extends Component {
         </section>
 
         <footer>
-          <Link to="/">back</Link>
+          <Link to="/">home</Link>
         </footer>
       </nav>
     );
