@@ -5,6 +5,8 @@
     "HOME": "home",
     "ATTACK": "Attack",
     "DEFEND": "Defend",
+    "TIMER": "timer",
+    "SCORES": "scores",
     "YOUR_SCORES": "Your scores",
     "RETRY": "Retry",
     "MENU": "Menu",

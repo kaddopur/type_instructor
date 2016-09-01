@@ -18,7 +18,7 @@ class App extends Component {
 
   getChildContext() {
     return {
-      messages: getMessages('ja')
+      messages: getMessages('en')
     }
   }
 
@@ -28,7 +28,7 @@ class App extends Component {
 }
 
 ReactDOM.render(
-  <App style={{fontSize: 20}}>
+  <App>
     <Router history={hashHistory}>
       <Route path="/" component={Home} />
       <Route path="/menu" component={Menu} />

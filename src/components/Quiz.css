@@ -21,7 +21,7 @@
 }
 
 .Quiz .stemTimer,
-.Quiz .stemCombo {
+.Quiz .stemScores {
   width: 50%;
   font-size: .8rem;
   line-height: 4;
