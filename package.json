@@ -21,5 +21,6 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js"
-  }
+  },
+  "homepage": "http://kaddopur.github.io/type_instructor"
 }
