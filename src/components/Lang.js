@@ -7,14 +7,24 @@ class Lang extends Component {
     messages: PropTypes.object
   };
 
+  componentWillReceiveProps(nextProps) {
+    const { lang } = nextProps.params;
+
+    if (lang === 'en') {
+      document.documentElement.style.fontSize = "100%"
+    } else {
+      document.documentElement.style.fontSize = "125%"
+    }
+  }
+
   render() {
     const { lang } = this.props.params;
-    const { HOME } = this.context.messages[lang];
+    const { LANGUAGE, HOME } = this.context.messages[lang];
 
     return (
       <nav className="Lang">
         <section>
-          <h1>Language</h1>
+          <h1>{LANGUAGE}</h1>
           <div className={`langItem ${lang === 'en' ? 'active' : ''}`}>
             <I18nLink to="/lang" lang="en">English</I18nLink>
           </div>
