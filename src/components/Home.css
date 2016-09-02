@@ -12,9 +12,9 @@
 
 .Home h1 {
   box-sizing: border-box;
-  padding: 4rem;
-  text-shadow: 0 .3rem rgba(0, 0, 0, .2);
-  font-size: 2rem;
+  padding: 64px;
+  text-shadow: 0 5px rgba(0, 0, 0, .2);
+  font-size: 32px;
   line-height: 1.4;
 
   flex-grow: 3;
@@ -25,14 +25,18 @@
 }
 
 .Home .start a {
-  padding: 1.6rem;
+  display: block;
+  padding: 24px 0;
+  width: 120px;
   border: solid 4px black;
-  border-radius: 1.6rem;
-  box-shadow: 0 .24rem rgba(0, 0, 0, .2);
+  border-radius: 24px;
+  box-shadow: 0 4px rgba(0, 0, 0, .2);
+  text-align: center;
   text-shadow: 0 .24rem rgba(0, 0, 0, .2);
   font-size: 1.2rem;
 }
 
 .Home footer {
-  padding: 4rem;
+  padding: 64px;
+  text-align: center;
 }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import I18nPage from './I18nPage';
 import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
@@ -6,12 +7,13 @@ import './Quiz.css';
 
 class Quiz extends Component {
   static contextTypes = {
-    router: React.PropTypes.object
-  }
+    router: PropTypes.object,
+    messages: PropTypes.object
+  };
 
   state = {
     timer: 60,
-    combo: 0,
+    scores: 0,
     status: '',
     freeze: false,
     quiz: getQuiz(this.props.params.quizType)
@@ -24,7 +26,7 @@ class Quiz extends Component {
       }, () => {
         if (this.state.timer === 0) {
           clearInterval(this.timerInterval);
-          this.context.router.push(`${this.props.location.pathname}/result/${this.state.combo}`);
+          this.context.router.push(`${this.props.location.pathname}/result/${this.state.scores}`);
         }
       });
     }, 1000);
@@ -35,20 +37,23 @@ class Quiz extends Component {
   }
 
   render() {
-    const { timer, combo, status, quiz } = this.state;
+    const { timer, scores, status, quiz } = this.state;
     const { emeny, options } = quiz;
+    const { lang } = this.props.params;
+    const messages = this.context.messages[lang];
+    const { TIMER, SCORES } = messages;
 
     return (
       <div className="Quiz">
         <div className={`stemContainer Bgc-${emeny.type}`}>
           <div className="stemHeader">
-            <div className="stemTimer">timer: {timer}</div>
-            <div className="stemCombo">combo: {combo}</div>
+            <div className="stemTimer">{TIMER}: {timer}</div>
+            <div className="stemScores">{SCORES}: {scores}</div>
           </div>
           <div className="stemEnemy">
-            <div className="stemEnemyText">{emeny.title}<br/>( {emeny.type} )</div>
+            <div className="stemEnemyText">{messages[emeny.title]}<br/>( {messages[emeny.type.toUpperCase()]} )</div>
           </div>
-          <div className="stemStatus">{status}</div>
+          <div className="stemStatus">{messages[status]}</div>
         </div>
         <div className="optionContainer">
           {options.map((option, index) => {
@@ -62,7 +67,7 @@ class Quiz extends Component {
                 className={optionClass}
                 onClick={this.handleOptionClick.bind(this, index)}>
                 <div className="optionText">
-                  {type}
+                  {messages[type.toUpperCase()]}
                   {clicked ? <div className="optionDemage">{demage}</div> : null}
                 </div>
               </div>
@@ -74,7 +79,7 @@ class Quiz extends Component {
   }
 
   handleOptionClick(clickIndex, e) {
-    const { combo, quiz, freeze } = this.state;
+    const { scores, quiz, freeze } = this.state;
 
     if (freeze) {
       return; // no-op
@@ -88,7 +93,7 @@ class Quiz extends Component {
     if (clickType === quiz.answer) {
       this.setState({
         status: getStatus(clickDemage),
-        combo: combo + 1,
+        scores: scores + 1,
         freeze: true,
         quiz: {
           ...quiz,
@@ -116,7 +121,7 @@ class Quiz extends Component {
 
     this.setState({
       status: getStatus(clickDemage),
-      combo: combo - 1,
+      scores: scores - 1,
       freeze: true,
       quiz: {
         ...quiz,
@@ -140,4 +145,4 @@ class Quiz extends Component {
   }
 }
 
-export default Quiz;
+export default I18nPage(Quiz);

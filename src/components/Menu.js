@@ -1,37 +1,51 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router'
+import React, { Component, PropTypes } from 'react';
+import I18nLink from './I18nLink';
+import I18nPage from './I18nPage';
 import './Menu.css';
 
 class Menu extends Component {
+  static contextTypes = {
+    messages: PropTypes.object
+  };
+
   render() {
+    const { lang } = this.props.params;
+    const {
+      SINGLE_TYPED,
+      DOUBLE_TYPED,
+      HOME,
+      ATTACK,
+      DEFEND
+    } = this.context.messages[lang];
+
     return (
       <nav className="Menu">
         <section>
-          <h1>Single-typed</h1>
+          <h1>{SINGLE_TYPED}</h1>
           <div className="menuItem">
-            <Link to="/quizzes/attackSingle">Attack</Link>
+            <I18nLink to="/quizzes/attackSingle" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <Link to="/quizzes/defendSingle">Defend</Link>
+            <I18nLink to="/quizzes/defendSingle" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
         <section className="working">
-          <h1>Double-typed</h1>
+          <h1>{DOUBLE_TYPED}</h1>
           <div className="menuItem">
-            <Link to="/Menu">Attack</Link>
+            <I18nLink to="/Menu" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <Link to="/Menu">Defend</Link>
+            <I18nLink to="/Menu" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
         <footer>
-          <Link to="/">home</Link>
+          <I18nLink to="/" lang={lang}>{HOME}</I18nLink>
         </footer>
       </nav>
     );
   }
 }
 
-export default Menu;
+export default I18nPage(Menu);

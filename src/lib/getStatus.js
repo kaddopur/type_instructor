@@ -1,12 +1,12 @@
 const getStatus = demage => {
   if (demage === 0) {
-    return 'not effective';
+    return 'EFFECTIVE_0';
   } else if (demage < 1) {
-    return 'not very effective';
+    return 'EFFECTIVE_1_2';
   } else if (demage === 1) {
-    return 'effective';
+    return 'EFFECTIVE_1';
   } else if (demage > 1) {
-    return 'super effective';
+    return 'EFFECTIVE_2';
   }
 }
 
