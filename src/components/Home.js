@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import I18nLink from './I18nLink';
+import I18nPage from './I18nPage';
 import './Home.css';
 import globe from '../images/globe.png';
 
@@ -31,4 +32,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default I18nPage(Home);

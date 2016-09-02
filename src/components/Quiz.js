@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import I18nPage from './I18nPage';
 import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
@@ -144,4 +145,4 @@ class Quiz extends Component {
   }
 }
 
-export default Quiz;
+export default I18nPage(Quiz);

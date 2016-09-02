@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import I18nLink from './I18nLink';
+import I18nPage from './I18nPage';
 import './Result.css';
 
 class Result extends Component {
@@ -38,4 +39,4 @@ class Result extends Component {
   }
 }
 
-export default Result;
+export default I18nPage(Result);

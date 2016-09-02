@@ -1,21 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import I18nLink from './I18nLink';
+import I18nPage from './I18nPage';
 import './Lang.css';
 
 class Lang extends Component {
   static contextTypes = {
     messages: PropTypes.object
   };
-
-  componentWillReceiveProps(nextProps) {
-    const { lang } = nextProps.params;
-
-    if (lang === 'en') {
-      document.documentElement.style.fontSize = "100%"
-    } else {
-      document.documentElement.style.fontSize = "125%"
-    }
-  }
 
   render() {
     const { lang } = this.props.params;
@@ -44,4 +35,4 @@ class Lang extends Component {
   }
 }
 
-export default Lang;
+export default I18nPage(Lang);

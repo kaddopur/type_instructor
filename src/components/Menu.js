@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import I18nLink from './I18nLink';
+import I18nPage from './I18nPage';
 import './Menu.css';
 
 class Menu extends Component {
@@ -47,4 +48,4 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+export default I18nPage(Menu);
