@@ -36,6 +36,10 @@
   font-size: 1.2rem;
 }
 
+.Home .lang {
+  margin-top: 24px;
+}
+
 .Home footer {
   padding: 64px;
   text-align: center;
