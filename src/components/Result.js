@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router'
+import I18nLink from './I18nLink';
 import './Result.css';
 
 class Result extends Component {
@@ -8,12 +8,13 @@ class Result extends Component {
   };
 
   render() {
+    const { lang } = this.props.params;
     const {
       YOUR_SCORES,
       RETRY,
       MENU,
       HOME
-    } = this.context.messages;
+    } = this.context.messages[lang];
 
     const { scores, quizType } = this.props.params;
 
@@ -22,15 +23,15 @@ class Result extends Component {
         <section>
           <h1>{YOUR_SCORES}: {scores}</h1>
           <div className="resultItem">
-            <Link to={`/quizzes/${quizType}`}>{RETRY}</Link>
+            <I18nLink to={`/quizzes/${quizType}`} lang={lang}>{RETRY}</I18nLink>
           </div>
           <div className="resultItem">
-            <Link to="/menu">{MENU}</Link>
+            <I18nLink to="/menu" lang={lang}>{MENU}</I18nLink>
           </div>
         </section>
 
         <footer>
-          <Link to="/">{HOME}</Link>
+          <I18nLink to="/" lang={lang}>{HOME}</I18nLink>
         </footer>
       </nav>
     );

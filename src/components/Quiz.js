@@ -38,7 +38,8 @@ class Quiz extends Component {
   render() {
     const { timer, scores, status, quiz } = this.state;
     const { emeny, options } = quiz;
-    const { messages } = this.context;
+    const { lang } = this.props.params;
+    const messages = this.context.messages[lang];
     const { TIMER, SCORES } = messages;
 
     return (

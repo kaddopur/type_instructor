@@ -1,8 +1,9 @@
-const getMessages = (locale) => {
-  if (!locale || locale === 'en') {
-    return require(`../lang/strings.json`);
+const getMessages = () => {
+  return {
+    en: require(`../lang/strings.json`),
+    ja: require(`../lang/strings_ja.json`),
+    zh: require(`../lang/strings_zh.json`)
   }
-  return require(`../lang/strings_${locale}.json`)    
 }
 
 export default getMessages;

@@ -8,6 +8,7 @@ import './color.css'
 
 import Home from './components/Home';
 import Menu from './components/Menu';
+import Lang from './components/Lang';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
 
@@ -18,7 +19,7 @@ class App extends Component {
 
   getChildContext() {
     return {
-      messages: getMessages('en')
+      messages: getMessages()
     }
   }
 
@@ -31,9 +32,11 @@ ReactDOM.render(
   <App>
     <Router history={hashHistory}>
       <Route path="/" component={Home} />
-      <Route path="/menu" component={Menu} />
-      <Route path="/quizzes/:quizType" component={Quiz} />
-      <Route path="/quizzes/:quizType/result/:scores" component={Result} />
+      <Route path="/:lang/" component={Home} />
+      <Route path="/:lang/menu" component={Menu} />
+      <Route path="/:lang/lang" component={Lang} />
+      <Route path="/:lang/quizzes/:quizType" component={Quiz} />
+      <Route path="/:lang/quizzes/:quizType/result/:scores" component={Result} />
     </Router>
   </App>,
   document.getElementById('root')
