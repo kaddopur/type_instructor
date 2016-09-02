@@ -33,7 +33,7 @@ ReactDOM.render(
       <Route path="/" component={Home} />
       <Route path="/menu" component={Menu} />
       <Route path="/quizzes/:quizType" component={Quiz} />
-      <Route path="/quizzes/:quizType/result/:combo" component={Result} />
+      <Route path="/quizzes/:quizType/result/:scores" component={Result} />
     </Router>
   </App>,
   document.getElementById('root')

@@ -15,12 +15,14 @@ class Result extends Component {
       HOME
     } = this.context.messages;
 
+    const { scores, quizType } = this.props.params;
+
     return (
       <nav className="Result">
         <section>
-          <h1>{YOUR_SCORES}: {this.props.params.combo}</h1>
+          <h1>{YOUR_SCORES}: {scores}</h1>
           <div className="resultItem">
-            <Link to="/quizzes/attackSingle">{RETRY}</Link>
+            <Link to={`/quizzes/${quizType}`}>{RETRY}</Link>
           </div>
           <div className="resultItem">
             <Link to="/menu">{MENU}</Link>
