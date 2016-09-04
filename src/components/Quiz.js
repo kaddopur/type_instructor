@@ -114,8 +114,13 @@ class Quiz extends Component {
 
     const {
       type: clickType,
-      demage: clickDemage
+      demage: clickDemage,
+      clicked
     } = quiz.options[clickIndex];
+
+    if (clicked) {
+      return; // no-op
+    }
 
     if (clickType === quiz.answer) {
       this.setState({
