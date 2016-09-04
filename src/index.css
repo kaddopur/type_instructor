@@ -13,4 +13,5 @@ body {
 a {
   color: initial;
   text-decoration: none;
+  user-select: none;
 }

@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   width: 100vw;
   height: 100vh;
 }
@@ -70,6 +71,8 @@
   width: 50%;
   color: white;
   text-align: center;
+
+  user-select: none;
 }
 
 .Quiz .stemEnemyText,
