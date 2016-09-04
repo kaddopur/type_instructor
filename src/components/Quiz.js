@@ -19,18 +19,33 @@ class Quiz extends Component {
     scores: 0,
     status: '',
     freeze: false,
-    quiz: getQuiz(this.props.params.quizType)
+    quiz: getQuiz(this.props.params.quizType),
+    overlay: true
   };
 
-  componentDidMount() {
+  dismissOverlay() {
+    const { 
+      location: {
+        pathname
+      },
+      params: {
+        gameType
+      }
+    } = this.props;
+    const timerStep = gameType === 'basic' ? -1 : 1;
+
+    this.setState({
+      overlay: false
+    });
+
     this.timerInterval = setInterval(() => {
-      const timerStep = this.props.params.gameType === 'basic' ? -1 : 1;
+      const { timer, scores } = this.state;
       this.setState({
-        timer: this.state.timer + timerStep
+        timer: timer + timerStep
       }, () => {
-        if (this.props.params.gameType === 'basic' && this.state.timer === 0) {
+        if (gameType === 'basic' && timer === 0) {
           clearInterval(this.timerInterval);
-          this.context.router.push(`${this.props.location.pathname}/result/${this.state.scores}`);
+          this.context.router.push(`${pathname}/result/${scores}`);
         }
       });
     }, 1000);
@@ -41,14 +56,22 @@ class Quiz extends Component {
   }
 
   render() {
-    const { timer, scores, status, quiz } = this.state;
+    const { timer, scores, status, quiz, overlay } = this.state;
     const { emeny, options } = quiz;
-    const { lang } = this.props.params;
+    const { lang, gameType } = this.props.params;
     const messages = this.context.messages[lang];
-    const { TIMER, SCORES } = messages;
+    const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
+
+    const overlayDiv = (
+      <div className="overlay" onClick={this.dismissOverlay.bind(this)}>
+          <h2>{GOAL}</h2>
+          <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
+        </div>
+    );
 
     return (
       <div className="Quiz">
+        {overlay ? overlayDiv : null}
         <div className={`stemContainer Bgc-${emeny.type}`}>
           <div className="stemHeader">
             <div className="stemTimer">{TIMER}: {timer}</div>
