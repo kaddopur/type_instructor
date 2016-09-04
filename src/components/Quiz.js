@@ -6,6 +6,7 @@ import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
 const TIME_LIMIT = 60;
+const SCORE_TARGET = 20;
 
 class Quiz extends Component {
   static contextTypes = {
@@ -14,7 +15,7 @@ class Quiz extends Component {
   };
 
   state = {
-    timer: this.props.params.gameType === 's' ? 0 : TIME_LIMIT,
+    timer: this.props.params.gameType === 'basic' ? TIME_LIMIT : 0,
     scores: 0,
     status: '',
     freeze: false,
@@ -23,10 +24,11 @@ class Quiz extends Component {
 
   componentDidMount() {
     this.timerInterval = setInterval(() => {
+      const timerStep = this.props.params.gameType === 'basic' ? -1 : 1;
       this.setState({
-        timer: this.state.timer - 1
+        timer: this.state.timer + timerStep
       }, () => {
-        if (this.props.params.gameType === 'b' && this.state.timer === 0) {
+        if (this.props.params.gameType === 'basic' && this.state.timer === 0) {
           clearInterval(this.timerInterval);
           this.context.router.push(`${this.props.location.pathname}/result/${this.state.scores}`);
         }
@@ -116,7 +118,7 @@ class Quiz extends Component {
             status: '',
             freeze: false
           }, () => {
-            if (this.props.params.gameType === 't' && this.state.scores === 2) {
+            if (this.props.params.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
               clearInterval(this.timerInterval);
               this.context.router.push(`${this.props.location.pathname}/result/${this.state.timer}`);
             }

@@ -19,11 +19,18 @@ class Result extends Component {
     } = this.context.messages[lang];
 
     const { value, catetory, gameType, quizType } = this.props.params;
+    let titleDiv = null;
+
+    if (gameType === 'basic') {
+      titleDiv = <h1>{YOUR_SCORES}<br/>{value}</h1>;
+    } else if (gameType === 'speedrun') {
+      titleDiv = <h1>{YOUR_TIME}<br/>{`${value}s`}</h1>;
+    }
 
     return (
       <nav className="Result">
         <section>
-          <h1>{gameType === 'b' ? YOUR_SCORES : YOUR_TIME}: {value}</h1>
+          {titleDiv}
           <div className="resultItem">
             <I18nLink to={`/quizzes/${catetory}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink>
           </div>

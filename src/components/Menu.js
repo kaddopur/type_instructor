@@ -23,20 +23,20 @@ class Menu extends Component {
         <section>
           <h1>{BASIC}</h1>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/b/attack" lang={lang}>{ATTACK}</I18nLink>
+            <I18nLink to="/quizzes/s/basic/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/b/defend" lang={lang}>{DEFEND}</I18nLink>
+            <I18nLink to="/quizzes/s/basic/defend" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
         <section>
           <h1>{SPEEDRUN}</h1>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/t/attack" lang={lang}>{ATTACK}</I18nLink>
+            <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/t/attack" lang={lang}>{DEFEND}</I18nLink>
+            <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
