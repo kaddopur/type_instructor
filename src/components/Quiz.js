@@ -5,6 +5,9 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
+const TIME_LIMIT = 60;
+const SCORE_TARGET = 20;
+
 class Quiz extends Component {
   static contextTypes = {
     router: PropTypes.object,
@@ -12,21 +15,37 @@ class Quiz extends Component {
   };
 
   state = {
-    timer: 60,
+    timer: this.props.params.gameType === 'basic' ? TIME_LIMIT : 0,
     scores: 0,
     status: '',
     freeze: false,
-    quiz: getQuiz(this.props.params.quizType)
+    quiz: getQuiz(this.props.params.quizType),
+    overlay: true
   };
 
-  componentDidMount() {
+  dismissOverlay() {
+    const { 
+      location: {
+        pathname
+      },
+      params: {
+        gameType
+      }
+    } = this.props;
+    const timerStep = gameType === 'basic' ? -1 : 1;
+
+    this.setState({
+      overlay: false
+    });
+
     this.timerInterval = setInterval(() => {
+      const { timer, scores } = this.state;
       this.setState({
-        timer: this.state.timer - 1
+        timer: timer + timerStep
       }, () => {
-        if (this.state.timer === 0) {
+        if (gameType === 'basic' && timer === 0) {
           clearInterval(this.timerInterval);
-          this.context.router.push(`${this.props.location.pathname}/result/${this.state.scores}`);
+          this.context.router.push(`${pathname}/result/${scores}`);
         }
       });
     }, 1000);
@@ -37,14 +56,22 @@ class Quiz extends Component {
   }
 
   render() {
-    const { timer, scores, status, quiz } = this.state;
+    const { timer, scores, status, quiz, overlay } = this.state;
     const { emeny, options } = quiz;
-    const { lang } = this.props.params;
+    const { lang, gameType } = this.props.params;
     const messages = this.context.messages[lang];
-    const { TIMER, SCORES } = messages;
+    const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
+
+    const overlayDiv = (
+      <div className="overlay" onClick={this.dismissOverlay.bind(this)}>
+          <h2>{GOAL}</h2>
+          <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
+        </div>
+    );
 
     return (
       <div className="Quiz">
+        {overlay ? overlayDiv : null}
         <div className={`stemContainer Bgc-${emeny.type}`}>
           <div className="stemHeader">
             <div className="stemTimer">{TIMER}: {timer}</div>
@@ -87,8 +114,13 @@ class Quiz extends Component {
 
     const {
       type: clickType,
-      demage: clickDemage
+      demage: clickDemage,
+      clicked
     } = quiz.options[clickIndex];
+
+    if (clicked) {
+      return; // no-op
+    }
 
     if (clickType === quiz.answer) {
       this.setState({
@@ -113,6 +145,11 @@ class Quiz extends Component {
             quiz: getQuiz(this.props.params.quizType, quiz.emeny.type),
             status: '',
             freeze: false
+          }, () => {
+            if (this.props.params.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
+              clearInterval(this.timerInterval);
+              this.context.router.push(`${this.props.location.pathname}/result/${this.state.timer}`);
+            }
           });
         }, 500);
       });

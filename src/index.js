@@ -35,8 +35,8 @@ ReactDOM.render(
       <Route path="/:lang/" component={Home} />
       <Route path="/:lang/menu" component={Menu} />
       <Route path="/:lang/lang" component={Lang} />
-      <Route path="/:lang/quizzes/:quizType" component={Quiz} />
-      <Route path="/:lang/quizzes/:quizType/result/:scores" component={Result} />
+      <Route path="/:lang/quizzes/:catetory/:gameType/:quizType" component={Quiz} />
+      <Route path="/:lang/quizzes/:catetory/:gameType/:quizType/result/:value" component={Result} />
     </Router>
   </App>,
   document.getElementById('root')

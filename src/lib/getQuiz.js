@@ -105,7 +105,7 @@ const getQuiz = (quizType, lastEmeny) => {
     emenyIndex = Math.floor(Math.random() * types.length);
   }
 
-  if (quizType === 'attackSingle') {
+  if (quizType === 'attack') {
     const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);
     return quizFactory(enemyDefendList, max, {
       title: 'ENEMY_ATTACK',
@@ -113,7 +113,7 @@ const getQuiz = (quizType, lastEmeny) => {
     });
   }
 
-  if (quizType === 'defendSingle') {
+  if (quizType === 'defend') {
     const emenyAttackList = demageMatrix[emenyIndex];
     return quizFactory(emenyAttackList, min, {
       title: 'ENEMY_DEFEND',

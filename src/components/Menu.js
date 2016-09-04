@@ -11,8 +11,8 @@ class Menu extends Component {
   render() {
     const { lang } = this.props.params;
     const {
-      SINGLE_TYPED,
-      DOUBLE_TYPED,
+      BASIC,
+      SPEEDRUN,
       HOME,
       ATTACK,
       DEFEND
@@ -21,22 +21,22 @@ class Menu extends Component {
     return (
       <nav className="Menu">
         <section>
-          <h1>{SINGLE_TYPED}</h1>
+          <h1>{BASIC}</h1>
           <div className="menuItem">
-            <I18nLink to="/quizzes/attackSingle" lang={lang}>{ATTACK}</I18nLink>
+            <I18nLink to="/quizzes/s/basic/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/quizzes/defendSingle" lang={lang}>{DEFEND}</I18nLink>
+            <I18nLink to="/quizzes/s/basic/defend" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
-        <section className="working">
-          <h1>{DOUBLE_TYPED}</h1>
+        <section>
+          <h1>{SPEEDRUN}</h1>
           <div className="menuItem">
-            <I18nLink to="/Menu" lang={lang}>{ATTACK}</I18nLink>
+            <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/Menu" lang={lang}>{DEFEND}</I18nLink>
+            <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
