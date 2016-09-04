@@ -2,6 +2,8 @@
     "START": "Start",
     "SINGLE_TYPED": "Single-typed",
     "DOUBLE_TYPED": "Double-typed",
+    "BASIC": "Basic",
+    "SPEEDRUN": "Speedrun",
     "HOME": "home",
     "ATTACK": "Attack",
     "DEFEND": "Defend",

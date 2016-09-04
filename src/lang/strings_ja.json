@@ -2,6 +2,8 @@
     "START": "スタート",
     "SINGLE_TYPED": "1種類のタイプ",
     "DOUBLE_TYPED": "2種類のタイプ",
+    "BASIC": "基本",
+    "SPEEDRUN": "タイムアタック",
     "HOME": "ホーム",
     "ATTACK": "攻撃",
     "DEFEND": "防御",
