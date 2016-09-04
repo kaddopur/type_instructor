@@ -36,7 +36,7 @@ class Menu extends Component {
             <I18nLink to="/quizzes/s/t/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/t/attack" lang={lang}>{ATTACK}</I18nLink>
+            <I18nLink to="/quizzes/s/t/attack" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
