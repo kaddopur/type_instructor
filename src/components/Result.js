@@ -12,19 +12,20 @@ class Result extends Component {
     const { lang } = this.props.params;
     const {
       YOUR_SCORES,
+      YOUR_TIME,
       RETRY,
       MENU,
       HOME
     } = this.context.messages[lang];
 
-    const { scores, quizType } = this.props.params;
+    const { value, catetory, gameType, quizType } = this.props.params;
 
     return (
       <nav className="Result">
         <section>
-          <h1>{YOUR_SCORES}: {scores}</h1>
+          <h1>{gameType === 'b' ? YOUR_SCORES : YOUR_TIME}: {value}</h1>
           <div className="resultItem">
-            <I18nLink to={`/quizzes/${quizType}`} lang={lang}>{RETRY}</I18nLink>
+            <I18nLink to={`/quizzes/${catetory}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink>
           </div>
           <div className="resultItem">
             <I18nLink to="/menu" lang={lang}>{MENU}</I18nLink>
