@@ -11,7 +11,10 @@
     "normalize.css": "^4.2.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
-    "react-router": "^2.7.0"
+    "react-redux": "^4.4.5",
+    "react-router": "^2.7.0",
+    "react-router-redux": "^4.0.5",
+    "redux": "^3.6.0"
   },
   "scripts": {
     "deploy": "git commit -am \"Save local changes\"; git checkout -B gh-pages; git add -f build; git commit -am \"Rebuild website\"; git filter-branch -f --prune-empty --subdirectory-filter build; git push -f origin gh-pages; git checkout -",
