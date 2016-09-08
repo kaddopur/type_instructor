@@ -6,6 +6,7 @@ const TIME_LIMIT = 60;
 // Actions
 export const RESET_QUIZZES = 'type_instructor/quizzes/RESET_QUIZZES';
 export const DISMISS_OVERLAY = 'type_instructor/quizzes/DISMISS_OVERLAY';
+export const UPDATE_TIMER = 'type_instructor/quizzes/UPDATE_TIMER';
 
 // Reducer
 export default function reducer(state = {}, action = {}) {
@@ -24,6 +25,11 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         overlay: false
       };
+    case UPDATE_TIMER:
+      return {
+        ...state,
+        timer: action.payload.timer
+      };
     default:
       return state;
   }
@@ -37,11 +43,20 @@ export function resetQuizzes(gameType, quizType) {
       gameType,
       quizType
     }
-  }
+  };
 }
 
 export function dismissOverlay() {
   return {
     type: DISMISS_OVERLAY
-  }
+  };
+}
+
+export function updateTimer(timer) {
+  return {
+    type: UPDATE_TIMER,
+    payload: {
+      timer
+    }
+  };
 }

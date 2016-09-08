@@ -6,40 +6,57 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
-import { resetQuizzes, dismissOverlay } from '../ducks/quizzes';
+import { resetQuizzes, dismissOverlay, updateTimer } from '../ducks/quizzes';
 import { push } from 'react-router-redux'
 
 const SCORE_TARGET = 20;
 
 class Quiz extends Component {
+
+  // handler
   dismissOverlay() {
+    const { 
+      computed: {
+        timerStep
+      },
+      actions: {
+        dismissOverlay,
+        updateTimer
+      }
+    } = this.props;
+
+    dismissOverlay();
+
+    this.timerInterval = setInterval(() => {
+      updateTimer(this.props.quizzes.timer + timerStep);
+    }, 1000);
+  }
+
+  componentWillMount() {
+    this.props.actions.resetQuizzes();
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { 
       location: {
         pathname
       },
       gameType,
-      computed: {
-        timerStep
+      quizzes: {
+        timer,
+        scores
+      },
+      actions: {
+        showResult
       }
     } = this.props;
 
-    this.props.actions.dismissOverlay();
-
-    // this.timerInterval = setInterval(() => {
-    //   const { timer, scores } = this.state.quizzes;
-    //   this.setState({
-    //     timer: timer + timerStep
-    //   }, () => {
-    //     if (gameType === 'basic' && timer === 0) {
-    //       clearInterval(this.timerInterval);
-    //       this.props.actions.showResult(`${pathname}/result/${scores}`);
-    //     }
-    //   });
-    // }, 1000);
-  }
-
-  componentWillMount() {
-    this.props.actions.resetQuizzes();
+    if (timer !== nextProps.quizzes.timer) {
+      if (gameType === 'basic' && nextProps.quizzes.timer === 0) {
+        clearInterval(this.timerInterval);
+        showResult(`${pathname}/result/${scores}`);
+      }  
+    }
   }
 
   componentWillUnmount() {
@@ -48,28 +65,27 @@ class Quiz extends Component {
 
   render() {
     const {
-      timer,
-      scores,
-      status,
-      quiz: {
-        emeny = { type: '' },
-        options = []
-      } = {},
-      overlay
-    } = this.props.quizzes;
-
-    const {
       messages,
-      gameType
+      gameType,
+      quizzes: {
+        timer,
+        scores,
+        status,
+        quiz: {
+          emeny = { type: '' },
+          options = []
+        } = {},
+        overlay
+      }
     } = this.props;
 
     const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
 
     const overlayDiv = (
       <div className="overlay" onClick={this.dismissOverlay.bind(this)}>
-          <h2>{GOAL}</h2>
-          <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
-        </div>
+        <h2>{GOAL}</h2>
+        <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
+      </div>
     );
 
     return (
@@ -225,6 +241,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       },
       showResult: (resultUrl) => {
         dispatch(push(resultUrl))
+      },
+      updateTimer: (timer) => {
+        dispatch(updateTimer(timer))
       }
     }
   }
