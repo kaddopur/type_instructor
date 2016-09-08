@@ -1,24 +1,28 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import I18nLink from './I18nLink';
 import I18nPage from './I18nPage';
 import './Result.css';
 
-class Result extends Component {
-  static contextTypes = {
-    messages: PropTypes.object
-  };
-
+class Result extends PureComponent {
   render() {
-    const { lang } = this.props.params;
     const {
-      YOUR_SCORES,
-      YOUR_TIME,
-      RETRY,
-      MENU,
-      HOME
-    } = this.context.messages[lang];
+      messages: {
+        YOUR_SCORES,
+        YOUR_TIME,
+        RETRY,
+        MENU,
+        HOME
+      },
+      lang,
+      params: {
+        value,
+        catetory,
+        gameType,
+        quizType
+      }
+    } = this.props;
 
-    const { value, catetory, gameType, quizType } = this.props.params;
     let titleDiv = null;
 
     if (gameType === 'basic') {
@@ -47,4 +51,19 @@ class Result extends Component {
   }
 }
 
-export default I18nPage(Result);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages
+  } = state;
+
+  const {
+    lang = 'en'
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang
+  };
+};
+
+export default I18nPage(connect(mapStateToProps)(Result));

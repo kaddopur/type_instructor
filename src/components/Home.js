@@ -1,17 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import I18nLink from './I18nLink';
 import I18nPage from './I18nPage';
 import './Home.css';
 import globe from '../images/globe.png';
 
-class Home extends Component {
-  static contextTypes = {
-    messages: PropTypes.object
-  };
-
+class Home extends PureComponent {
   render() {
-    const { lang = 'en' } = this.props.params;
-    const { START } = this.context.messages[lang];
+    const {
+      messages: {
+        START
+      },
+      lang
+    } = this.props;
 
     return (
       <article className="Home">
@@ -21,7 +22,7 @@ class Home extends Component {
         </section>
         <section className="lang">
           <I18nLink to="/lang" lang={lang}>
-            <img src={globe} alt="change language"/>
+            <img src={globe} width="32" height="32" alt="change language"/>
           </I18nLink>
         </section>
         <footer>
@@ -32,4 +33,19 @@ class Home extends Component {
   }
 }
 
-export default I18nPage(Home);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages
+  } = state;
+
+  const {
+    lang = 'en'
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang
+  };
+};
+
+export default I18nPage(connect(mapStateToProps)(Home));

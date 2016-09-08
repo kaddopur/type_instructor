@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import I18nPage from './I18nPage';
 import classnames from 'classnames';
 import getQuiz from '../lib/getQuiz';
@@ -10,8 +11,7 @@ const SCORE_TARGET = 20;
 
 class Quiz extends Component {
   static contextTypes = {
-    router: PropTypes.object,
-    messages: PropTypes.object
+    router: PropTypes.object
   };
 
   state = {
@@ -56,10 +56,24 @@ class Quiz extends Component {
   }
 
   render() {
-    const { timer, scores, status, quiz, overlay } = this.state;
-    const { emeny, options } = quiz;
-    const { lang, gameType } = this.props.params;
-    const messages = this.context.messages[lang];
+    const {
+      timer,
+      scores,
+      status,
+      quiz: {
+        emeny,
+        options
+      },
+      overlay
+    } = this.state;
+
+    const {
+      messages,
+      params: {
+        gameType
+      }
+    } = this.props;
+
     const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
 
     const overlayDiv = (
@@ -182,4 +196,19 @@ class Quiz extends Component {
   }
 }
 
-export default I18nPage(Quiz);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages
+  } = state;
+
+  const {
+    lang = 'en'
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang
+  };
+};
+
+export default I18nPage(connect(mapStateToProps)(Quiz));

@@ -1,16 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import I18nLink from './I18nLink';
 import I18nPage from './I18nPage';
 import './Lang.css';
 
-class Lang extends Component {
-  static contextTypes = {
-    messages: PropTypes.object
-  };
-
+class Lang extends PureComponent {
   render() {
-    const { lang } = this.props.params;
-    const { LANGUAGE, HOME } = this.context.messages[lang];
+    const {
+      messages: {
+        LANGUAGE,
+        HOME
+      },
+      lang
+    } = this.props;
 
     return (
       <nav className="Lang">
@@ -35,4 +37,19 @@ class Lang extends Component {
   }
 }
 
-export default I18nPage(Lang);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages
+  } = state;
+
+  const {
+    lang = 'en'
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang
+  };
+};
+
+export default I18nPage(connect(mapStateToProps)(Lang));
