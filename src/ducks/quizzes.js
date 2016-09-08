@@ -12,7 +12,17 @@ export const CLICK_WRONG_OPTION = 'type_instructor/quizzes/CLICK_WRONG_OPTION';
 export const UNFREEZE = 'type_instructor/quizzes/UNFREEZE';
 
 // Reducer
-export default function reducer(state = {}, action = {}) {
+const initialState = {
+  timer: TIME_LIMIT,
+  scores: 0,
+  status: '',
+  freeze: false,
+  finish: false,
+  quiz: getQuiz('attack'),
+  overlay: true
+};
+
+export default function reducer(state = initialState, action = {}) {
   switch(action.type) {
     case RESET_QUIZZES:
       return {
@@ -77,7 +87,7 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         freeze: false,
         status: '',
-        finish: !action.payload.finish,
+        finish: action.payload.finish ? false : state.finish,
         quiz: action.payload.finish ? getQuiz(action.payload.quizType) : state.quiz
       };
     default:
