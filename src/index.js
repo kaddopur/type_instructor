@@ -12,10 +12,10 @@ import Lang from './components/Lang';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as reducers from './ducks/index';
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 
 const store = createStore(
   combineReducers({
@@ -23,7 +23,8 @@ const store = createStore(
     messages: getMessages,
     routing: routerReducer
   }),
-  window.devToolsExtension ? window.devToolsExtension() : undefined
+  window.devToolsExtension ? window.devToolsExtension() : undefined,
+  applyMiddleware(routerMiddleware(hashHistory))
 );
 
 const history = syncHistoryWithStore(hashHistory, store);

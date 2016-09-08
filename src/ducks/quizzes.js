@@ -5,6 +5,7 @@ const TIME_LIMIT = 60;
 
 // Actions
 export const RESET_QUIZZES = 'type_instructor/quizzes/RESET_QUIZZES';
+export const DISMISS_OVERLAY = 'type_instructor/quizzes/DISMISS_OVERLAY';
 
 // Reducer
 export default function reducer(state = {}, action = {}) {
@@ -17,6 +18,11 @@ export default function reducer(state = {}, action = {}) {
         freeze: false,
         quiz: getQuiz(action.payload.quizType),
         overlay: true
+      };
+    case DISMISS_OVERLAY:
+      return {
+        ...state,
+        overlay: false
       };
     default:
       return state;
@@ -31,5 +37,11 @@ export function resetQuizzes(gameType, quizType) {
       gameType,
       quizType
     }
+  }
+}
+
+export function dismissOverlay() {
+  return {
+    type: DISMISS_OVERLAY
   }
 }

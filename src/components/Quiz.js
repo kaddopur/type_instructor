@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import I18nPage from './I18nPage';
 import classnames from 'classnames';
@@ -6,15 +6,12 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
-import { resetQuizzes } from '../ducks/quizzes';
+import { resetQuizzes, dismissOverlay } from '../ducks/quizzes';
+import { push } from 'react-router-redux'
 
 const SCORE_TARGET = 20;
 
 class Quiz extends Component {
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
   dismissOverlay() {
     const { 
       location: {
@@ -26,21 +23,19 @@ class Quiz extends Component {
       }
     } = this.props;
 
-    this.setState({
-      overlay: false
-    });
+    this.props.actions.dismissOverlay();
 
-    this.timerInterval = setInterval(() => {
-      const { timer, scores } = this.state.quizzes;
-      this.setState({
-        timer: timer + timerStep
-      }, () => {
-        if (gameType === 'basic' && timer === 0) {
-          clearInterval(this.timerInterval);
-          this.context.router.push(`${pathname}/result/${scores}`);
-        }
-      });
-    }, 1000);
+    // this.timerInterval = setInterval(() => {
+    //   const { timer, scores } = this.state.quizzes;
+    //   this.setState({
+    //     timer: timer + timerStep
+    //   }, () => {
+    //     if (gameType === 'basic' && timer === 0) {
+    //       clearInterval(this.timerInterval);
+    //       this.props.actions.showResult(`${pathname}/result/${scores}`);
+    //     }
+    //   });
+    // }, 1000);
   }
 
   componentWillMount() {
@@ -156,7 +151,7 @@ class Quiz extends Component {
           }, () => {
             if (this.props.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
               clearInterval(this.timerInterval);
-              this.context.router.push(`${this.props.location.pathname}/result/${this.state.timer}`);
+              this.props.actions.showResult(`${this.props.location.pathname}/result/${this.state.timer}`);
             }
           });
         }, 500);
@@ -224,6 +219,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     actions: {
       resetQuizzes: () => {
         dispatch(resetQuizzes(gameType, quizType));
+      },
+      dismissOverlay: () => {
+        dispatch(dismissOverlay());
+      },
+      showResult: (resultUrl) => {
+        dispatch(push(resultUrl))
       }
     }
   }
