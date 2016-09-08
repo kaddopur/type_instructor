@@ -7,6 +7,8 @@ const TIME_LIMIT = 60;
 export const RESET_QUIZZES = 'type_instructor/quizzes/RESET_QUIZZES';
 export const DISMISS_OVERLAY = 'type_instructor/quizzes/DISMISS_OVERLAY';
 export const UPDATE_TIMER = 'type_instructor/quizzes/UPDATE_TIMER';
+export const CLICK_WRONG_OPTION = 'type_instructor/quizzes/CLICK_WRONG_OPTION';
+export const UNFREEZE = 'type_instructor/quizzes/UNFREEZE';
 
 // Reducer
 export default function reducer(state = {}, action = {}) {
@@ -29,6 +31,30 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         timer: action.payload.timer
+      };
+    case CLICK_WRONG_OPTION:
+      return {
+        ...state,
+        status: action.payload.status,
+        scores: state.scores - 1,
+        freeze: true,
+        quiz: {
+          ...state.quiz,
+          options: [
+            ...state.quiz.options.slice(0, action.payload.index),
+            {
+              ...state.quiz.options[action.payload.index],
+              clicked: true
+            },
+            ...state.quiz.options.slice(action.payload.index + 1)
+          ]
+        }
+      };
+    case UNFREEZE:
+      return {
+        ...state,
+        freeze: false,
+        status: ''
       };
     default:
       return state;
@@ -58,5 +84,21 @@ export function updateTimer(timer) {
     payload: {
       timer
     }
+  };
+}
+
+export function clickWrongOption(index, status) {
+  return {
+    type: CLICK_WRONG_OPTION,
+    payload: {
+      index,
+      status
+    }
+  };
+}
+
+export function unfreeze() {
+  return {
+    type: UNFREEZE
   };
 }

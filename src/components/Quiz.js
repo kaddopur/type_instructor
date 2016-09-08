@@ -6,7 +6,7 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
-import { resetQuizzes, dismissOverlay, updateTimer } from '../ducks/quizzes';
+import { resetQuizzes, dismissOverlay, updateTimer, clickWrongOption, unfreeze } from '../ducks/quizzes';
 import { push } from 'react-router-redux'
 
 const SCORE_TARGET = 20;
@@ -44,7 +44,8 @@ class Quiz extends Component {
       gameType,
       quizzes: {
         timer,
-        scores
+        scores,
+        freeze
       },
       actions: {
         showResult
@@ -56,6 +57,14 @@ class Quiz extends Component {
         clearInterval(this.timerInterval);
         showResult(`${pathname}/result/${scores}`);
       }  
+    }
+
+    if (freeze !== nextProps.quizzes.freeze) {
+      if (nextProps.quizzes.freeze) {
+        setTimeout(() => {
+          this.props.actions.unfreeze();
+        }, 500);
+      }
     }
   }
 
@@ -125,7 +134,7 @@ class Quiz extends Component {
   }
 
   handleOptionClick(clickIndex, e) {
-    const { scores, quiz, freeze } = this.state;
+    const { scores, quiz, freeze } = this.props.quizzes;
 
     if (freeze) {
       return; // no-op
@@ -175,29 +184,7 @@ class Quiz extends Component {
       return;
     }
 
-    this.setState({
-      status: getStatus(clickDemage),
-      scores: scores - 1,
-      freeze: true,
-      quiz: {
-        ...quiz,
-        options: [
-          ...quiz.options.slice(0, clickIndex),
-          {
-            ...quiz.options[clickIndex],
-            clicked: true
-          },
-          ...quiz.options.slice(clickIndex + 1)
-        ]
-      }
-    }, () => {
-      setTimeout(() => {
-        this.setState({
-          status: '',
-          freeze: false
-        });
-      }, 500);
-    });
+    this.props.actions.clickWrongOption(clickIndex, getStatus(clickDemage));
   }
 }
 
@@ -240,10 +227,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch(dismissOverlay());
       },
       showResult: (resultUrl) => {
-        dispatch(push(resultUrl))
+        dispatch(push(resultUrl));
       },
       updateTimer: (timer) => {
-        dispatch(updateTimer(timer))
+        dispatch(updateTimer(timer));
+      },
+      clickWrongOption: (index, status) => {
+        dispatch(clickWrongOption(index, status));
+      },
+      unfreeze: () => {
+        dispatch(unfreeze());
       }
     }
   }
