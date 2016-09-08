@@ -38,6 +38,40 @@ class Quiz extends PureComponent {
     }, 1000);
   }
 
+  handleOptionClick(clickIndex, e) {
+    const {
+      quizzes: {
+        quiz,
+        freeze
+      },
+      actions: {
+        clickRightOption,
+        clickWrongOption
+      }
+    } = this.props;
+
+    if (freeze) {
+      return; // no-op
+    }
+
+    const {
+      type: clickType,
+      demage: clickDemage,
+      clicked
+    } = quiz.options[clickIndex];
+
+    if (clicked) {
+      return; // no-op
+    }
+
+    if (clickType === quiz.answer) {
+      clickRightOption(clickIndex, getStatus(clickDemage));
+    } else {
+      clickWrongOption(clickIndex, getStatus(clickDemage));
+    }
+  }
+
+  // life cycle methods
   componentWillMount() {
     this.props.actions.resetQuizzes();
   }
@@ -78,10 +112,6 @@ class Quiz extends PureComponent {
         }, FREEZE_DURATION);
       }
     }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerInterval);
   }
 
   render() {
@@ -145,37 +175,8 @@ class Quiz extends PureComponent {
     );
   }
 
-  handleOptionClick(clickIndex, e) {
-    const {
-      quizzes: {
-        quiz,
-        freeze
-      },
-      actions: {
-        clickRightOption,
-        clickWrongOption
-      }
-    } = this.props;
-
-    if (freeze) {
-      return; // no-op
-    }
-
-    const {
-      type: clickType,
-      demage: clickDemage,
-      clicked
-    } = quiz.options[clickIndex];
-
-    if (clicked) {
-      return; // no-op
-    }
-
-    if (clickType === quiz.answer) {
-      clickRightOption(clickIndex, getStatus(clickDemage));
-    } else {
-      clickWrongOption(clickIndex, getStatus(clickDemage));
-    }
+  componentWillUnmount() {
+    clearInterval(this.timerInterval);
   }
 }
 
