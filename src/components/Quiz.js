@@ -6,7 +6,8 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
-const TIME_LIMIT = 60;
+import { resetQuizzes } from '../ducks/quizzes';
+
 const SCORE_TARGET = 20;
 
 class Quiz extends Component {
@@ -14,32 +15,23 @@ class Quiz extends Component {
     router: PropTypes.object
   };
 
-  state = {
-    timer: this.props.params.gameType === 'basic' ? TIME_LIMIT : 0,
-    scores: 0,
-    status: '',
-    freeze: false,
-    quiz: getQuiz(this.props.params.quizType),
-    overlay: true
-  };
-
   dismissOverlay() {
     const { 
       location: {
         pathname
       },
-      params: {
-        gameType
+      gameType,
+      computed: {
+        timerStep
       }
     } = this.props;
-    const timerStep = gameType === 'basic' ? -1 : 1;
 
     this.setState({
       overlay: false
     });
 
     this.timerInterval = setInterval(() => {
-      const { timer, scores } = this.state;
+      const { timer, scores } = this.state.quizzes;
       this.setState({
         timer: timer + timerStep
       }, () => {
@@ -49,6 +41,10 @@ class Quiz extends Component {
         }
       });
     }, 1000);
+  }
+
+  componentWillMount() {
+    this.props.actions.resetQuizzes();
   }
 
   componentWillUnmount() {
@@ -61,17 +57,15 @@ class Quiz extends Component {
       scores,
       status,
       quiz: {
-        emeny,
-        options
-      },
+        emeny = { type: '' },
+        options = []
+      } = {},
       overlay
-    } = this.state;
+    } = this.props.quizzes;
 
     const {
       messages,
-      params: {
-        gameType
-      }
+      gameType
     } = this.props;
 
     const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
@@ -160,7 +154,7 @@ class Quiz extends Component {
             status: '',
             freeze: false
           }, () => {
-            if (this.props.params.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
+            if (this.props.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
               clearInterval(this.timerInterval);
               this.context.router.push(`${this.props.location.pathname}/result/${this.state.timer}`);
             }
@@ -198,17 +192,46 @@ class Quiz extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    messages
+    messages,
+    quizzes
   } = state;
 
   const {
-    lang = 'en'
+    lang = 'en',
+    gameType,
+    quizType
   } = ownProps.params;
 
   return {
     messages: messages[lang],
-    lang
+    lang,
+    quizzes,
+    gameType,
+    quizType,
+    computed: {
+      timerStep: gameType === 'basic' ? -1 : 1
+    }
   };
 };
 
-export default I18nPage(connect(mapStateToProps)(Quiz));
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const {
+    gameType,
+    quizType
+  } = ownProps.params;
+
+  return {
+    actions: {
+      resetQuizzes: () => {
+        dispatch(resetQuizzes(gameType, quizType));
+      }
+    }
+  }
+};
+
+// {
+//   gameType: basic|speedrun,
+//   quizType: attack|defend
+// }
+
+export default I18nPage(connect(mapStateToProps, mapDispatchToProps)(Quiz));

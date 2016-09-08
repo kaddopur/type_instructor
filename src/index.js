@@ -13,11 +13,13 @@ import Quiz from './components/Quiz';
 import Result from './components/Result';
 
 import { createStore, combineReducers } from 'redux';
+import * as reducers from './ducks/index';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 const store = createStore(
   combineReducers({
+    ...reducers,
     messages: getMessages,
     routing: routerReducer
   }),
