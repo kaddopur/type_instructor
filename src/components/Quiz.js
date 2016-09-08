@@ -1,18 +1,23 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import I18nPage from './I18nPage';
 import classnames from 'classnames';
-import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
-
-import { resetQuizzes, dismissOverlay, updateTimer, clickRightOption, clickWrongOption, unfreeze } from '../ducks/quizzes';
+import {
+  resetQuizzes,
+  dismissOverlay,
+  updateTimer,
+  clickRightOption,
+  clickWrongOption,
+  unfreeze
+} from '../ducks/quizzes';
 import { push } from 'react-router-redux'
 
 const SCORE_TARGET = 3;
 const FREEZE_DURATION = 500;
 
-class Quiz extends Component {
+class Quiz extends PureComponent {
 
   // handler
   dismissOverlay() {
@@ -141,7 +146,16 @@ class Quiz extends Component {
   }
 
   handleOptionClick(clickIndex, e) {
-    const { scores, quiz, freeze } = this.props.quizzes;
+    const {
+      quizzes: {
+        quiz,
+        freeze
+      },
+      actions: {
+        clickRightOption,
+        clickWrongOption
+      }
+    } = this.props;
 
     if (freeze) {
       return; // no-op
@@ -158,9 +172,9 @@ class Quiz extends Component {
     }
 
     if (clickType === quiz.answer) {
-      this.props.actions.clickRightOption(clickIndex, getStatus(clickDemage));
+      clickRightOption(clickIndex, getStatus(clickDemage));
     } else {
-      this.props.actions.clickWrongOption(clickIndex, getStatus(clickDemage));
+      clickWrongOption(clickIndex, getStatus(clickDemage));
     }
   }
 }
@@ -221,10 +235,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
   }
 };
-
-// {
-//   gameType: basic|speedrun,
-//   quizType: attack|defend
-// }
 
 export default I18nPage(connect(mapStateToProps, mapDispatchToProps)(Quiz));
