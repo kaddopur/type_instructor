@@ -6,10 +6,11 @@ import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
 
-import { resetQuizzes, dismissOverlay, updateTimer, clickWrongOption, unfreeze } from '../ducks/quizzes';
+import { resetQuizzes, dismissOverlay, updateTimer, clickRightOption, clickWrongOption, unfreeze } from '../ducks/quizzes';
 import { push } from 'react-router-redux'
 
-const SCORE_TARGET = 20;
+const SCORE_TARGET = 3;
+const FREEZE_DURATION = 500;
 
 class Quiz extends Component {
 
@@ -42,13 +43,15 @@ class Quiz extends Component {
         pathname
       },
       gameType,
+      quizType,
       quizzes: {
         timer,
         scores,
         freeze
       },
       actions: {
-        showResult
+        showResult,
+        unfreeze
       }
     } = this.props;
 
@@ -62,8 +65,12 @@ class Quiz extends Component {
     if (freeze !== nextProps.quizzes.freeze) {
       if (nextProps.quizzes.freeze) {
         setTimeout(() => {
-          this.props.actions.unfreeze();
-        }, 500);
+          unfreeze(quizType, nextProps.quizzes.finish);
+          if (gameType === 'speedrun' && nextProps.quizzes.scores === SCORE_TARGET) {
+            clearInterval(this.timerInterval);
+            showResult(`${pathname}/result/${timer}`);
+          }
+        }, FREEZE_DURATION);
       }
     }
   }
@@ -151,40 +158,10 @@ class Quiz extends Component {
     }
 
     if (clickType === quiz.answer) {
-      this.setState({
-        status: getStatus(clickDemage),
-        scores: scores + 1,
-        freeze: true,
-        quiz: {
-          ...quiz,
-          options: [
-            ...quiz.options.slice(0, clickIndex),
-            {
-              ...quiz.options[clickIndex],
-              clicked: true,
-              correct: true
-            },
-            ...quiz.options.slice(clickIndex + 1)
-          ]
-        }
-      }, () => {
-        setTimeout(() => {
-          this.setState({
-            quiz: getQuiz(this.props.params.quizType, quiz.emeny.type),
-            status: '',
-            freeze: false
-          }, () => {
-            if (this.props.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
-              clearInterval(this.timerInterval);
-              this.props.actions.showResult(`${this.props.location.pathname}/result/${this.state.timer}`);
-            }
-          });
-        }, 500);
-      });
-      return;
+      this.props.actions.clickRightOption(clickIndex, getStatus(clickDemage));
+    } else {
+      this.props.actions.clickWrongOption(clickIndex, getStatus(clickDemage));
     }
-
-    this.props.actions.clickWrongOption(clickIndex, getStatus(clickDemage));
   }
 }
 
@@ -232,11 +209,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       updateTimer: (timer) => {
         dispatch(updateTimer(timer));
       },
+      clickRightOption: (index, status) => {
+        dispatch(clickRightOption(index, status));
+      },
       clickWrongOption: (index, status) => {
         dispatch(clickWrongOption(index, status));
       },
-      unfreeze: () => {
-        dispatch(unfreeze());
+      unfreeze: (quizType, finish) => {
+        dispatch(unfreeze(quizType, finish));
       }
     }
   }

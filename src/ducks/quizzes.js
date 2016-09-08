@@ -7,6 +7,7 @@ const TIME_LIMIT = 60;
 export const RESET_QUIZZES = 'type_instructor/quizzes/RESET_QUIZZES';
 export const DISMISS_OVERLAY = 'type_instructor/quizzes/DISMISS_OVERLAY';
 export const UPDATE_TIMER = 'type_instructor/quizzes/UPDATE_TIMER';
+export const CLICK_RIGHT_OPTION = 'type_instructor/quizzes/CLICK_RIGHT_OPTION';
 export const CLICK_WRONG_OPTION = 'type_instructor/quizzes/CLICK_WRONG_OPTION';
 export const UNFREEZE = 'type_instructor/quizzes/UNFREEZE';
 
@@ -19,6 +20,7 @@ export default function reducer(state = {}, action = {}) {
         scores: 0,
         status: '',
         freeze: false,
+        finish: false,
         quiz: getQuiz(action.payload.quizType),
         overlay: true
       };
@@ -31,6 +33,26 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         timer: action.payload.timer
+      };
+    case CLICK_RIGHT_OPTION:
+      return {
+        ...state,
+        status: action.payload.status,
+        scores: state.scores + 1,
+        freeze: true,
+        finish: true,
+        quiz: {
+          ...state.quiz,
+          options: [
+            ...state.quiz.options.slice(0, action.payload.index),
+            {
+              ...state.quiz.options[action.payload.index],
+              clicked: true,
+              correct: true
+            },
+            ...state.quiz.options.slice(action.payload.index + 1)
+          ]
+        }
       };
     case CLICK_WRONG_OPTION:
       return {
@@ -54,7 +76,9 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         freeze: false,
-        status: ''
+        status: '',
+        finish: !action.payload.finish,
+        quiz: action.payload.finish ? getQuiz(action.payload.quizType) : state.quiz
       };
     default:
       return state;
@@ -87,6 +111,16 @@ export function updateTimer(timer) {
   };
 }
 
+export function clickRightOption(index, status) {
+  return {
+    type: CLICK_RIGHT_OPTION,
+    payload: {
+      index,
+      status
+    }
+  };
+}
+
 export function clickWrongOption(index, status) {
   return {
     type: CLICK_WRONG_OPTION,
@@ -97,8 +131,12 @@ export function clickWrongOption(index, status) {
   };
 }
 
-export function unfreeze() {
+export function unfreeze(quizType, finish) {
   return {
-    type: UNFREEZE
+    type: UNFREEZE,
+    payload: {
+      quizType,
+      finish
+    }
   };
 }
