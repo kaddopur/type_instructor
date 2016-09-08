@@ -1,72 +1,142 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import I18nPage from './I18nPage';
 import classnames from 'classnames';
-import getQuiz from '../lib/getQuiz';
 import getStatus from '../lib/getStatus';
 import './Quiz.css';
+import {
+  resetQuizzes,
+  dismissOverlay,
+  updateTimer,
+  clickRightOption,
+  clickWrongOption,
+  unfreeze
+} from '../ducks/quizzes';
+import { push } from 'react-router-redux'
 
-const TIME_LIMIT = 60;
-const SCORE_TARGET = 20;
+const SCORE_TARGET = 3;
+const FREEZE_DURATION = 500;
 
-class Quiz extends Component {
-  static contextTypes = {
-    router: PropTypes.object,
-    messages: PropTypes.object
-  };
+class Quiz extends PureComponent {
 
-  state = {
-    timer: this.props.params.gameType === 'basic' ? TIME_LIMIT : 0,
-    scores: 0,
-    status: '',
-    freeze: false,
-    quiz: getQuiz(this.props.params.quizType),
-    overlay: true
-  };
-
+  // handler
   dismissOverlay() {
+    const { 
+      computed: {
+        timerStep
+      },
+      actions: {
+        dismissOverlay,
+        updateTimer
+      }
+    } = this.props;
+
+    dismissOverlay();
+
+    this.timerInterval = setInterval(() => {
+      updateTimer(this.props.quizzes.timer + timerStep);
+    }, 1000);
+  }
+
+  handleOptionClick(clickIndex, e) {
+    const {
+      quizzes: {
+        quiz,
+        freeze
+      },
+      actions: {
+        clickRightOption,
+        clickWrongOption
+      }
+    } = this.props;
+
+    if (freeze) {
+      return; // no-op
+    }
+
+    const {
+      type: clickType,
+      demage: clickDemage,
+      clicked
+    } = quiz.options[clickIndex];
+
+    if (clicked) {
+      return; // no-op
+    }
+
+    if (clickType === quiz.answer) {
+      clickRightOption(clickIndex, getStatus(clickDemage));
+    } else {
+      clickWrongOption(clickIndex, getStatus(clickDemage));
+    }
+  }
+
+  // life cycle methods
+  componentWillMount() {
+    this.props.actions.resetQuizzes();
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { 
       location: {
         pathname
       },
-      params: {
-        gameType
+      gameType,
+      quizType,
+      quizzes: {
+        timer,
+        scores,
+        freeze
+      },
+      actions: {
+        showResult,
+        unfreeze
       }
     } = this.props;
-    const timerStep = gameType === 'basic' ? -1 : 1;
 
-    this.setState({
-      overlay: false
-    });
+    if (timer !== nextProps.quizzes.timer) {
+      if (gameType === 'basic' && nextProps.quizzes.timer === 0) {
+        clearInterval(this.timerInterval);
+        showResult(`${pathname}/result/${scores}`);
+      }  
+    }
 
-    this.timerInterval = setInterval(() => {
-      const { timer, scores } = this.state;
-      this.setState({
-        timer: timer + timerStep
-      }, () => {
-        if (gameType === 'basic' && timer === 0) {
-          clearInterval(this.timerInterval);
-          this.context.router.push(`${pathname}/result/${scores}`);
-        }
-      });
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerInterval);
+    if (freeze !== nextProps.quizzes.freeze) {
+      if (nextProps.quizzes.freeze) {
+        setTimeout(() => {
+          unfreeze(quizType, nextProps.quizzes.finish);
+          if (gameType === 'speedrun' && nextProps.quizzes.scores === SCORE_TARGET) {
+            clearInterval(this.timerInterval);
+            showResult(`${pathname}/result/${timer}`);
+          }
+        }, FREEZE_DURATION);
+      }
+    }
   }
 
   render() {
-    const { timer, scores, status, quiz, overlay } = this.state;
-    const { emeny, options } = quiz;
-    const { lang, gameType } = this.props.params;
-    const messages = this.context.messages[lang];
+    const {
+      messages,
+      gameType,
+      quizzes: {
+        timer,
+        scores,
+        status,
+        quiz: {
+          emeny = { type: '' },
+          options = []
+        } = {},
+        overlay
+      }
+    } = this.props;
+
     const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN } = messages;
 
     const overlayDiv = (
       <div className="overlay" onClick={this.dismissOverlay.bind(this)}>
-          <h2>{GOAL}</h2>
-          <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
-        </div>
+        <h2>{GOAL}</h2>
+        <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
+      </div>
     );
 
     return (
@@ -105,81 +175,66 @@ class Quiz extends Component {
     );
   }
 
-  handleOptionClick(clickIndex, e) {
-    const { scores, quiz, freeze } = this.state;
-
-    if (freeze) {
-      return; // no-op
-    }
-
-    const {
-      type: clickType,
-      demage: clickDemage,
-      clicked
-    } = quiz.options[clickIndex];
-
-    if (clicked) {
-      return; // no-op
-    }
-
-    if (clickType === quiz.answer) {
-      this.setState({
-        status: getStatus(clickDemage),
-        scores: scores + 1,
-        freeze: true,
-        quiz: {
-          ...quiz,
-          options: [
-            ...quiz.options.slice(0, clickIndex),
-            {
-              ...quiz.options[clickIndex],
-              clicked: true,
-              correct: true
-            },
-            ...quiz.options.slice(clickIndex + 1)
-          ]
-        }
-      }, () => {
-        setTimeout(() => {
-          this.setState({
-            quiz: getQuiz(this.props.params.quizType, quiz.emeny.type),
-            status: '',
-            freeze: false
-          }, () => {
-            if (this.props.params.gameType === 'speedrun' && this.state.scores === SCORE_TARGET) {
-              clearInterval(this.timerInterval);
-              this.context.router.push(`${this.props.location.pathname}/result/${this.state.timer}`);
-            }
-          });
-        }, 500);
-      });
-      return;
-    }
-
-    this.setState({
-      status: getStatus(clickDemage),
-      scores: scores - 1,
-      freeze: true,
-      quiz: {
-        ...quiz,
-        options: [
-          ...quiz.options.slice(0, clickIndex),
-          {
-            ...quiz.options[clickIndex],
-            clicked: true
-          },
-          ...quiz.options.slice(clickIndex + 1)
-        ]
-      }
-    }, () => {
-      setTimeout(() => {
-        this.setState({
-          status: '',
-          freeze: false
-        });
-      }, 500);
-    });
+  componentWillUnmount() {
+    clearInterval(this.timerInterval);
   }
 }
 
-export default I18nPage(Quiz);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages,
+    quizzes
+  } = state;
+
+  const {
+    lang = 'en',
+    gameType,
+    quizType
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang,
+    quizzes,
+    gameType,
+    quizType,
+    computed: {
+      timerStep: gameType === 'basic' ? -1 : 1
+    }
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const {
+    gameType,
+    quizType
+  } = ownProps.params;
+
+  return {
+    actions: {
+      resetQuizzes: () => {
+        dispatch(resetQuizzes(gameType, quizType));
+      },
+      dismissOverlay: () => {
+        dispatch(dismissOverlay());
+      },
+      showResult: (resultUrl) => {
+        dispatch(push(resultUrl));
+      },
+      updateTimer: (timer) => {
+        dispatch(updateTimer(timer));
+      },
+      clickRightOption: (index, status) => {
+        dispatch(clickRightOption(index, status));
+      },
+      clickWrongOption: (index, status) => {
+        dispatch(clickWrongOption(index, status));
+      },
+      unfreeze: (quizType, finish) => {
+        dispatch(unfreeze(quizType, finish));
+      }
+    }
+  }
+};
+
+export default I18nPage(connect(mapStateToProps, mapDispatchToProps)(Quiz));

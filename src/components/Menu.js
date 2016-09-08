@@ -1,22 +1,21 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import I18nLink from './I18nLink';
 import I18nPage from './I18nPage';
 import './Menu.css';
 
-class Menu extends Component {
-  static contextTypes = {
-    messages: PropTypes.object
-  };
-
+class Menu extends PureComponent {
   render() {
-    const { lang } = this.props.params;
     const {
-      BASIC,
-      SPEEDRUN,
-      HOME,
-      ATTACK,
-      DEFEND
-    } = this.context.messages[lang];
+      messages: {
+        BASIC,
+        SPEEDRUN,
+        HOME,
+        ATTACK,
+        DEFEND
+      },
+      lang
+    } = this.props;
 
     return (
       <nav className="Menu">
@@ -48,4 +47,19 @@ class Menu extends Component {
   }
 }
 
-export default I18nPage(Menu);
+const mapStateToProps = (state, ownProps) => {
+  const {
+    messages
+  } = state;
+
+  const {
+    lang = 'en'
+  } = ownProps.params;
+
+  return {
+    messages: messages[lang],
+    lang
+  };
+};
+
+export default I18nPage(connect(mapStateToProps)(Menu));
