@@ -6,12 +6,22 @@
   url("./fonts/pokemon_gb-webfont.woff") format("woff");
 }
 
+@font-face {
+  font-weight: normal;
+  font-style: normal;
+  font-family: "pkmn_s";
+  src: url("./fonts/pkmn_s.woff") format("woff");
+
+  unicode-range: U+0030-0039, U+3040-309F, U+30A1-30F3;
+}
+
 body {
-  font-family: "pokemon_gbregular", monospace;
+  font-family: "pkmn_s", "pokemon_gbregular", monospace;
 }
 
 a {
   color: initial;
   text-decoration: none;
+
   user-select: none;
 }
