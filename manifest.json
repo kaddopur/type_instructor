@@ -1,0 +1,13 @@
+{
+    "short_name": "type_instructor_pwa",
+    "name": "type_instructor PWA",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "./",
+    "display": "standalone"
+}
