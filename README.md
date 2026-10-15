@@ -24,6 +24,10 @@ Pokémon 的相關權利屬於各權利人。
 2. 看清楚敵方屬性或敵方攻擊屬性，再從四個選項中作答。
 3. 答對加 1 分，答錯扣 1 分。答錯後可在回饋結束時嘗試其他選項，答對則進入下一題。
 
+每場將 18 種題幹屬性洗牌後依序出題，每輪各出現一次，跨輪也不會連續重複。
+防禦題針對同一攻擊屬性，先練免疫、下一輪練抗性，再交替輪替；沒有免疫時練抗性。
+抗性題不放入免疫選項，請選四個選項中受到傷害最少的屬性。重玩會重設題序與輪替紀錄。
+
 | 模式 | 目標 |
 |---|---|
 | 一般遊玩 | 在 60 秒內取得最高分，最後分數可能為負分 |
@@ -92,6 +96,7 @@ React 19、Vite 8、React Router、Zustand、Tailwind CSS 4 與共用 CSS。
 Button／Dialog 採用 shadcn/ui 的 Radix 版本原始碼，MIT 授權見 [UI 授權](src/components/ui/LICENSE.md)。
 
 - [gameRules.ts](src/lib/gameRules.ts)：集中定義競速目標 20 分，供遊戲邏輯與三語目標說明共用。
+- [getQuiz.ts](src/lib/getQuiz.ts)：傷害矩陣、唯一最佳答案、每場獨立的 18 屬性題袋及防禦免疫／抗性輪替。
 - [quiz.ts](src/stores/quiz.ts)：每場遊戲建立獨立狀態，管理開始、作答、計分、回饋與結束。
 - [useGame.ts](src/hooks/useGame.ts)：管理計時器並在離開時清理；重玩或更換遊戲路徑會建立新場次。
 - [src/lang](src/lang)：三語遊戲與介紹頁文案。語言、模式沿用 URL，不持久保存遊戲場次或紀錄。
@@ -122,14 +127,14 @@ Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離�
 |---|---|
 | `pnpm lint` | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
 | `pnpm typecheck` | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移 |
-| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，15 個案例 |
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，21 個案例 |
 | `pnpm test:unit:watch` | 開發時持續執行單元測試 |
-| `pnpm test:e2e` | Playwright 完整矩陣，144 個案例 |
+| `pnpm test:e2e` | Playwright 完整矩陣，152 個案例 |
 | `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
 | `pnpm test:a11y` | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y` |
 
-單元測試放在原始碼旁（`src/**/*.test.ts`），使用 Node 環境，涵蓋出題、傷害倍率、計分、
-19／20 分邊界、場次隔離及路由驗證。Playwright 僅收集 `tests/e2e/**/*.spec.js`，涵蓋完整頁面、
+單元測試放在原始碼旁（`src/**/*.test.ts`），使用 Node 環境，涵蓋題袋覆蓋與跨輪防重複、
+防禦輪替、傷害倍率、計分、19／20 分邊界、場次隔離及路由驗證。Playwright 僅收集 `tests/e2e/**/*.spec.js`，涵蓋完整頁面、
 遊戲流程、三語布局、鍵盤操作、axe 掃描、介紹頁、Pages 子路徑資源及離線版本更新。
 
 ```sh
@@ -146,7 +151,7 @@ pnpm test:e2e
 
 ### CI 分成兩組平行執行
 
-兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 72 個。
+兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 76 個。
 兩組都通過才允許部署；只有第一組上傳 Pages 產物。本機 `pnpm test:e2e` 仍執行全部案例。
 
 ```sh
