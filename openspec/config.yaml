@@ -1,0 +1,8 @@
+schema: spec-driven
+context: |
+  Pokémon single-type matchup memory game; current source baseline is 4f1e318.
+  See openspec/baseline.md for evidence, known bugs, and verification coverage.
+  Migration target: Vite, React, hash routing, Zustand; preserve gameplay.
+  Current tooling: pnpm 11.22.0, Node .nvmrc, Workbox build, Pages Actions workflow.
+  Baseline docs and tests precede implementation. Keep current observations distinct
+  from bug-fix targets and pending browser acceptance checks.

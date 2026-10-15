@@ -5,6 +5,7 @@
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
 }
 
 .Quiz .overlay {
@@ -67,7 +68,7 @@
 
 .Quiz .optionItem {
   position: relative;
-  padding-bottom: 37.5%;
+  padding-bottom: min(37.5%, 25dvh);
   width: 50%;
   color: white;
   text-align: center;

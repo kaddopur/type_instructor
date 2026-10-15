@@ -1,0 +1,13 @@
+{
+  "short_name": "type_instructor_pwa",
+  "name": "type_instructor PWA",
+  "icons": [
+    {
+      "src": "cover-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./",
+  "display": "standalone"
+}
