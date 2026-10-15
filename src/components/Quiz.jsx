@@ -46,18 +46,18 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
   }
 
   return (
-    <div className="Quiz grid-rows-[72px_minmax(0,1fr)_56px_minmax(120px,.85fr)] [@media(max-height:480px)_and_(orientation:landscape)]:grid-rows-[72px_minmax(0,1fr)_48px]"
+    <div className="Quiz mx-auto grid h-full w-[min(100%,720px)] grid-rows-[72px_minmax(0,1fr)_56px_minmax(120px,.85fr)] gap-3 p-4 landscape-short:w-[min(100%,1000px)] landscape-short:grid-cols-2 landscape-short:grid-rows-[72px_minmax(0,1fr)_48px]"
       onPointerDownCapture={() => { keyboardInput.current = false; }}
       onKeyDownCapture={() => { keyboardInput.current = true; }}>
       <Dialog open={overlay} onOpenChange={open => { if (!open) navigate(`/${lang}/menu`); }}>
         <DialogContent className="overlay" onCloseAutoFocus={event => event.preventDefault()}>
-          <p className={`mode-label mode-label-${gameType}`}>{messages[gameType === 'basic' ? 'BASIC' : 'SPEEDRUN']}</p>
+          <p className={cn(`mode-label mode-label-${gameType}`, 'flex h-7 w-45 items-center justify-center rounded-[6px] bg-accent-soft text-[14px] leading-5 short:h-6', gameType === 'speedrun' && 'bg-[#def3fc]')}>{messages[gameType === 'basic' ? 'BASIC' : 'SPEEDRUN']}</p>
           <DialogTitle>{GOAL}</DialogTitle>
-          <DialogDescription asChild className="dialog-goal">
+          <DialogDescription asChild className="dialog-goal flex h-12 w-full items-center justify-center short:h-10 short:text-[14px] short:leading-5">
             <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN.replace('{scoreTarget}', SCORE_TARGET)}</span>
           </DialogDescription>
-          <Button type="button" data-testid="start-game" variant="primary" className="dialog-action dialog-start" onClick={start}>{START}</Button>
-          <Button asChild variant="ghost" className="dialog-action dialog-menu"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
+          <Button type="button" data-testid="start-game" variant="primary" className="dialog-action dialog-start h-15 min-h-0 w-[min(100%,280px)] whitespace-nowrap px-2 py-1 short:h-11" onClick={start}>{START}</Button>
+          <Button asChild variant="ghost" className="dialog-action dialog-menu h-12 min-h-0 w-[min(100%,280px)] rounded-[24px] border-2 border-ink whitespace-nowrap px-2 py-1 text-[16px] short:h-11"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
         </DialogContent>
       </Dialog>
       <Dialog open={exitOpen} onOpenChange={setExitOpen}>
@@ -67,51 +67,51 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
         }}>
           <DialogTitle>{messages.EXIT_CONFIRM_TITLE}</DialogTitle>
           <DialogDescription>{messages.EXIT_CONFIRM_DESCRIPTION}</DialogDescription>
-          <Button type="button" variant="primary" className="exit-action min-h-[60px] w-[min(100%,280px)] whitespace-normal px-[8px] py-[4px]" onClick={() => setExitOpen(false)}>{messages.CONTINUE_GAME}</Button>
-          <Button asChild variant="ghost" className="exit-action min-h-[48px] w-[min(100%,280px)] rounded-[24px] border-2 border-ink whitespace-normal px-[8px] py-[4px] text-[16px]"><I18nLink to="/menu" lang={lang}>{messages.RETURN_TO_MENU}</I18nLink></Button>
+          <Button type="button" variant="primary" className="exit-action min-h-15 w-[min(100%,280px)] whitespace-normal px-2 py-1" onClick={() => setExitOpen(false)}>{messages.CONTINUE_GAME}</Button>
+          <Button asChild variant="ghost" className="exit-action min-h-12 w-[min(100%,280px)] rounded-[24px] border-2 border-ink whitespace-normal px-2 py-1 text-[16px]"><I18nLink to="/menu" lang={lang}>{messages.RETURN_TO_MENU}</I18nLink></Button>
         </DialogContent>
       </Dialog>
-      <header className="quiz-hud">
-        <div className="stemHeader grid h-[44px] grid-cols-[minmax(0,1fr)_80px_minmax(0,1fr)] items-center gap-[8px] text-right text-[14px] leading-[28px] whitespace-nowrap">
+      <header className="quiz-hud min-w-0 landscape-short:col-span-full">
+        <div className="stemHeader grid h-11 grid-cols-[minmax(0,1fr)_80px_minmax(0,1fr)] items-center gap-2 text-right text-[14px] leading-7 whitespace-nowrap">
           <div className="stemTimer text-left">{TIMER}: {timer}</div>
-          <Button ref={exitButton} type="button" variant="ghost" className="quiz-exit min-h-[44px] w-auto justify-self-center whitespace-nowrap px-0 py-[8px] text-[14px] text-muted" disabled={overlay || result !== null} onClick={() => setExitOpen(true)}>{messages.EXIT_GAME}</Button>
+          <Button ref={exitButton} type="button" variant="ghost" className="quiz-exit min-h-11 w-auto justify-self-center whitespace-nowrap px-0 py-2 text-[14px] text-muted" disabled={overlay || result !== null} onClick={() => setExitOpen(true)}>{messages.EXIT_GAME}</Button>
           <div className="stemScores">{SCORES}: {scores}</div>
         </div>
-        <div className="quiz-progress" aria-hidden={gameType !== 'speedrun' || undefined}>
+        <div className="quiz-progress flex h-7 items-center gap-3 text-[14px] whitespace-nowrap" aria-hidden={gameType !== 'speedrun' || undefined}>
           {gameType === 'speedrun' ? <>
-            <progress max={SCORE_TARGET} value={Math.max(0, Math.min(scores, SCORE_TARGET))} aria-label={messages.PROGRESS} />
+            <progress className="h-4 w-full appearance-none overflow-hidden rounded-[12px] border-2 border-ink bg-surface text-accent [&::-webkit-progress-bar]:bg-surface [&::-webkit-progress-value]:bg-accent [&::-moz-progress-bar]:bg-accent" max={SCORE_TARGET} value={Math.max(0, Math.min(scores, SCORE_TARGET))} aria-label={messages.PROGRESS} />
             <span>{Math.max(0, scores)} / {SCORE_TARGET}</span>
           </> : null}
         </div>
       </header>
-      <div className="quiz-stem">
-        <div id="enemy-condition" className={cn('stemContainer', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
-          <div className="stemEnemy">
-            <div className="stemEnemyText">
-              <span className="question-prompt">{messages[enemy.title]}</span>
-              <strong className="question-type">{messages[enemy.type.toUpperCase()]}</strong>
+      <div className="quiz-stem grid min-h-0 grid-rows-[minmax(0,1fr)_64px] gap-3 landscape-short:col-start-1 landscape-short:row-start-2 landscape-short:grid-rows-[minmax(0,1fr)_48px] landscape-short:gap-2">
+        <div id="enemy-condition" className={cn('stemContainer flex min-h-0 items-center justify-center rounded-2xl border-3 border-ink p-3 text-center landscape-short:p-2', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
+          <div className="stemEnemy w-full">
+            <div className="stemEnemyText flex flex-col items-center justify-center">
+              <span className="question-prompt flex h-10 w-full items-center justify-center text-[16px] leading-6 landscape-short:h-7 landscape-short:text-[14px] landscape-short:leading-5">{messages[enemy.title]}</span>
+              <strong className="question-type block text-[28px] leading-10 font-normal landscape-short:text-[24px] landscape-short:leading-8">{messages[enemy.type.toUpperCase()]}</strong>
             </div>
           </div>
         </div>
-        <h1 id="quiz-question" className="quiz-instruction">{messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}</h1>
+        <h1 id="quiz-question" className="quiz-instruction flex h-16 items-center justify-center px-1 text-center text-[16px] leading-6 whitespace-pre-line landscape-short:h-12 landscape-short:leading-5">{messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}</h1>
       </div>
-      <div className="stemStatus">
-        {status ? <><span className="feedback-symbol" aria-hidden="true">{finish ? '✓' : '✕'}</span>
+      <div className="stemStatus flex h-14 items-center justify-center gap-2 text-center text-[14px] leading-5 landscape-short:col-start-1 landscape-short:row-start-3 landscape-short:h-12">
+        {status ? <><span className="feedback-symbol text-[24px] font-[sans-serif]" aria-hidden="true">{finish ? '✓' : '✕'}</span>
           {`${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}`}</> : null}
       </div>
-      <div ref={answerGroup} role="group" tabIndex={-1} aria-label={CHOOSE_ANSWER} aria-describedby="enemy-condition quiz-question" className="optionContainer">
+      <div ref={answerGroup} role="group" tabIndex={-1} aria-label={CHOOSE_ANSWER} aria-describedby="enemy-condition quiz-question" className="optionContainer grid min-h-0 grid-cols-2 grid-rows-2 gap-3 landscape-short:col-start-2 landscape-short:row-span-2 landscape-short:row-start-2">
         {options.map(({ type, damage, clicked, correct }, index) => (
           <Button key={type + index} type="button" variant="answer" size="answer"
             aria-label={`${messages[type.toUpperCase()]}${clicked ? `, ${DAMAGE_MULTIPLIER}: ${damage}` : ''}`}
             aria-describedby={index === 0 ? 'enemy-condition quiz-question' : undefined}
             tabIndex={clicked ? -1 : 0}
             aria-disabled={overlay || exitOpen || freeze || result !== null || clicked || undefined}
-            className={cn('optionItem',
+            className={cn('optionItem min-h-11 min-w-0 w-full rounded-[18px] border-3 border-ink px-2 py-1 text-[20px] leading-7 focus-visible:outline-offset-[-6px]',
               clicked && !correct ? typeStyles.wrong : typeStyles[type], `Bgc-${clicked && !correct ? 'wrong' : type}`)}
             onClick={() => selectAnswer(index)}>
-            <span className="optionText">
+            <span className="optionText flex flex-col items-center justify-center">
               {messages[type.toUpperCase()]}
-              {clicked ? <><span className="answer-symbol" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage" aria-hidden="true">{damage}</span></> : null}
+              {clicked ? <><span className="answer-symbol absolute top-1.5 right-2 text-[16px] leading-5 font-[sans-serif]" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage text-[14px] leading-5" aria-hidden="true">{damage}</span></> : null}
             </span>
           </Button>
         ))}

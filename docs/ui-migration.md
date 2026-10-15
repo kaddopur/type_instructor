@@ -148,3 +148,33 @@ the home title is larger than action text, and HUD/record text uses 14px.
 
 Final locale-layout audit: lint, typecheck, 15 unit tests and all 120 E2E cases
 passed locally. The complete suite includes all four browser/device projects.
+
+## Complete component-style migration
+
+All page and shared-control styles now live in Tailwind utilities, including
+safe-area layout, compact/landscape variants, dialogs, progress-bar browser
+pseudo-elements and the full introduction page. Landing.css has been removed.
+index.css retains framework imports, theme tokens, font faces, document-wide
+base styles and four shared responsive variants. pageStyles.ts shares only the
+repeated navigation-page layout, title and footer classes.
+
+The spacing theme explicitly uses a 4px unit, so canonical utilities such as
+`mt-8` retain 32px despite the shared 125% root font. Typography and corner
+radii retain explicit values where the default scale differs. Semantic class
+names remain test hooks without component-selector CSS rules. A temporary
+browser harness compared 264 states against the previous build: three languages,
+four viewports, all routes and Quiz intro/playing/feedback/exit states. Recorded
+geometry, typography, colors, borders and focus styles matched with zero differences.
+
+Final migration checks: lint, typecheck, 27 unit tests and all 212 browser cases
+passed locally across Chromium, Firefox, WebKit and iPhone-size WebKit emulation.
+Physical devices and manual screen readers remain outside this verification.
+
+## Canonical Tailwind class names
+
+The workspace configures `tailwindCSS.rootFontSize` as 20 to match the shared
+125% root size. Canonical class suggestions are checked using the installed
+Tailwind design system, including the project's theme and custom variants.
+Equivalent utilities replace arbitrary values for rotation, underline offsets,
+selected corner radii, normal line height, scrollbar gutters and safe-area padding.
+Arbitrary values remain where the theme has no equivalent.

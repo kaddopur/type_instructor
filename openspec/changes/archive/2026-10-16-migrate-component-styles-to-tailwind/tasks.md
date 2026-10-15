@@ -1,0 +1,7 @@
+- [x] 1. Record the current visual/style baseline and validate the change proposal.
+- [x] 2. Migrate shared shell, page layout, Home, Menu, Lang and Result.
+- [x] 3. Migrate shared Dialog, Quiz and progress pseudo-elements.
+- [x] 4. Migrate Landing and remove component-specific CSS rules/files.
+- [x] 5. Compare styles and geometry; run browser, unit, build and static checks.
+- [x] 6. Sync specifications, document verification and archive.
+- [x] 7. Prepare Conventional Commit metadata for commit/push handoff; defer PR creation at the user's request.
