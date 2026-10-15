@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import I18nPage from './I18nPage.jsx';
 import classnames from 'classnames';
-import useGame from '../hooks/useGame.js';
-import { SCORE_TARGET } from '../lib/gameRules.js';
+import useGame from '../hooks/useGame.ts';
+import { SCORE_TARGET } from '../lib/gameRules.ts';
 import './Quiz.css';
 
 function Quiz({ messages, params: { gameType, quizType }, location: { pathname }, navigate }) {
   const {
-    timer, scores, status, quiz: { emeny, options }, overlay, result, start, answer
+    timer, scores, status, quiz: { enemy, options }, overlay, result, start, answer
   } = useGame(gameType, quizType);
 
   useEffect(() => {
@@ -26,19 +26,19 @@ function Quiz({ messages, params: { gameType, quizType }, location: { pathname }
   return (
     <div className="Quiz">
       {overlay ? overlayDiv : null}
-      <div className={`stemContainer Bgc-${emeny.type}`}>
+      <div className={`stemContainer Bgc-${enemy.type}`}>
         <div className="stemHeader">
           <div className="stemTimer">{TIMER}: {timer}</div>
           <div className="stemScores">{SCORES}: {scores}</div>
         </div>
         <div className="stemEnemy">
-          <div className="stemEnemyText">{messages[emeny.title]}<br/>( {messages[emeny.type.toUpperCase()]} )</div>
+          <div className="stemEnemyText">{messages[enemy.title]}<br/>( {messages[enemy.type.toUpperCase()]} )</div>
         </div>
         <div className="stemStatus">{messages[status]}</div>
       </div>
       <div className="optionContainer">
         {options.map((option, index) => {
-          const { type, demage, clicked, correct } = option;
+          const { type, damage, clicked, correct } = option;
           const optionClass = classnames('optionItem', {
             [`Bgc-${type}`]: !clicked || correct,
             'Bgc-wrong': clicked && !correct
@@ -49,7 +49,7 @@ function Quiz({ messages, params: { gameType, quizType }, location: { pathname }
               onClick={() => answer(index)}>
               <div className="optionText">
                 {messages[type.toUpperCase()]}
-                {clicked ? <div className="optionDemage">{demage}</div> : null}
+                {clicked ? <div className="optionDamage">{damage}</div> : null}
               </div>
             </div>
           );

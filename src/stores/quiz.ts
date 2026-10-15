@@ -1,10 +1,27 @@
 import { createStore } from 'zustand/vanilla';
-import getQuiz from '../lib/getQuiz.js';
-import getStatus from '../lib/getStatus.js';
-import { SCORE_TARGET } from '../lib/gameRules.js';
+import getQuiz from '../lib/getQuiz.ts';
+import getStatus from '../lib/getStatus.ts';
+import { SCORE_TARGET } from '../lib/gameRules.ts';
+import type { GameType, QuizType, Quiz } from '../lib/types.ts';
 
-export function createQuizStore(gameType, quizType) {
-  return createStore(set => ({
+export interface QuizState {
+  timer: number;
+  scores: number;
+  status: ReturnType<typeof getStatus> | '';
+  freeze: boolean;
+  finish: boolean;
+  finishTime: number | null;
+  result: number | null;
+  quiz: Quiz;
+  overlay: boolean;
+  start: () => void;
+  tick: () => void;
+  answer: (index: number) => void;
+  advance: () => void;
+}
+
+export function createQuizStore(gameType: GameType, quizType: QuizType) {
+  return createStore<QuizState>(set => ({
     timer: gameType === 'basic' ? 60 : 0,
     scores: 0,
     status: '',
@@ -30,7 +47,7 @@ export function createQuizStore(gameType, quizType) {
       const correct = option.type === state.quiz.answer;
       return {
         scores: state.scores + (correct ? 1 : -1),
-        status: getStatus(option.demage),
+        status: getStatus(option.damage),
         freeze: true,
         finish: correct,
         finishTime: correct ? state.timer : null,

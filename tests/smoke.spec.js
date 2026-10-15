@@ -1,10 +1,57 @@
 import { test, expect } from '@playwright/test';
-import { SCORE_TARGET } from '../src/lib/gameRules.js';
+import { SCORE_TARGET } from '../src/lib/gameRules.ts';
 
 async function pauseClock(page) {
   await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
   await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
 }
+
+test('unknown languages and invalid game URLs recover without crashing or leaving timers', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await pauseClock(page);
+  await page.goto('./#/unknown/menu');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.getByRole('heading', { name: 'Basic', exact: true })).toBeVisible();
+  await expect(page.locator('.Menu a').first()).toHaveAttribute('href', '#/en/quizzes/s/basic/attack');
+
+  await page.goto('./#/unknown/quizzes/s/basic/attack');
+  await expect(page.locator('.overlay span')).toHaveText('answer in 60 sec');
+  await page.locator('.overlay').click();
+  await page.clock.runFor(1000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 59');
+
+  for (const path of [
+    '/zh/quizzes/d/basic/attack',
+    '/ja/quizzes/s/unknown/attack',
+    '/en/quizzes/s/basic/unknown',
+    '/zh/quizzes/s/basic/attack/result/NaN',
+    '/ja/quizzes/s/speedrun/defend/result/-1',
+    '/en/quizzes/s/basic/attack/result/9007199254740992',
+    '/zh/quizzes/s/basic/attack/result/1.5',
+    '/unknown/quizzes/s/basic/attack/result/1e2'
+  ]) {
+    await page.evaluate(path => { window.location.hash = path; }, path);
+    const lang = path.split('/')[1];
+    await expect(page).toHaveURL(new RegExp(`#/${lang === 'unknown' ? 'en' : lang}/menu$`));
+    await expect(page.locator('.Menu')).toBeVisible();
+    await page.clock.runFor(61000);
+    await expect(page.locator('.Menu')).toBeVisible();
+  }
+
+  // Negative basic scores and zero-second speedrun results remain valid links.
+  for (const [mode, value] of [['basic', '-1'], ['speedrun', '0']]) {
+    await page.goto(`./#/en/quizzes/s/${mode}/attack/result/${value}`);
+    await expect(page.locator('.Result h1')).toContainText(value);
+    await page.getByRole('link', { name: 'Retry', exact: true }).click();
+    await expect(page.locator('.overlay')).toBeVisible();
+  }
+
+  await page.goto('./#/en/does-not-exist');
+  await expect(page).toHaveURL(/#\/en\/$/);
+  await expect(page.getByRole('heading', { name: 'Type Instructor of Pokémon' })).toBeVisible();
+  expect(errors).toEqual([]);
+});
 
 test('three languages navigate, render games, show feedback, and retry', async ({ page }) => {
   const errors = [];
@@ -37,7 +84,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
       await page.locator('.overlay').click();
       await expect(page.locator('.overlay')).toHaveCount(0);
       await page.locator('.optionItem').first().click();
-      await expect(page.locator('.optionDemage')).toHaveCount(1);
+      await expect(page.locator('.optionDamage')).toHaveCount(1);
       await expect(page.locator('.stemStatus')).not.toBeEmpty();
       await expect(page.locator('.stemScores')).toHaveText(new RegExp(`${text.score}: -?1$`));
 
@@ -47,7 +94,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
       await page.getByRole('link', { name: text.retry, exact: true }).click();
       await expect(page.locator('.overlay')).toBeVisible();
       await expect(page.locator('.stemScores')).toHaveText(`${text.score}: 0`);
-      await expect(page.locator('.optionDemage')).toHaveCount(0);
+      await expect(page.locator('.optionDamage')).toHaveCount(0);
       await page.goto(`./#/${lang}/quizzes/s/basic/${kind}/result/7`);
       await page.getByRole('link', { name: text.menu, exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`#/${lang}/menu$`));
@@ -109,7 +156,7 @@ test('rapid answers and route changes keep game sessions isolated', async ({ pag
   await page.clock.runFor(2000);
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
   await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
-  await expect(page.locator('.optionDemage')).toHaveCount(0);
+  await expect(page.locator('.optionDamage')).toHaveCount(0);
   await page.locator('.overlay').click();
   await page.clock.runFor(1000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 1');
@@ -139,7 +186,7 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
       await page.clock.runFor(500);
       if (score === 19) await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
     }
-    if (score < SCORE_TARGET) await expect(page.locator('.optionDemage')).toHaveCount(0);
+    if (score < SCORE_TARGET) await expect(page.locator('.optionDamage')).toHaveCount(0);
   }
   await expect(page).toHaveURL(new RegExp(`#/en/quizzes/s/speedrun/defend/result/${Math.floor((SCORE_TARGET - 1) / 2)}$`));
   await page.getByRole('link', { name: 'Retry', exact: true }).click();

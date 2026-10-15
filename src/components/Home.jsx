@@ -1,35 +1,32 @@
-import React, { PureComponent } from 'react';
 import I18nLink from './I18nLink.jsx';
 import I18nPage from './I18nPage.jsx';
 import './Home.css';
 import globe from '../images/globe.png';
 
-class Home extends PureComponent {
-  render() {
-    const {
-      messages: {
-        START
-      },
-      lang
-    } = this.props;
+function Home(props) {
+  const {
+    messages: {
+      START
+    },
+    lang
+  } = props;
 
-    return (
-      <article className="Home">
-        <h1>Type Instructor of Pokémon</h1>
-        <section className="start">
-          <I18nLink to="/menu" lang={lang}>{START}</I18nLink>
-        </section>
-        <section className="lang">
-          <I18nLink to="/lang" lang={lang}>
-            <img src={globe} width="32" height="32" alt="change language"/>
-          </I18nLink>
-        </section>
-        <footer>
-          <a href="https://twitter.com/kaddopur" target="_blank">@kaddopur</a>
-        </footer>
-      </article>
-    );
-  }
+  return (
+    <article className="Home">
+      <h1>Type Instructor of Pokémon</h1>
+      <section className="start">
+        <I18nLink to="/menu" lang={lang}>{START}</I18nLink>
+      </section>
+      <section className="lang">
+        <I18nLink to="/lang" lang={lang}>
+          <img src={globe} width="32" height="32" alt="change language"/>
+        </I18nLink>
+      </section>
+      <footer>
+        <a href="https://twitter.com/kaddopur" target="_blank">@kaddopur</a>
+      </footer>
+    </article>
+  );
 }
 
 export default I18nPage(Home);

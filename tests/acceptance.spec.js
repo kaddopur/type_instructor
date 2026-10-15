@@ -58,7 +58,7 @@ for (const [lang, text] of Object.entries(languages)) {
         const correct = `.optionItem.Bgc-${kind === 'attack' ? 'fighting' : 'ghost'}`;
         await page.locator(`.optionItem:not(${correct})`).first().evaluate(node => { node.click(); node.click(); });
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
-        const damage = Number(await page.locator('.optionDemage').textContent());
+        const damage = Number(await page.locator('.optionDamage').textContent());
         const status = { 0: 'EFFECTIVE_0', 0.5: 'EFFECTIVE_1_2', 1: 'EFFECTIVE_1', 2: 'EFFECTIVE_2' }[damage];
         await expect(page.locator('.stemStatus')).toHaveText(text[status]);
         await page.locator(correct).click(); // Rejected during feedback.
@@ -71,7 +71,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await page.locator(correct).click();
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 0`);
         await page.clock.runFor(500);
-        await expect(page.locator('.optionDemage')).toHaveCount(0);
+        await expect(page.locator('.optionDamage')).toHaveCount(0);
 
         let result;
         if (mode === 'basic') {
@@ -93,7 +93,7 @@ for (const [lang, text] of Object.entries(languages)) {
             await page.clock.runFor(score === 20 ? 499 : 500);
             await expect(page).toHaveURL(new RegExp(`#${path}$`));
             if (score === 20) await page.clock.runFor(1);
-            else await expect(page.locator('.optionDemage')).toHaveCount(0);
+            else await expect(page.locator('.optionDamage')).toHaveCount(0);
           }
         }
 
@@ -106,7 +106,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await expect(page.locator('.overlay')).toBeVisible();
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 0`);
         await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 60 : 0}`);
-        await expect(page.locator('.optionDemage')).toHaveCount(0);
+        await expect(page.locator('.optionDamage')).toHaveCount(0);
         await page.goBack();
         await expect(page.locator('.Result')).toBeVisible();
         await page.goForward();

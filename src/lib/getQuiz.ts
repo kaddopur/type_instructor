@@ -1,7 +1,6 @@
 import sampleSize from 'lodash/sampleSize.js';
 import shuffle from 'lodash/shuffle.js';
-import max from 'lodash/max.js';
-import min from 'lodash/min.js';
+import type { Quiz, QuizType } from './types.ts';
 
 const types = [
   'normal',
@@ -22,9 +21,11 @@ const types = [
   'dragon',
   'dark',
   'fairy'
-];
+] as const;
 
-const demageMatrix = [
+export type PokemonType = (typeof types)[number];
+
+const damageMatrix = [
   [1,   1,   1,   1,   1, 1/2,   1,   0, 1/2,   1,   1,   1,   1,   1,   1,   1,   1,   1],
   [2,   1, 1/2, 1/2,   1,   2, 1/2,   0,   2,   1,   1,   1,   1, 1/2,   2,   1,   2, 1/2],
   [1,   2,   1,   1,   1, 1/2,   2,   1, 1/2,   1,   1,   2, 1/2,   1,   1,   1,   1,   1],
@@ -45,81 +46,54 @@ const demageMatrix = [
   [1,   2,   1, 1/2,   1,   1,   1,   1, 1/2, 1/2,   1,   1,   1,   1,   1,   2,   2,   1]
 ];
 
-// const quizzes = [
-//   {
-//     emeny: {
-//       title: 'attack emeny',
-//       type: 'dragon'
-//     },
-//     options: [
-//       {
-//         type: 'normal',
-//         value: 1
-//       },
-//       {
-//         type: 'poison',
-//         value: 1
-//       },
-//       {
-//         type: 'fairy',
-//         value: 2
-//       },
-//       {
-//         type: 'electric',
-//         value: 0.5
-//       }
-//     ],
-//     answer: 'fairy'
-//   }
-// ]
+const quizFactory = (
+  damageList: number[],
+  answerDamage: number,
+  enemy: Quiz['enemy']
+): Quiz => {
+  const answers: number[] = [];
+  const others: number[] = [];
 
-const quizFactory = (demageList, findAnswerDemage, emeny) => {
-  const answerDemage = findAnswerDemage(demageList);
-  let answers = [];
-  let others = [];
-
-  demageList.forEach((demage, index) => {
-    if (demage === answerDemage) {
+  damageList.forEach((damage, index) => {
+    if (damage === answerDamage) {
       answers.push(index);
     } else {
       others.push(index);
     }
   });
 
-  const answerIndex = sampleSize(answers);
-  const otherIndice = sampleSize(others, 3);
+  const [answerIndex] = sampleSize(answers, 1);
+  const otherIndices = sampleSize(others, 3);
 
   return {
-    emeny,
-    options: shuffle(answerIndex.concat(otherIndice)).map(typeIndex => ({
+    enemy,
+    options: shuffle([answerIndex, ...otherIndices]).map(typeIndex => ({
       type: types[typeIndex],
-      demage: demageList[typeIndex]
+      damage: damageList[typeIndex]
     })),
     answer: types[answerIndex]
   }
 }
 
-const getQuiz = (quizType, lastEmeny) => {
-  let emenyIndex = Math.floor(Math.random() * types.length);
-  while(types[emenyIndex] === lastEmeny) {
-    emenyIndex = Math.floor(Math.random() * types.length);
+const getQuiz = (quizType: QuizType, lastEnemy?: PokemonType): Quiz => {
+  let enemyIndex = Math.floor(Math.random() * types.length);
+  while(types[enemyIndex] === lastEnemy) {
+    enemyIndex = Math.floor(Math.random() * types.length);
   }
 
   if (quizType === 'attack') {
-    const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);
-    return quizFactory(enemyDefendList, max, {
+    const enemyDefendList = damageMatrix.map(damage => damage[enemyIndex]);
+    return quizFactory(enemyDefendList, Math.max(...enemyDefendList), {
       title: 'ENEMY_ATTACK',
-      type: types[emenyIndex]
+      type: types[enemyIndex]
     });
   }
 
-  if (quizType === 'defend') {
-    const emenyAttackList = demageMatrix[emenyIndex];
-    return quizFactory(emenyAttackList, min, {
-      title: 'ENEMY_DEFEND',
-      type: types[emenyIndex]
-    });
-  }
+  const enemyAttackList = damageMatrix[enemyIndex];
+  return quizFactory(enemyAttackList, Math.min(...enemyAttackList), {
+    title: 'ENEMY_DEFEND',
+    type: types[enemyIndex]
+  });
 };
 
 export default getQuiz;

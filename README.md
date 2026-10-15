@@ -1,11 +1,11 @@
 # Type Instructor of Pokémon
 
 單屬性攻防記憶遊戲，支援英文、繁體中文與日文，以及一般／競速模式。
-保留原本的像素介面，目前正在分階段更新技術環境。
+保留原本的像素介面，已完成 Vite／React 遷移與遊戲流程驗收。
 
 ## 開發
 
-使用 Node.js 22.23.2（見 `.nvmrc`）；Router 要求至少 22.22，專案限定 Node 22。
+使用 Node.js 24.19.0（見 `.nvmrc`）；專案限定 Node 24，CI 讀取相同版本。
 套件管理使用 pnpm 11.22.0（見 packageManager）；`.npmrc` 使用公開 npm registry。
 沿用 pnpm-workspace.yaml 的套件發佈時間例外設定，僅保留 pnpm-lock.yaml 作為依賴鎖定檔。
 
@@ -18,6 +18,8 @@ pnpm dev
 
 開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動 Vite。
 使用 hash URL，例如 `#/zh/menu`，以相容 GitHub Pages 的靜態託管。
+未知語系使用英文，遊戲路由只接受單屬性（s）、basic／speedrun 與 attack／defend。
+錯誤遊戲參數會回到目錄；結果需為安全整數，競速秒數不可為負；未匹配路徑回英文首頁。
 
 ## 建置與預覽
 
@@ -35,6 +37,12 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 改由下方 GitHub Actions workflow 部署 dist，不需另外推送產物分支。
 
 ## 測試
+
+`pnpm lint` 檢查 JavaScript／TypeScript、未使用變數與 React Hooks。
+`pnpm typecheck` 使用 strict TypeScript 檢查核心出題、計分、store 與 hook；既有 JS 元件逐步遷移。
+兩者均在 CI 執行。
+
+核心出題使用原生 `Math.max/min`；Lodash 僅用於抽樣與洗牌。
 
 出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
@@ -54,7 +62,7 @@ pnpm test:smoke
 SMOKE_SERVER=dev pnpm test:smoke
 ```
 
-正式 build／preview 有 7 個瀏覽器測試；開發模式執行 6 個並跳過需要正式 worker 的更新測試。
+正式 build／preview 有 8 個瀏覽器測試（包含無效路由與語系回復）；開發模式執行 7 個並跳過需要正式 worker 的更新測試。
 若本機已安裝 Google Chrome，可在測試指令前加 `PLAYWRIGHT_CHANNEL=chrome`，
 使用該瀏覽器而不另行下載 Chromium。測試會自行啟動與停止伺服器。
 
@@ -70,7 +78,7 @@ SMOKE_SERVER=dev pnpm test:smoke
 正式遊戲：[Type Instructor](https://kaddopur.github.io/type_instructor/)。遷移 PR：[#2](https://github.com/kaddopur/type_instructor/pull/2)。
 
 競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
-目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
+目標值集中於 [gameRules.ts](src/lib/gameRules.ts)，遊戲邏輯與中英日說明共用此設定。
 
 玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
 第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
@@ -80,9 +88,9 @@ SMOKE_SERVER=dev pnpm test:smoke
 
 ## 遊戲狀態
 
-每場遊戲使用獨立的 [Zustand store](src/stores/quiz.js)，直接管理開始、計時、
+每場遊戲使用獨立的 [Zustand store](src/stores/quiz.ts)，直接管理開始、計時、
 作答與回饋後的狀態更新；開始前、回饋期間、已選過的選項和結束後的輸入不計分。
-[useGame](src/hooks/useGame.js) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
+[useGame](src/hooks/useGame.ts) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
 語言與模式沿用 URL，翻譯來自靜態 JSON；目前不持久保存遊戲狀態。
 
 ## 離線與版本更新
