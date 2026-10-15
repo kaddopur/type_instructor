@@ -1,7 +1,5 @@
 import sampleSize from 'lodash/sampleSize.js';
 import shuffle from 'lodash/shuffle.js';
-import max from 'lodash/max.js';
-import min from 'lodash/min.js';
 import type { Quiz, QuizType } from './types.ts';
 
 const types = [
@@ -50,10 +48,9 @@ const demageMatrix = [
 
 const quizFactory = (
   demageList: number[],
-  findAnswerDemage: (values: number[]) => number | undefined,
+  answerDemage: number,
   emeny: Quiz['emeny']
 ): Quiz => {
-  const answerDemage = findAnswerDemage(demageList);
   const answers: number[] = [];
   const others: number[] = [];
 
@@ -86,14 +83,14 @@ const getQuiz = (quizType: QuizType, lastEmeny?: PokemonType): Quiz => {
 
   if (quizType === 'attack') {
     const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);
-    return quizFactory(enemyDefendList, max, {
+    return quizFactory(enemyDefendList, Math.max(...enemyDefendList), {
       title: 'ENEMY_ATTACK',
       type: types[emenyIndex]
     });
   }
 
   const emenyAttackList = demageMatrix[emenyIndex];
-  return quizFactory(emenyAttackList, min, {
+  return quizFactory(emenyAttackList, Math.min(...emenyAttackList), {
     title: 'ENEMY_DEFEND',
     type: types[emenyIndex]
   });

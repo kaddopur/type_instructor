@@ -1,7 +1,7 @@
 # Type Instructor of Pokémon
 
 單屬性攻防記憶遊戲，支援英文、繁體中文與日文，以及一般／競速模式。
-保留原本的像素介面，目前正在分階段更新技術環境。
+保留原本的像素介面，已完成 Vite／React 遷移與遊戲流程驗收。
 
 ## 開發
 
@@ -41,6 +41,8 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 `pnpm lint` 檢查 JavaScript／TypeScript、未使用變數與 React Hooks。
 `pnpm typecheck` 使用 strict TypeScript 檢查核心出題、計分、store 與 hook；既有 JS 元件逐步遷移。
 兩者均在 CI 執行。
+
+核心出題使用原生 `Math.max/min`；Lodash 僅用於抽樣與洗牌。
 
 出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
