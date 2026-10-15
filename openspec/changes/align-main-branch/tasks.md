@@ -1,0 +1,3 @@
+- [x] 1. Document branch-rename requirements and deployment validation.
+- [ ] 2. Update workflow/current instructions and the environment branch policy; verify main publication and non-main/PR exclusion.
+- [ ] 3. Run checks, record evidence, sync specs and archive.
