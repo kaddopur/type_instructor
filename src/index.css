@@ -2,6 +2,30 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+
+@theme {
+  --font-pixel: "pkmn_s", "pokemon_gbregular", monospace;
+  --color-type-normal: #bbbbaa;
+  --color-type-fighting: #bb5544;
+  --color-type-flying: #6699ff;
+  --color-type-poison: #aa5599;
+  --color-type-ground: #ddbb55;
+  --color-type-rock: #bbaa66;
+  --color-type-bug: #aabb22;
+  --color-type-ghost: #6666bb;
+  --color-type-steel: #aaaabb;
+  --color-type-fire: #ff4422;
+  --color-type-water: #3399ff;
+  --color-type-grass: #77cc55;
+  --color-type-electric: #ffcc33;
+  --color-type-psychic: #ff5599;
+  --color-type-ice: #77ddff;
+  --color-type-dragon: #7766ee;
+  --color-type-dark: #775544;
+  --color-type-fairy: #ffaaff;
+  --color-type-wrong: #434343;
+}
+
 @font-face {
   font-weight: normal;
   font-style: normal;
