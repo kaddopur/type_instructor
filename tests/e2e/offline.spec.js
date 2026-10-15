@@ -17,8 +17,8 @@ async function updateWorker(page) {
   });
 }
 
-test('legacy and current workers update safely, survive failed installs, and play offline', async ({ page }) => {
-  test.skip(process.env.SMOKE_SERVER === 'dev', 'Worker upgrade requires the production build.');
+test('legacy and current workers update safely, survive failed installs, and play offline', { tag: '@offline' }, async ({ page }) => {
+  test.skip(process.env.E2E_SERVER === 'dev', 'Worker upgrade requires the production build.');
   test.setTimeout(60_000);
   const fixture = await serveOfflineBuilds();
   const origin = new URL(fixture.url).origin;
@@ -71,7 +71,7 @@ test('legacy and current workers update safely, survive failed installs, and pla
     await expect(page.locator('.Home')).toBeVisible();
     await page.evaluate(() => { location.hash = '/zh/menu'; });
     await page.getByRole('link', { name: '防禦', exact: true }).first().click();
-    await page.locator('.overlay').click();
+    await page.getByTestId('start-game').click();
     await page.locator('.optionItem').first().click();
     await expect(page.locator('.stemScores')).toHaveText(/分數: -?1$/);
     const scores = await page.locator('.stemScores').textContent();

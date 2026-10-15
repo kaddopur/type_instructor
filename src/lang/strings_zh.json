@@ -40,5 +40,10 @@
     "EFFECTIVE_1": "效果一般",
     "EFFECTIVE_2": "效果絕佳",
     "ENEMY_ATTACK": "攻擊敵人",
-    "ENEMY_DEFEND": "防禦來自敵人的攻擊"
+    "ENEMY_DEFEND": "防禦來自敵人的攻擊",
+    "CORRECT": "答對了",
+    "INCORRECT": "答錯了",
+    "CHOOSE_ANSWER": "選擇答案",
+    "DAMAGE_MULTIPLIER": "傷害倍率",
+    "CHANGE_LANGUAGE": "切換語言"
 }

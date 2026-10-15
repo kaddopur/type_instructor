@@ -40,5 +40,10 @@
     "EFFECTIVE_1": "effective",
     "EFFECTIVE_2": "super effective",
     "ENEMY_ATTACK": "attack enemy",
-    "ENEMY_DEFEND": "defend against enemy"
+    "ENEMY_DEFEND": "defend against enemy",
+    "CORRECT": "Correct",
+    "INCORRECT": "Incorrect",
+    "CHOOSE_ANSWER": "Choose an answer",
+    "DAMAGE_MULTIPLIER": "Damage multiplier",
+    "CHANGE_LANGUAGE": "Change language"
 }

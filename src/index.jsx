@@ -7,13 +7,12 @@ import Lang from './components/Lang.jsx';
 import Quiz from './components/Quiz.jsx';
 import Result from './components/Result.jsx';
 import GameRoute from './components/GameRoute.tsx';
-import 'normalize.css';
 import './index.css';
-import './color.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HashRouter>
+      <main id="main-content">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:lang/" element={<Home />} />
@@ -25,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         </Route>
         <Route path="*" element={<Navigate to="/en/" replace />} />
       </Routes>
+      </main>
     </HashRouter>
   </StrictMode>
 );
