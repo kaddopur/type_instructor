@@ -158,8 +158,10 @@ index.css retains framework imports, theme tokens, font faces, document-wide
 base styles and four shared responsive variants. pageStyles.ts shares only the
 repeated navigation-page layout, title and footer classes.
 
-Pixel values remain explicit because the shared root font is 125%. Semantic
-class names remain test hooks without component-selector CSS rules. A temporary
+The spacing theme explicitly uses a 4px unit, so canonical utilities such as
+`mt-8` retain 32px despite the shared 125% root font. Typography and corner
+radii retain explicit values where the default scale differs. Semantic class
+names remain test hooks without component-selector CSS rules. A temporary
 browser harness compared 264 states against the previous build: three languages,
 four viewports, all routes and Quiz intro/playing/feedback/exit states. Recorded
 geometry, typography, colors, borders and focus styles matched with zero differences.

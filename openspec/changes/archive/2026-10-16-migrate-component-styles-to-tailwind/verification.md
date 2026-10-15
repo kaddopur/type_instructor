@@ -32,7 +32,7 @@ preserves the original decorative shadow serialization as well as appearance.
 Existing real game PNGs remain accurate because their rendered layouts match.
 
 ## Scope and limitations
-Landing.css is removed. index.css falls from 790 lines to 102, retaining only
+Landing.css is removed. index.css falls from 790 lines to 104, retaining only
 Tailwind imports, theme variables, font faces, document-wide base rules and
 shared responsive variants. No component selectors or @apply blocks remain.
 The shared pageStyles module contains only repeated page/title/footer utilities.
@@ -42,3 +42,12 @@ Physical devices, installed iOS mode and manual screen readers were not tested.
 Remote CI, merge and deployment are separate from these local results.
 
 The user requested deferring PR creation. This handoff stops after commit and push.
+
+## Canonical utility follow-up
+The spacing theme now declares `--spacing: 4px`, independent of the 125% root
+font. Pixel spacing/dimension utilities use canonical numeric classes such as
+`mt-8`; existing rem-based button spacing was adjusted to preserve its geometry.
+Pixel typography and radii remain explicit when default theme values differ.
+The same 264-state comparison again reports zero differences. Lint, typecheck,
+all 27 unit tests and seven Chromium smoke tests passed after this cleanup.
+The full four-browser suite was not repeated for this follow-up.

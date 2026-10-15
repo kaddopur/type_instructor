@@ -5,6 +5,8 @@
 
 
 @theme {
+  /* Keep the four-pixel spacing scale independent of the 125% root font. */
+  --spacing: 4px;
   --color-canvas: #f7f5ef;
   --color-surface: #ffffff;
   --color-ink: #242424;
