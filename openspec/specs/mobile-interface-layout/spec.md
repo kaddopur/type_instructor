@@ -18,9 +18,10 @@ document or inner page scrolling, including compact landscape navigation.
 - **THEN** all four answer controls remain inside its usable viewport
 
 ### Requirement: Local CJK pixel typography
-The application SHALL bundle Cubic 11 and its license locally for Chinese and
-Japanese. Japanese kana, kanji and punctuation SHALL use a consistent font.
-Latin and digits SHALL retain the PKMN/GB stack. Unused font assets SHALL be removed.
+The application SHALL bundle Cubic 11 and its license locally as the primary UI
+font for English, Chinese and Japanese, including Latin letters, digits, kana,
+kanji and punctuation. PKMN/GB SHALL be fallbacks for missing glyphs. Equivalent
+UI roles SHALL retain the same font sizes and line heights across languages.
 
 #### Scenario: Japanese mixed label
 - **WHEN** the player sees やり直し or メニューに戻る
@@ -29,6 +30,10 @@ Latin and digits SHALL retain the PKMN/GB stack. Unused font assets SHALL be rem
 #### Scenario: Offline font delivery
 - **WHEN** the production application reloads offline after worker activation
 - **THEN** the bundled CJK font remains available under the Pages base path
+
+#### Scenario: Consistent Latin typography
+- **WHEN** the player switches between English, Chinese and Japanese
+- **THEN** Latin text and digits retain consistent rendered glyph metrics without language-specific font scaling
 
 ### Requirement: Stable action geometry
 Home, Menu, language selection, result and quiz intro controls SHALL preserve

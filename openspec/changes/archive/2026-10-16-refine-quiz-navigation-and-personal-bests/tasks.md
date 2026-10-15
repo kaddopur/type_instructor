@@ -1,0 +1,6 @@
+- [x] 1. Add localized exit confirmation and the time/exit/score layout.
+- [x] 2. Reproduce and fix pointer/touch Tab ordering while preserving keyboard play.
+- [x] 3. Add validated browser-local personal bests and menu record descriptions.
+- [x] 4. Normalize multilingual font metrics, enlarge Home branding and use Tailwind for changed component styles.
+- [x] 5. Refresh and inspect all nine real game screenshots and capture provenance.
+- [x] 6. Validate final source, synchronize specs, record evidence and archive.
