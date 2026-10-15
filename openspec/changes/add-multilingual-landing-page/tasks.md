@@ -1,3 +1,0 @@
-- [x] 1. Capture reproducible real screenshots in all three languages.
-- [x] 2. Implement localized responsive landing, route, Home entry and GitHub link.
-- [ ] 3. Verify layout, language navigation, screenshots, accessibility and offline use; archive and commit.
