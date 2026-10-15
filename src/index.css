@@ -218,3 +218,17 @@
   .stemStatus { grid-column: 1; grid-row: 3; height: 48px; }
   .optionContainer { grid-column: 2; grid-row: 2 / 4; }
 }
+
+.result-panel { display: grid; justify-items: center; gap: 16px; width: min(100%,420px); margin-block: auto; }
+.result-summary { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; margin-bottom: 16px; text-align: center; }
+.result-summary > span { display: flex; align-items: center; justify-content: center; height: 64px; width: 100%; font-size: 24px; line-height: 32px; }
+.result-summary strong { display: flex; align-items: center; justify-content: center; min-width: 160px; height: 96px; padding: 12px 20px; border-radius: 16px; background: var(--color-accent-soft); font-size: 48px; font-weight: normal; line-height: 56px; }
+.result-action { width: 260px; max-width: 100%; height: 60px; min-height: 0; padding: 8px; white-space: nowrap; }
+.result-menu { height: 48px; font-size: 16px; }
+@media (max-height: 480px) {
+  .result-panel { gap: 10px; }
+  .result-summary { flex-direction: row; gap: 12px; margin-bottom: 0; }
+  .result-summary > span { width: 60%; font-size: 20px; line-height: 28px; }
+  .result-summary strong { min-width: 100px; height: 64px; font-size: 36px; line-height: 40px; }
+  .result-action { height: 48px; }
+}

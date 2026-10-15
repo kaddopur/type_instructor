@@ -6,5 +6,5 @@
 - [x] 4. Refresh language selection.
 - [x] 5. Refresh the start dialog.
 - [x] 6. Refresh Quiz and progress feedback.
-- [ ] 7. Refresh results.
+- [x] 7. Refresh results.
 - [ ] 8. Verify, document and archive the complete redesign; prepare PR handoff.
