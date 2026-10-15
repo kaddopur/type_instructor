@@ -1,59 +1,62 @@
 import { test, expect } from '@playwright/test';
 
-test('exit confirmation text fits its dialog and buttons on narrow screens in every language', async ({
-  page,
-}) => {
-  for (const viewport of [
-    { width: 320, height: 600 },
-    { width: 390, height: 844 },
-    { width: 844, height: 390 },
-  ]) {
-    await page.setViewportSize(viewport);
-    for (const lang of ['en', 'zh', 'ja']) {
-      await page.goto(`./#/${lang}/quizzes/s/basic/attack`);
-      await page.getByTestId('start-game').click();
-      await page.locator('.quiz-exit').click();
-      const dialog = page.getByRole('dialog');
-      await page.evaluate(() => document.fonts.ready);
-      const sizes = await dialog.evaluate((node) => ({
-        scroll: node.scrollWidth,
-        visible: node.clientWidth,
-      }));
-      expect(sizes.scroll, `${lang} at ${viewport.width}px`).toBeLessThanOrEqual(sizes.visible);
-      const bounds = await dialog.boundingBox();
-      for (const target of await dialog.locator('h2, p, button, a').all()) {
-        const box = await target.boundingBox();
-        expect(box.x).toBeGreaterThanOrEqual(bounds.x);
-        expect(box.x + box.width).toBeLessThanOrEqual(bounds.x + bounds.width);
-        const textRects = await target.evaluate((node) => {
-          const range = document.createRange();
-          range.selectNodeContents(node);
-          return [...range.getClientRects()].map((rect) => ({
-            left: rect.left,
-            right: rect.right,
-            top: rect.top,
-            bottom: rect.bottom,
-          }));
-        });
-        for (const rect of textRects) {
-          expect(rect.left).toBeGreaterThanOrEqual(box.x - 1);
-          expect(rect.right).toBeLessThanOrEqual(box.x + box.width + 1);
-          expect(rect.top).toBeGreaterThanOrEqual(box.y - 1);
-          expect(rect.bottom).toBeLessThanOrEqual(box.y + box.height + 1);
+for (const viewport of [
+  { width: 320, height: 600 },
+  { width: 390, height: 844 },
+  { width: 844, height: 390 },
+]) {
+  test(
+    'exit confirmation text fits its dialog and buttons on narrow screens in every language' +
+      ` at ${viewport.width}x${viewport.height}`,
+    async ({ page }) => {
+      await page.setViewportSize(viewport);
+      for (const lang of ['en', 'zh', 'ja']) {
+        await page.goto(`./#/${lang}/quizzes/s/basic/attack`);
+        await page.getByTestId('start-game').click();
+        await page.locator('.quiz-exit').click();
+        const dialog = page.getByRole('dialog');
+        await page.evaluate(() => document.fonts.ready);
+        const sizes = await dialog.evaluate((node) => ({
+          scroll: node.scrollWidth,
+          visible: node.clientWidth,
+        }));
+        expect(sizes.scroll, `${lang} at ${viewport.width}px`).toBeLessThanOrEqual(sizes.visible);
+        const bounds = await dialog.boundingBox();
+        for (const target of await dialog.locator('h2, p, button, a').all()) {
+          const box = await target.boundingBox();
+          expect(box.x).toBeGreaterThanOrEqual(bounds.x);
+          expect(box.x + box.width).toBeLessThanOrEqual(bounds.x + bounds.width);
+          const textRects = await target.evaluate((node) => {
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            return [...range.getClientRects()].map((rect) => ({
+              left: rect.left,
+              right: rect.right,
+              top: rect.top,
+              bottom: rect.bottom,
+            }));
+          });
+          for (const rect of textRects) {
+            expect(rect.left).toBeGreaterThanOrEqual(box.x - 1);
+            expect(rect.right).toBeLessThanOrEqual(box.x + box.width + 1);
+            expect(rect.top).toBeGreaterThanOrEqual(box.y - 1);
+            expect(rect.bottom).toBeLessThanOrEqual(box.y + box.height + 1);
+          }
         }
       }
-    }
-  }
-});
+    },
+  );
+}
 
-test(
-  'app shell keeps routes and quiz controls inside the usable mobile viewport',
-  { tag: '@layout' },
-  async ({ page }) => {
-    for (const viewport of [
-      { width: 390, height: 600 },
-      { width: 844, height: 390 },
-    ]) {
+for (const viewport of [
+  { width: 390, height: 600 },
+  { width: 844, height: 390 },
+]) {
+  test(
+    'app shell keeps routes and quiz controls inside the usable mobile viewport' +
+      ` at ${viewport.width}x${viewport.height}`,
+    { tag: '@layout' },
+    async ({ page }) => {
       await page.setViewportSize(viewport);
       await page.goto('./#/en/');
       await expect(page.locator('html')).toHaveAttribute('lang', 'en');
@@ -157,19 +160,20 @@ test(
           expect(bounds.x + bounds.width).toBeLessThanOrEqual(viewport.width - 20 + 1);
         }
       }
-    }
-  },
-);
+    },
+  );
+}
 
-test(
-  'language selection returns Home with Start focused and preserves picker geometry',
-  { tag: '@layout' },
-  async ({ page }) => {
-    for (const viewport of [
-      { width: 390, height: 600 },
-      { width: 390, height: 844 },
-      { width: 844, height: 390 },
-    ]) {
+for (const viewport of [
+  { width: 390, height: 600 },
+  { width: 390, height: 844 },
+  { width: 844, height: 390 },
+]) {
+  test(
+    'language selection returns Home with Start focused and preserves picker geometry' +
+      ` at ${viewport.width}x${viewport.height}`,
+    { tag: '@layout' },
+    async ({ page }) => {
       await page.setViewportSize(viewport);
       await page.goto('./#/en/lang');
       await page.evaluate(() => document.fonts.ready);
@@ -214,66 +218,67 @@ test(
           'page',
         );
       }
-    }
-  },
-);
+    },
+  );
+}
 
-test(
-  'all routes preserve layout geometry across languages',
-  { tag: '@layout' },
-  async ({ page }) => {
-    await page.clock.install();
-    await page.addInitScript(() => {
-      Math.random = () => 0.5 / 18;
-    });
-    async function geometry(selector) {
-      return page.locator(selector).evaluateAll((nodes) =>
-        nodes.map((node) => {
-          const rect = node.getBoundingClientRect();
-          const style = getComputedStyle(node);
-          return {
-            center: rect.x + rect.width / 2,
-            top: rect.y,
-            height: rect.height,
-            width: node.matches('footer a') ? 0 : rect.width,
-            radius: style.borderTopLeftRadius,
-            fontSize: style.fontSize,
-          };
-        }),
-      );
-    }
-    function compare(actual, expected, label) {
-      expect(actual.length, label).toBe(expected.length);
-      actual.forEach((box, index) => {
-        for (const key of ['center', 'top', 'width', 'height']) {
-          expect(
-            Math.abs(box[key] - expected[index][key]),
-            `${label} ${index} ${key}`,
-          ).toBeLessThanOrEqual(1);
+for (const viewport of [
+  { width: 390, height: 600 },
+  { width: 844, height: 390 },
+  { width: 1280, height: 900 },
+]) {
+  for (const [route, selector] of [
+    ['', '.Home h1, .Home .start a, .Home .lang a, footer a'],
+    ['menu', '.menuItem a, footer a'],
+    ['lang', '.langItem a, footer a'],
+    ['quizzes/s/basic/attack/result/7', '.resultItem a, footer a'],
+    ['quizzes/s/speedrun/defend/result/7', '.resultItem a, footer a'],
+    ...['basic', 'speedrun'].flatMap((mode) =>
+      ['attack', 'defend'].map((kind) => [
+        `quizzes/s/${mode}/${kind}`,
+        '[role="dialog"], [role="dialog"] button, [role="dialog"] a',
+      ]),
+    ),
+  ]) {
+    test(
+      'all routes preserve layout geometry across languages' +
+        ` at ${viewport.width}x${viewport.height} / ${route || 'home'}`,
+      { tag: '@layout' },
+      async ({ page }) => {
+        await page.clock.install();
+        await page.addInitScript(() => {
+          Math.random = () => 0.5 / 18;
+        });
+        async function geometry(selector) {
+          return page.locator(selector).evaluateAll((nodes) =>
+            nodes.map((node) => {
+              const rect = node.getBoundingClientRect();
+              const style = getComputedStyle(node);
+              return {
+                center: rect.x + rect.width / 2,
+                top: rect.y,
+                height: rect.height,
+                width: node.matches('footer a') ? 0 : rect.width,
+                radius: style.borderTopLeftRadius,
+                fontSize: style.fontSize,
+              };
+            }),
+          );
         }
-        expect(box.radius, label).toBe(expected[index].radius);
-        expect(box.fontSize, label).toBe(expected[index].fontSize);
-      });
-    }
-    for (const viewport of [
-      { width: 390, height: 600 },
-      { width: 844, height: 390 },
-      { width: 1280, height: 900 },
-    ]) {
-      await page.setViewportSize(viewport);
-      for (const [route, selector] of [
-        ['', '.Home h1, .Home .start a, .Home .lang a, footer a'],
-        ['menu', '.menuItem a, footer a'],
-        ['lang', '.langItem a, footer a'],
-        ['quizzes/s/basic/attack/result/7', '.resultItem a, footer a'],
-        ['quizzes/s/speedrun/defend/result/7', '.resultItem a, footer a'],
-        ...['basic', 'speedrun'].flatMap((mode) =>
-          ['attack', 'defend'].map((kind) => [
-            `quizzes/s/${mode}/${kind}`,
-            '[role="dialog"], [role="dialog"] button, [role="dialog"] a',
-          ]),
-        ),
-      ]) {
+        function compare(actual, expected, label) {
+          expect(actual.length, label).toBe(expected.length);
+          actual.forEach((box, index) => {
+            for (const key of ['center', 'top', 'width', 'height']) {
+              expect(
+                Math.abs(box[key] - expected[index][key]),
+                `${label} ${index} ${key}`,
+              ).toBeLessThanOrEqual(1);
+            }
+            expect(box.radius, label).toBe(expected[index].radius);
+            expect(box.fontSize, label).toBe(expected[index].fontSize);
+          });
+        }
+        await page.setViewportSize(viewport);
         const expected = {};
         for (const lang of ['en', 'zh', 'ja']) {
           await page.goto(`./#/${lang}/${route}`);
@@ -294,7 +299,7 @@ test(
           expected.answered ??= answered;
           compare(answered, expected.answered, `${lang}/${route} feedback`);
         }
-      }
-    }
-  },
-);
+      },
+    );
+  }
+}
