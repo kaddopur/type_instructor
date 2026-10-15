@@ -5,7 +5,7 @@
 
 
 @theme {
-  --font-pixel: "pkmn_s", "pokemon_gbregular", monospace;
+  --font-pixel: "pkmn_s", "pokemon_gbregular", "Cubic 11", monospace;
   --color-type-normal: #bbbbaa;
   --color-type-fighting: #bb5544;
   --color-type-flying: #6699ff;
@@ -31,8 +31,7 @@
   font-weight: normal;
   font-style: normal;
   font-family: "pokemon_gbregular";
-  src: url("./fonts/pokemon_gb-webfont.woff2") format("woff2"),
-  url("./fonts/pokemon_gb-webfont.woff") format("woff");
+  src: url("./fonts/pokemon_gb-webfont.woff2") format("woff2");
 }
 
 @font-face {
@@ -41,10 +40,30 @@
   font-family: "pkmn_s";
   src: url("./fonts/pkmn_s.woff") format("woff");
 
-  unicode-range: U+0030-0039, U+3040-309F, U+30A1-30F3;
+  unicode-range: U+0030-0039, U+3040-309F, U+30A0-30FF;
+}
+
+@font-face {
+  font-family: "Cubic 11";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Cubic_11.woff2") format("woff2");
+  unicode-range: U+2E80-312F, U+31A0-31BF, U+3400-4DBF,
+    U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 
 @layer base {
+  html { font-size: 125%; }
+  :lang(zh) {
+    --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
+  :lang(ja) {
+    --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "Hiragino Kaku Gothic ProN", sans-serif;
+  }
+  html, body {
+    overflow: hidden;
+  }
   body {
     font-family: var(--font-pixel);
     background: white;
@@ -59,4 +78,47 @@
     outline-offset: 4px;
     box-shadow: 0 0 0 2px white;
   }
+}
+
+/* Keep every route inside Safari's visible viewport and device safe area. */
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+
+.app-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-height: 700px) {
+  .Menu h2 { margin-block: 20px 10px; }
+  .Menu footer { padding: 20px; }
+  .Menu .menuItem { margin: 5px; }
+  .Menu .menuItem a { min-height: 44px; padding-block: 10px; }
+  .Lang h1 { margin-block: 1em .5em; }
+  .Lang footer { padding: 1em; }
+  .Lang .langItem { margin: .25em; }
+  .Lang .langItem a { min-height: 44px; padding-block: .5em; }
+  .Home h1 { padding-block: 16px; }
+  .Home .lang { margin-top: .5rem; }
+  .Home footer, .Result footer { padding: 1rem; }
+  .Result h1 { margin-block: 1rem .5rem; }
+  .resultItem { margin: .25rem; }
+  .Home .start a, .resultItem a {
+    min-height: 44px;
+    padding-block: .5rem;
+  }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .Menu footer { padding: 10px; }
+  .Lang footer { padding: .5em; }
+  .Home h1 { font-size: 25px; }
+  .Home footer, .Result footer { padding: .5rem; }
+  .Menu { display: grid; grid-template-columns: 1fr 1fr; }
+  .Menu footer { grid-column: 1 / -1; text-align: center; }
 }

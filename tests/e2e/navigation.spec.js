@@ -56,9 +56,9 @@ test('three languages navigate, render games, show feedback, and retry', { tag: 
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const labels = {
-    en: { start: 'Start', language: 'English', attack: 'Attack', defend: 'Defend', retry: 'Retry', menu: 'Menu', score: 'scores', font: '100%' },
-    zh: { start: '開始', language: '中文', attack: '攻擊', defend: '防禦', retry: '重玩', menu: '目錄', score: '分數', font: '125%' },
-    ja: { start: 'スタート', language: '日本語', attack: '攻撃', defend: '防御', retry: 'やり直し', menu: 'メニューに戻る', score: 'スゴア', font: '125%' }
+    en: { start: 'Start', language: 'English', attack: 'Attack', defend: 'Defend', retry: 'Retry', menu: 'Menu', score: 'scores' },
+    zh: { start: '開始', language: '中文', attack: '攻擊', defend: '防禦', retry: '重玩', menu: '目錄', score: '分數' },
+    ja: { start: 'スタート', language: '日本語', attack: '攻撃', defend: '防御', retry: 'やり直し', menu: 'メニューに戻る', score: 'スゴア' }
   };
 
   for (const [lang, text] of Object.entries(labels)) {
@@ -69,7 +69,7 @@ test('three languages navigate, render games, show feedback, and retry', { tag: 
     await page.getByRole('link', { name: text.language, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
     await expect(page.locator('html')).toHaveAttribute('lang', lang);
-    await expect.poll(() => page.locator('html').evaluate(node => node.style.fontSize)).toBe(text.font);
+    await expect(page.locator('html')).toHaveCSS('font-size', '20px');
     // Return through the language page's home link.
     await page.locator('footer a').click();
     await page.getByRole('link', { name: text.start, exact: true }).click();
@@ -123,6 +123,17 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
   for (const href of await page.locator('link[rel="apple-touch-icon"]').evaluateAll(nodes => nodes.map(node => node.href))) {
     expect((await request.get(href)).headers()['content-type']).toContain('image/png');
   }
+  for (const lang of ['zh', 'ja']) {
+    await page.goto(`./#/${lang}/menu`);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator('.Menu')).toHaveCSS('font-family', /"Cubic 11"/);
+  }
+  const loadedFonts = await page.evaluate(async () =>
+    (await document.fonts.load('20px "Cubic 11"', '開始攻擊防禦')).map(font => font.status));
+  expect(loadedFonts).toEqual(['loaded']);
+  const fontURL = await page.evaluate(() => performance.getEntriesByType('resource')
+    .find(entry => /Cubic_11.*\.woff2/.test(entry.name))?.name);
+  expect(fontURL).toContain('/type_instructor/');
   if (process.env.E2E_SERVER !== 'dev') {
     const registration = await page.evaluate(async () => {
       const worker = await navigator.serviceWorker.ready;
@@ -132,7 +143,13 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
     expect(registration.script).toBe('http://127.0.0.1:4173/type_instructor/service-worker.js');
     await page.context().setOffline(true);
     await page.reload();
-    await expect(page.locator('.Home')).toBeVisible();
+    await expect(page.locator('.Menu')).toBeVisible();
+    const cachedFont = await page.evaluate(async url => {
+      await document.fonts.ready;
+      const fonts = await document.fonts.load('20px "Cubic 11"', '開始攻擊防禦');
+      return fonts.length === 1 && fonts[0].status === 'loaded' && (await fetch(url)).ok;
+    }, fontURL);
+    expect(cachedFont).toBe(true);
   } else {
     expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)).toBe(0);
   }

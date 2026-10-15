@@ -36,15 +36,15 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
   }
 
   return (
-    <div className="Quiz flex h-dvh w-full flex-col overflow-hidden">
+    <div className="Quiz flex h-full w-full flex-col overflow-hidden">
       <Dialog open={overlay} onOpenChange={open => { if (!open) navigate(`/${lang}/menu`); }}>
         <DialogContent className="overlay" onCloseAutoFocus={event => event.preventDefault()}>
           <DialogTitle>{GOAL}</DialogTitle>
-          <DialogDescription asChild>
+          <DialogDescription asChild className="flex h-[2.8rem] items-center justify-center">
             <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN.replace('{scoreTarget}', SCORE_TARGET)}</span>
           </DialogDescription>
-          <Button type="button" data-testid="start-game" className="mx-auto" onClick={start}>{START}</Button>
-          <Button asChild variant="ghost" className="mx-auto py-2"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
+          <Button type="button" data-testid="start-game" className="mx-auto w-full max-w-[240px] rounded-[24px]" onClick={start}>{START}</Button>
+          <Button asChild variant="ghost" className="mx-auto w-full max-w-[240px] rounded-[24px] px-0 py-2 whitespace-nowrap"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
         </DialogContent>
       </Dialog>
       <div className={cn('stemContainer relative flex min-h-0 flex-1 flex-col items-center text-center text-[1.4rem] leading-[1.6]', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
@@ -57,7 +57,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
             {messages[enemy.title]}<br />( {messages[enemy.type.toUpperCase()]} )
           </h1>
         </div>
-        <div className="stemStatus flex min-h-[3.2rem] items-center justify-center px-2 text-[.8rem] leading-normal">{status ? `${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}` : ''}</div>
+        <div className="stemStatus flex w-full min-h-[3.2rem] items-center justify-center px-2 text-[.8rem] leading-normal">{status ? `${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}` : ''}</div>
       </div>
       <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} className="optionContainer grid w-full shrink-0 grid-cols-2">
         {options.map(({ type, damage, clicked, correct }, index) => (

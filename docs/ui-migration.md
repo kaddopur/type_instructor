@@ -36,7 +36,7 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 - Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
 - ESLint, strict TypeScript checks and 15 Vitest unit tests, including route validation.
 - Production browser smoke subset: seven Chromium tests selected with `@smoke`.
-- Complete E2E suite: 108 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- Complete E2E suite: 120 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
 - Accessibility scans cover all three languages, home/menu/language/results, every mode's
   intro dialog and playable/answered states. No axe rules are disabled.
 - Computed text/background colors are checked for all 18 target types, rendered options
@@ -63,3 +63,83 @@ A single `playwright.config.js` defines all four browser/device projects. The fu
 per project. `pnpm test:e2e:smoke` selects seven Chromium cases with `@smoke`;
 `pnpm test:a11y` selects `@a11y` across the matrix. CI runs unit tests followed by one
 complete E2E run, without a separate duplicate smoke run.
+
+## Mobile Safari app shell
+
+The shared AppShell owns the dynamic viewport height and safe-area padding.
+Routes fit inside its content area without document or inner scrolling. Short
+viewports use reduced spacing; landscape menus arrange the two modes side by side.
+The viewport uses
+`viewport-fit=cover`, with all four safe-area insets handled by the shell.
+Quiz keeps its fixed-height layout inside the available shell space.
+
+The @layout browser check covers home, menu, language, results and quiz in all
+three languages, portrait and landscape, with simulated safe-area padding.
+Browser emulation cannot reproduce iOS Safari's Liquid Glass address bar. Verify
+expanded/collapsed bars and home-screen mode on an actual iPhone before claiming
+this specific device issue is resolved.
+
+## Traditional Chinese font
+
+Chinese routes use a locally bundled Cubic 11 font for CJK characters and
+punctuation, with the original PKMN/GB fonts retained for Latin, digits and kana.
+The unmodified WOFF2 and upstream OFL license are stored under src/fonts; the
+source revision is recorded there. Workbox precaches the font for offline use.
+The existing Chinese UI contains 88 unique Han characters, all covered by Cubic 11.
+The simplified character in 没有效果 was corrected to 沒有效果.
+
+Font verification: lint, TypeScript and all 15 unit tests passed. The 44 targeted
+browser checks (navigation/resources, layout, keyboard and axe) passed across all
+four projects. Chinese font loading and fetching the font after an offline reload
+are checked in the Pages resource test. Chromium's rendered-font inspection
+confirmed Cubic 11 draws the Chinese menu heading; a 390×600 screenshot was inspected.
+
+Japanese kanji also use Cubic 11 through the shared fallback stack; PKMN remains
+first for kana and digits. Its CSS kana range includes U+30FC (ー), which was
+previously excluded. The resource check visits both Chinese and Japanese menus.
+
+Japanese fallback verification: lint/typecheck and 16 layout/navigation/resource
+checks passed across the four browser projects. Rendered-font inspection in
+Chromium confirmed Cubic 11 for 基本 and PKMN Strict for ホーム, including ー;
+the 390×600 Japanese menu screenshot was inspected.
+
+## Stable language selection
+
+The language page uses a constant local text size and em-based dimensions, so
+switching the global language font size does not move or resize its controls.
+Compact viewport spacing uses the same local units. A regression check compares
+all three buttons before/after English, Japanese and Chinese selection at three
+viewport sizes across all four browser projects.
+
+Japanese typography now prioritizes Cubic 11 for kana, kanji and punctuation,
+including mixed labels such as やり直し and メニューに戻る. Latin and digits stay
+on PKMN/GB. This supersedes the earlier choice to retain PKMN for Japanese kana,
+so Japanese labels no longer mix the two fonts' glyph metrics.
+Rendered-font inspection confirms both result actions (やり直し and メニューに戻る)
+use only Cubic 11. The updated result screenshot was inspected; lint and all 20
+layout/navigation/resource checks passed across four browser projects.
+
+Menu typography and spacing now use fixed local dimensions across languages:
+20px action/footer text, 24px headings, 175px action widths and 24px corners.
+The existing layout check compares all four menu actions' positions and sizes
+across en/zh/ja; lint, typecheck and 20 layout/navigation checks passed.
+The updated English menu screenshot at 390×844 was inspected.
+
+## Layout does not depend on the selected language
+
+The root font size is now a single CSS value (125%, normally 20px) for every
+language. Language navigation changes translations, glyph families, document
+language and title, but no longer resizes rem-based layout dimensions.
+The quiz intro description reserves two lines; feedback occupies the full stem
+width. Result actions share a 240px width so Japanese labels stay on one line.
+This replaces the earlier baseline rule that enlarged only Chinese and Japanese.
+
+A dedicated geometry regression check covers home, menu, language, both result
+modes, and all four quiz modes in intro/playing/answered states. It compares
+control/container positions, sizes, radii and font sizes across en/zh/ja at
+390×600, 844×390 and 1280×900 in all four browser projects. Natural footer text
+width may differ; its center, vertical position and line height must remain stable.
+Real iOS Safari browser chrome and physical devices are still not emulated.
+
+Final locale-layout audit: lint, typecheck, 15 unit tests and all 120 E2E cases
+passed locally. The complete suite includes all four browser/device projects.
