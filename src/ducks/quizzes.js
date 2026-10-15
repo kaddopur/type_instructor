@@ -1,4 +1,4 @@
-import getQuiz from '../lib/getQuiz';
+import getQuiz from '../lib/getQuiz.js';
 
 // Constants
 const TIME_LIMIT = 60;

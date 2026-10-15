@@ -1,7 +1,7 @@
-import sampleSize from 'lodash/sampleSize';
-import shuffle from 'lodash/shuffle';
-import max from 'lodash/max';
-import min from 'lodash/min';
+import sampleSize from 'lodash/sampleSize.js';
+import shuffle from 'lodash/shuffle.js';
+import max from 'lodash/max.js';
+import min from 'lodash/min.js';
 
 const types = [
   'normal',

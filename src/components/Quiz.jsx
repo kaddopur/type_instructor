@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import I18nPage from './I18nPage';
+import I18nPage from './I18nPage.jsx';
 import classnames from 'classnames';
-import getStatus from '../lib/getStatus';
+import getStatus from '../lib/getStatus.js';
 import './Quiz.css';
 import {
   resetQuizzes,
@@ -11,8 +11,7 @@ import {
   clickRightOption,
   clickWrongOption,
   unfreeze
-} from '../ducks/quizzes';
-import { push } from 'react-router-redux'
+} from '../ducks/quizzes.js';
 
 const SCORE_TARGET = 3;
 const FREEZE_DURATION = 500;
@@ -21,6 +20,9 @@ class Quiz extends PureComponent {
 
   // handler
   dismissOverlay() {
+    if (this.timerInterval) {
+      return;
+    }
     const { 
       computed: {
         timerStep
@@ -72,42 +74,43 @@ class Quiz extends PureComponent {
   }
 
   // life cycle methods
-  componentWillMount() {
+  componentDidMount() {
     this.props.actions.resetQuizzes();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { 
       location: {
         pathname
       },
       gameType,
       quizType,
+      navigate,
       quizzes: {
         timer,
         scores,
-        freeze
+        freeze,
+        finish
       },
       actions: {
-        showResult,
         unfreeze
       }
     } = this.props;
 
-    if (timer !== nextProps.quizzes.timer) {
-      if (gameType === 'basic' && nextProps.quizzes.timer === 0) {
+    if (timer !== prevProps.quizzes.timer) {
+      if (gameType === 'basic' && timer === 0) {
         clearInterval(this.timerInterval);
-        showResult(`${pathname}/result/${scores}`);
+        navigate(`${pathname}/result/${scores}`);
       }  
     }
 
-    if (freeze !== nextProps.quizzes.freeze) {
-      if (nextProps.quizzes.freeze) {
-        setTimeout(() => {
-          unfreeze(quizType, nextProps.quizzes.finish);
-          if (gameType === 'speedrun' && nextProps.quizzes.scores === SCORE_TARGET) {
+    if (freeze !== prevProps.quizzes.freeze) {
+      if (freeze) {
+        this.feedbackTimeout = setTimeout(() => {
+          unfreeze(quizType, finish);
+          if (gameType === 'speedrun' && scores === SCORE_TARGET) {
             clearInterval(this.timerInterval);
-            showResult(`${pathname}/result/${timer}`);
+            navigate(`${pathname}/result/${timer}`);
           }
         }, FREEZE_DURATION);
       }
@@ -177,6 +180,7 @@ class Quiz extends PureComponent {
 
   componentWillUnmount() {
     clearInterval(this.timerInterval);
+    clearTimeout(this.feedbackTimeout);
   }
 }
 
@@ -217,9 +221,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       },
       dismissOverlay: () => {
         dispatch(dismissOverlay());
-      },
-      showResult: (resultUrl) => {
-        dispatch(push(resultUrl));
       },
       updateTimer: (timer) => {
         dispatch(updateTimer(timer));

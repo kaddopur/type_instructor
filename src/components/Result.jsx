@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import I18nLink from './I18nLink';
-import I18nPage from './I18nPage';
+import I18nLink from './I18nLink.jsx';
+import I18nPage from './I18nPage.jsx';
 import './Result.css';
 
 class Result extends PureComponent {

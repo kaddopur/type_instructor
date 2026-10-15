@@ -1,20 +1,5 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { registerHooks, createRequire } from 'node:module';
-
-// Load the legacy ESM files without changing production imports or installing CRA.
-const require = createRequire(import.meta.url);
-registerHooks({
-  resolve(specifier, context, nextResolve) {
-    if (specifier.startsWith('lodash/')) {
-      return nextResolve(require.resolve(specifier), context);
-    }
-    if (specifier.startsWith('.') && !specifier.endsWith('.js')) {
-      return nextResolve(`${specifier}.js`, context);
-    }
-    return nextResolve(specifier, context);
-  }
-});
 
 const { default: getQuiz } = await import('../src/lib/getQuiz.js');
 const { default: getStatus } = await import('../src/lib/getStatus.js');

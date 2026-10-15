@@ -29,23 +29,18 @@
 
 ## 自動化測試
 
-需要 Node.js 22.15 以上（本次使用 22.23.2）。已有專案相依套件時執行：
+第 2 步已將專案改為 ES modules 並加入 lockfile；現行指令（Node.js 版本見 `.nvmrc`）：
 
 ```sh
+npm ci
 npm run test:baseline
 ```
 
-若尚未安裝舊版專案，可只在暫存目錄安裝既有的 Lodash，獨立驗證純邏輯，避免在第一步安裝整套舊建置鏈：
+測試直接載入原始碼，不再需要 Node resolve hook 或暫存安裝的 Lodash。
+這個指令不會驗證 React 元件或瀏覽器生命週期；第 2 步新增的瀏覽器 smoke
+驗證請見該 change 的 verification.md，以下清單保留完整遷移的驗收範圍。
 
-```sh
-baseline_deps=$(mktemp -d)
-npm install --prefix "$baseline_deps" --no-package-lock --ignore-scripts lodash@4.15.0
-NODE_PATH="$baseline_deps/node_modules" npm run test:baseline
-```
-
-測試中的 Node resolve hook 只用來載入現有的 extensionless ES module imports；Vite 遷移後可改由正式測試環境載入。這個指令不會驗證 React 元件或瀏覽器生命週期。
-
-### 本次執行結果
+### 第 1 步執行結果（歷史紀錄）
 
 - `openspec validate --specs --strict --no-interactive`：2 份規格通過，0 失敗。
 - `NODE_PATH=/tmp/type-instructor-baseline-deps/node_modules npm run test:baseline`：7 個測試通過，0 失敗。使用 Node 22.23.2 與暫存安裝的 Lodash 4.15.0，沒有安裝舊 CRA 建置鏈。

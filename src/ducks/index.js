@@ -1,4 +1,4 @@
-import quizzes from './quizzes';
+import quizzes from './quizzes.js';
 
 export {
   quizzes

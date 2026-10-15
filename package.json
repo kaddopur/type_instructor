@@ -3,30 +3,39 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.4.1",
-    "sw-precache": "^4.0.0"
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4",
+    "sw-precache": "^4.0.0",
+    "@playwright/test": "^1.64.1"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
-    "lodash": "^4.15.0",
-    "normalize.css": "^4.2.0",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.7.0",
-    "react-router-redux": "^4.0.5",
-    "redux": "^3.6.0"
+    "classnames": "^2.5.1",
+    "lodash": "^4.18.1",
+    "normalize.css": "^8.0.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-redux": "^9.3.0",
+    "react-router": "^8.4.0",
+    "redux": "^5.0.1"
   },
   "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build && sw-precache --navigate-fallback='index.html' --root='dist/' --static-file-globs='dist/**/!(*map*)'",
+    "preview": "vite preview",
+    "test": "node --test tests/baseline.test.mjs",
     "test:baseline": "node --test tests/baseline.test.mjs",
-    "deploy": "git commit -am \"Save local changes\"; git checkout -B gh-pages; git add -f build; git commit -am \"Rebuild website\"; git filter-branch -f --prune-empty --subdirectory-filter build; git push -f origin gh-pages; git checkout -",
-    "start": "react-scripts start",
-    "build": "react-scripts build && cp manifest.json favicon.ico cache-polyfill.js build/ && sw-precache --navigate-fallback='index.html' --root='build/' --static-file-globs='build/**/!(*map*)'",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test:smoke": "playwright test"
   },
-  "eslintConfig": {
-    "extends": "./node_modules/react-scripts/config/eslint.js"
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0 <23"
   },
-  "homepage": "https://kaddopur.github.io/type_instructor"
+  "overrides": {
+    "sw-precache": {
+      "meow": {
+        "trim-newlines": "^3.0.1"
+      }
+    }
+  }
 }
