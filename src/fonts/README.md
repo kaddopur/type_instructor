@@ -1,9 +1,9 @@
-# CJK pixel font
+# Shared pixel font
 
-Cubic 11 is used for Chinese characters and punctuation on Chinese routes.
-Japanese routes use Cubic 11 consistently for kana, kanji and punctuation.
-Latin text and digits keep the existing PKMN/GB fonts. The Cubic Unicode range
-includes kana and the prolonged sound mark (ー).
+Cubic 11 is the primary UI font for English, Chinese and Japanese, including
+Latin text, digits, kana, kanji and punctuation. Its Latin glyphs are narrower
+than the original full-width PKMN/GB letters, keeping translations visually
+balanced at the same font size. PKMN/GB remain fallbacks for missing glyphs.
 
 - Upstream: https://github.com/ACh-K/Cubic-11
 - Pinned source revision: 4c566f7d6cc5c05ee360fe9cff56b5da1fcafd4d

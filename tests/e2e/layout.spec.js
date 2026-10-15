@@ -1,5 +1,37 @@
 import { test, expect } from '@playwright/test';
 
+test('exit confirmation text fits its dialog and buttons on narrow screens in every language', async ({ page }) => {
+  for (const viewport of [{ width: 320, height: 600 }, { width: 390, height: 844 }, { width: 844, height: 390 }]) {
+    await page.setViewportSize(viewport);
+    for (const lang of ['en', 'zh', 'ja']) {
+      await page.goto(`./#/${lang}/quizzes/s/basic/attack`);
+      await page.getByTestId('start-game').click();
+      await page.locator('.quiz-exit').click();
+      const dialog = page.getByRole('dialog');
+      await page.evaluate(() => document.fonts.ready);
+      const sizes = await dialog.evaluate(node => ({ scroll: node.scrollWidth, visible: node.clientWidth }));
+      expect(sizes.scroll, `${lang} at ${viewport.width}px`).toBeLessThanOrEqual(sizes.visible);
+      const bounds = await dialog.boundingBox();
+      for (const target of await dialog.locator('h2, p, button, a').all()) {
+        const box = await target.boundingBox();
+        expect(box.x).toBeGreaterThanOrEqual(bounds.x);
+        expect(box.x + box.width).toBeLessThanOrEqual(bounds.x + bounds.width);
+        const textRects = await target.evaluate(node => {
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          return [...range.getClientRects()].map(rect => ({ left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }));
+        });
+        for (const rect of textRects) {
+          expect(rect.left).toBeGreaterThanOrEqual(box.x - 1);
+          expect(rect.right).toBeLessThanOrEqual(box.x + box.width + 1);
+          expect(rect.top).toBeGreaterThanOrEqual(box.y - 1);
+          expect(rect.bottom).toBeLessThanOrEqual(box.y + box.height + 1);
+        }
+      }
+    }
+  }
+});
+
 test('app shell keeps routes and quiz controls inside the usable mobile viewport', { tag: '@layout' }, async ({ page }) => {
   for (const viewport of [{ width: 390, height: 600 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(viewport);
@@ -70,6 +102,16 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
       expect(menuBounds.x).toBeGreaterThanOrEqual(dialogBounds.x);
       expect(menuBounds.x + menuBounds.width).toBeLessThanOrEqual(dialogBounds.x + dialogBounds.width);
       await page.getByTestId('start-game').click();
+      const exitBounds = await page.locator('.quiz-exit').boundingBox();
+      const hudBounds = await page.locator('.quiz-hud').boundingBox();
+      expect(exitBounds.y).toBeGreaterThanOrEqual(24);
+      expect(Math.abs(exitBounds.x + exitBounds.width / 2 - (hudBounds.x + hudBounds.width / 2))).toBeLessThanOrEqual(1);
+      expect(exitBounds.y).toBe(hudBounds.y);
+      expect(exitBounds.height).toBeGreaterThanOrEqual(44);
+      const timerBounds = await page.locator('.stemTimer').boundingBox();
+      const scoreBounds = await page.locator('.stemScores').boundingBox();
+      expect(timerBounds.x + timerBounds.width).toBeLessThanOrEqual(exitBounds.x);
+      expect(exitBounds.x + exitBounds.width).toBeLessThanOrEqual(scoreBounds.x);
       for (const answer of await page.locator('.optionItem').all()) {
         const bounds = await answer.boundingBox();
         expect(bounds.y).toBeGreaterThanOrEqual(24);
@@ -81,7 +123,7 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
   }
 });
 
-test('language buttons keep their size and position when the language changes', { tag: '@layout' }, async ({ page }) => {
+test('language selection returns Home with Start focused and preserves picker geometry', { tag: '@layout' }, async ({ page }) => {
   for (const viewport of [{ width: 390, height: 600 }, { width: 390, height: 844 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(viewport);
     await page.goto('./#/en/lang');
@@ -91,9 +133,15 @@ test('language buttons keep their size and position when the language changes', 
       const { x, y, width, height } = node.getBoundingClientRect();
       return { x, y, width, height };
     }));
-    for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English']]) {
-      await page.getByRole('link', { name: label, exact: true }).click();
+    for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English'], ['en', 'English']]) {
+      await page.getByRole('link', { name: label, exact: true }).focus();
+      await page.keyboard.press('Enter');
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/$`));
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      await expect(page.locator('.Home .start a')).toBeFocused();
+      await expect(page.locator('.Home .start a')).toHaveAttribute('href', `#/${lang}/menu`);
+      await page.locator('.Home .lang a').click();
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
       await page.evaluate(() => document.fonts.ready);
       for (let index = 0; index < original.length; index++) {
         const bounds = await buttons.nth(index).boundingBox();

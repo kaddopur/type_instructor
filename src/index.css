@@ -12,7 +12,7 @@
   --color-accent: #ffd447;
   --color-accent-soft: #fff4c2;
   --color-mode-blue: #2db6eb;
-  --font-pixel: "pkmn_s", "pokemon_gbregular", "Cubic 11", monospace;
+  --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", monospace;
   --color-type-normal: #bbbbaa;
   --color-type-fighting: #bb5544;
   --color-type-flying: #6699ff;
@@ -56,8 +56,6 @@
   font-weight: 400;
   font-display: swap;
   src: url("./fonts/Cubic_11.woff2") format("woff2");
-  unicode-range: U+2E80-312F, U+31A0-31BF, U+3400-4DBF,
-    U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 
 @layer base {
@@ -129,11 +127,6 @@
 .home-hero {
   align-self: end;
 }
-.Home h1 {
-  font-size: clamp(20px, 6.15vw, 32px);
-  line-height: 1.45;
-  letter-spacing: -.08em;
-}
 .home-hero p {
   font-family: system-ui, sans-serif;
   display: flex;
@@ -161,10 +154,6 @@
 .home-pixels-left {
   left: 20px;
 }
-.home-pixels-right {
-  right: 40px;
-  transform: scaleX(-1);
-}
 @media (max-height: 480px) {
   .Home {
     grid-template-rows: 1fr auto;
@@ -173,9 +162,6 @@
   }
   .home-hero {
     align-self: center;
-  }
-  .Home h1 {
-    font-size: 24px;
   }
   .home-hero p {
   font-family: system-ui, sans-serif;
@@ -460,8 +446,6 @@
 
   display: grid;
 
-  grid-template-rows: 64px minmax(0,1fr) 56px minmax(120px,.85fr);
-
   gap: 12px;
 
   height: 100%;
@@ -475,14 +459,6 @@
 }
 .quiz-hud {
   min-width: 0;
-}
-.stemHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  height: 32px;
-  font-size: 16px;
-  line-height: 28px;
 }
 .quiz-progress {
   display: flex;
@@ -593,7 +569,6 @@
   .Quiz {
     width: min(100%,1000px);
     grid-template-columns: repeat(2,minmax(0,1fr));
-    grid-template-rows: 64px minmax(0,1fr) 48px;
   }
   .quiz-hud {
     grid-column: 1 / -1;

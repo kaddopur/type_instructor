@@ -128,7 +128,7 @@ The updated English menu screenshot at 390×844 was inspected.
 ## Layout does not depend on the selected language
 
 The root font size is now a single CSS value (125%, normally 20px) for every
-language. Language navigation changes translations, glyph families, document
+language. Language navigation changes translations, document
 language and title, but no longer resizes rem-based layout dimensions.
 The quiz intro description reserves two lines; feedback occupies the full stem
 width. Result actions share a 240px width so Japanese labels stay on one line.
@@ -140,6 +140,11 @@ control/container positions, sizes, radii and font sizes across en/zh/ja at
 390×600, 844×390 and 1280×900 in all four browser projects. Natural footer text
 width may differ; its center, vertical position and line height must remain stable.
 Real iOS Safari browser chrome and physical devices are still not emulated.
+
+All three languages now use Cubic 11 for Latin, digits and CJK glyphs, replacing
+the earlier Unicode restriction that sent Latin text to the full-width GB font.
+Equivalent UI roles retain the same font sizes and line heights across locales;
+the home title is larger than action text, and HUD/record text uses 14px.
 
 Final locale-layout audit: lint, typecheck, 15 unit tests and all 120 E2E cases
 passed locally. The complete suite includes all four browser/device projects.

@@ -32,6 +32,8 @@ pnpm screenshots:landing
 指令會建置目前版本，啟動獨立的正式預覽伺服器，以 Chromium 的 390 × 844 viewport 擷取。
 計時器暫停、題目固定為毒屬性，方便比較各語言。需要先安裝 Playwright Chromium。
 本指令更新來源紀錄，因此只應在需要更新遊戲截圖時執行。
+若使用本機 Chrome，可執行 `PLAYWRIGHT_CHANNEL=chrome pnpm screenshots:landing`。
+來源紀錄會標示擷取時是否包含尚未提交的修改；擷取前等待字型完成載入，並透過一般點擊將焦點移離操作按鈕。
 
 ## 驗證
 

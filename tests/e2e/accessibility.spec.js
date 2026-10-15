@@ -18,6 +18,34 @@ async function tabTo(page, target) {
   await expect(target).toBeFocused();
 }
 
+test.describe('answer focus follows the input method', () => {
+  test.use({ hasTouch: true });
+
+  for (const input of ['click', 'tap']) {
+    test(`${input}: Tab enters the first answer after a question change`, async ({ page }) => {
+      await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
+      await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
+      await page.goto('./#/zh/quizzes/s/basic/attack');
+      await page.getByTestId('start-game')[input]();
+      const answers = page.locator('.optionItem');
+      await page.locator(await correctSelector(page, 'attack'))[input]();
+      await page.clock.runFor(500);
+      await page.keyboard.press('Tab');
+      await expect(answers.nth(0)).toBeFocused();
+      expect(await answers.nth(0).evaluate(node => node.matches(':focus-visible'))).toBe(true);
+      await page.keyboard.press('Tab');
+      await expect(answers.nth(1)).toBeFocused();
+
+      const correct = page.locator(await correctSelector(page, 'attack'));
+      await tabTo(page, correct);
+      await page.keyboard.press('Enter');
+      await page.clock.runFor(500);
+      await expect(answers.nth(0)).toBeFocused();
+      expect(await answers.nth(0).evaluate(node => node.matches(':focus-visible'))).toBe(true);
+    });
+  }
+});
+
 for (const [lang, text] of Object.entries(languages)) {
   test(`${lang}: keyboard-only dialog, answers, completion and retry`, { tag: '@a11y' }, async ({ page }) => {
     await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });

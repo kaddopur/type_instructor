@@ -7,9 +7,9 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME,
   return (
     <article className="Home">
       <div className="home-pixels home-pixels-left" aria-hidden="true" />
-      <div className="home-pixels home-pixels-right" aria-hidden="true" />
+      <div className="home-pixels home-pixels-right right-[20px] -scale-x-100" aria-hidden="true" />
       <header className="home-hero">
-        <h1 tabIndex={-1}>Type Instructor</h1>
+        <h1 tabIndex={-1} className="text-[clamp(32px,9vw,48px)] leading-[1.45] [@media(max-height:480px)]:text-[32px]">Type Instructor</h1>
         <p>{APP_DESCRIPTION}</p>
       </header>
       <div className="home-actions">

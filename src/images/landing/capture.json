@@ -1,10 +1,12 @@
 {
-  "sourceRevision": "b62975ffa7076080dfd24cc91a6d33abd08bc351",
+  "sourceRevision": "2ba7536b381018654c7449ad6a66c003f028e6d8",
+  "sourceWorktreeDirty": true,
   "viewport": {
     "width": 390,
     "height": 844
   },
   "engine": "Chromium",
+  "channel": "chrome",
   "languages": [
     "en",
     "zh",

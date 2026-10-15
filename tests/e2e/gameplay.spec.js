@@ -26,7 +26,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await expect(page.getByRole('heading', { name: 'Type Instructor', exact: true })).toBeVisible();
         await page.getByRole('link', { name: /change language/i }).click();
         await page.getByRole('link', { name: text.label, exact: true }).click();
-        await page.locator('footer a').click();
+        await expect(page.locator('.Home .start a')).toBeFocused();
         await page.getByRole('link', { name: text.START, exact: true }).click();
         await page.locator('.Menu section').nth(mode === 'basic' ? 0 : 1)
           .getByRole('link', { name: text[kind.toUpperCase()], exact: true }).click();
@@ -249,6 +249,56 @@ test('all languages select correct speedrun modes and show the shared 20-point g
       await expect(page.locator('.stemTimer')).toContainText('0');
     }
   }
+});
+
+for (const [lang, text] of Object.entries(languages)) {
+  for (const mode of ['basic', 'speedrun']) {
+    test(`${lang}/${mode}: exit confirmation preserves play or returns to menu`, async ({ page }) => {
+      await pauseClock(page);
+      await page.goto(`./#/${lang}/quizzes/s/${mode}/attack`);
+      await page.getByTestId('start-game').click();
+      const exit = page.getByRole('button', { name: text.EXIT_GAME, exact: true });
+      await exit.click();
+      const dialog = page.getByRole('dialog', { name: text.EXIT_CONFIRM_TITLE });
+      await expect(dialog).toBeVisible();
+      await expect(dialog.getByRole('button', { name: text.CONTINUE_GAME })).toBeFocused();
+      await page.locator('.optionItem').first().dispatchEvent('click');
+      await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 0`);
+      await page.clock.runFor(2000);
+      await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 58 : 2}`);
+      await dialog.getByRole('button', { name: text.CONTINUE_GAME }).click();
+      await expect(dialog).toHaveCount(0);
+      await page.clock.runFor(1); // Radix restores focus after the dialog unmounts.
+      await expect(exit).toBeFocused();
+      await page.locator(await correctSelector(page, 'attack')).click();
+      await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 1`);
+      await exit.click();
+      await page.clock.runFor(500);
+      await expect(dialog.getByRole('button', { name: text.CONTINUE_GAME })).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(dialog).toHaveCount(0);
+      await page.clock.runFor(1);
+      await expect(exit).toBeFocused();
+      await exit.click();
+      await dialog.getByRole('link', { name: text.RETURN_TO_MENU, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/menu$`));
+      await page.clock.runFor(61000);
+      await expect(page.locator('.Menu')).toBeVisible();
+      await page.goto(`./#/${lang}/quizzes/s/${mode}/attack`);
+      await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 0`);
+      await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 60 : 0}`);
+    });
+  }
+}
+
+test('basic game finishes when time expires during exit confirmation', async ({ page }) => {
+  await pauseClock(page);
+  await page.goto('./#/zh/quizzes/s/basic/attack');
+  await page.getByTestId('start-game').click();
+  await page.getByRole('button', { name: languages.zh.EXIT_GAME, exact: true }).click();
+  await page.clock.runFor(60000);
+  await expect(page).toHaveURL(/\/result\/0$/);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
 for (const kind of ['attack', 'defend']) {
