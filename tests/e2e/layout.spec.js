@@ -48,6 +48,8 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
       expect(textLines).toBe(1);
       const menuBounds = await menuLink.boundingBox();
       const dialogBounds = await page.getByRole('dialog').boundingBox();
+      const startBounds = await page.getByTestId('start-game').boundingBox();
+      expect(Math.abs(menuBounds.width - startBounds.width)).toBeLessThanOrEqual(1);
       expect(menuBounds.x).toBeGreaterThanOrEqual(dialogBounds.x);
       expect(menuBounds.x + menuBounds.width).toBeLessThanOrEqual(dialogBounds.x + dialogBounds.width);
       await page.getByTestId('start-game').click();
