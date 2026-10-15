@@ -1,0 +1,4 @@
+- [x] 1. Document branch-rename requirements and deployment validation.
+- [x] 2. Update workflow/current instructions and the environment branch policy; verify main publication and non-main/PR exclusion.
+- [x] 3. Run checks, record evidence, sync specs and archive.
+- [x] 4. Fix the Firefox palette test's wall-clock race reported by CI; repeat the case and rerun shard 1/2 before pushing the PR fix.

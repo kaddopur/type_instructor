@@ -2,7 +2,6 @@
 
 ## Purpose
 Define repeatable unit and browser checks, test locations, and the shared CI validation workflow.
-
 ## Requirements
 ### Requirement: Colocated unit tests
 
@@ -36,7 +35,7 @@ same scripts as local validation before allowing the existing deployment flow.
 #### Scenario: CI validation
 - **WHEN** the Pages workflow validates a revision
 - **THEN** lint, type checking, unit tests, and the complete browser suite must pass
-- **AND** deployment remains restricted to the existing master publication flow
+- **AND** deployment remains restricted to the existing main publication flow
 
 #### Scenario: Parallel CI shards
 - **WHEN** the Pages workflow runs the complete browser suite
