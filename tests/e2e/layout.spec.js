@@ -38,6 +38,18 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
       }
       await page.goto(`./#/${lang}/quizzes/s/basic/attack`);
       await page.addStyleTag({ content: '.app-shell { padding: 24px 20px 34px; }' });
+      await page.evaluate(() => document.fonts.ready);
+      const menuLink = page.getByRole('dialog').getByRole('link');
+      const textLines = await menuLink.evaluate(node => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return range.getClientRects().length;
+      });
+      expect(textLines).toBe(1);
+      const menuBounds = await menuLink.boundingBox();
+      const dialogBounds = await page.getByRole('dialog').boundingBox();
+      expect(menuBounds.x).toBeGreaterThanOrEqual(dialogBounds.x);
+      expect(menuBounds.x + menuBounds.width).toBeLessThanOrEqual(dialogBounds.x + dialogBounds.width);
       await page.getByTestId('start-game').click();
       for (const answer of await page.locator('.optionItem').all()) {
         const bounds = await answer.boundingBox();

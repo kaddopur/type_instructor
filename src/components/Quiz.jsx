@@ -44,7 +44,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
             <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN.replace('{scoreTarget}', SCORE_TARGET)}</span>
           </DialogDescription>
           <Button type="button" data-testid="start-game" className="mx-auto" onClick={start}>{START}</Button>
-          <Button asChild variant="ghost" className="mx-auto py-2"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
+          <Button asChild variant="ghost" className="mx-auto w-auto max-w-full px-0 py-2 whitespace-nowrap"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
         </DialogContent>
       </Dialog>
       <div className={cn('stemContainer relative flex min-h-0 flex-1 flex-col items-center text-center text-[1.4rem] leading-[1.6]', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
