@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { SCORE_TARGET } from '../src/stores/quiz.js';
+import { SCORE_TARGET } from '../src/lib/gameRules.js';
 
 async function pauseClock(page) {
   await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
@@ -120,16 +120,25 @@ test('rapid answers and route changes keep game sessions isolated', async ({ pag
   expect(errors).toEqual([]);
 });
 
-test('speedrun completes at the configured goal without stale result navigation', async ({ page }) => {
+test('speedrun continues at 19, finishes at 20 after feedback, and retries cleanly', async ({ page }) => {
   await pauseClock(page);
   await page.addInitScript(() => { Math.random = () => 12.5 / 18; });
-  // Use the defense deep link while BUG-01's menu link remains pending step 4.
-  await page.goto('./#/en/quizzes/s/speedrun/defend');
+  await page.goto('./#/en/menu');
+  await page.locator('.Menu section').nth(1).getByRole('link', { name: 'Defend', exact: true }).click();
+  await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+  await expect(page.locator('.overlay span')).toHaveText('score 20');
   await page.locator('.overlay').click();
   for (let score = 1; score <= SCORE_TARGET; score++) {
     await page.locator('.optionItem.Bgc-ground').click();
     await expect(page.locator('.stemScores')).toHaveText(`scores: ${score}`);
-    await page.clock.runFor(500);
+    if (score === SCORE_TARGET) {
+      await page.clock.runFor(499);
+      await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+      await page.clock.runFor(1);
+    } else {
+      await page.clock.runFor(500);
+      if (score === 19) await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+    }
     if (score < SCORE_TARGET) await expect(page.locator('.optionDemage')).toHaveCount(0);
   }
   await expect(page).toHaveURL(new RegExp(`#/en/quizzes/s/speedrun/defend/result/${Math.floor((SCORE_TARGET - 1) / 2)}$`));
@@ -145,6 +154,24 @@ test('speedrun completes at the configured goal without stale result navigation'
   await expect(page.locator('.Menu')).toBeVisible();
   await page.clock.runFor(2000);
   await expect(page).toHaveURL(/#\/en\/menu$/);
+});
+
+test('all languages select correct speedrun modes and show the shared 20-point goal', async ({ page }) => {
+  const labels = {
+    en: { attack: 'Attack', defend: 'Defend', goal: 'score 20', attackStem: 'attack enemy', defendStem: 'defend against enemy' },
+    zh: { attack: '攻擊', defend: '防禦', goal: '達到 20 分', attackStem: '攻擊敵人', defendStem: '防禦來自敵人的攻擊' },
+    ja: { attack: '攻撃', defend: '防御', goal: '目指せ 20 点', attackStem: '敵を攻撃する', defendStem: '敵の攻撃を防御する' }
+  };
+  for (const [lang, text] of Object.entries(labels)) {
+    for (const kind of ['attack', 'defend']) {
+      await page.goto(`./#/${lang}/menu`);
+      await page.locator('.Menu section').nth(1).getByRole('link', { name: text[kind], exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/quizzes/s/speedrun/${kind}$`));
+      await expect(page.locator('.stemEnemyText')).toContainText(text[`${kind}Stem`]);
+      await expect(page.locator('.overlay span')).toHaveText(text.goal);
+      await expect(page.locator('.stemTimer')).toContainText('0');
+    }
+  }
 });
 
 test('static resources resolve under the configured Pages base', async ({ page, request }) => {

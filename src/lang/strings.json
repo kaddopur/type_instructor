@@ -9,7 +9,7 @@
     "DEFEND": "Defend",
     "GOAL": "GOAL",
     "GOAL_BASIC": "answer in 60 sec",
-    "GOAL_SPEEDRUN": "score 20",
+    "GOAL_SPEEDRUN": "score {scoreTarget}",
     "TIMER": "timer",
     "SCORES": "scores",
     "YOUR_SCORES": "Your scores",

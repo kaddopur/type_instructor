@@ -10,14 +10,15 @@
 - 此步只有文件、測試及測試指令；正式環境的程式與相依版本不變。
 - 自動化測試直接執行既有出題與 reducer，沒有 mock Lodash。屬性倍率是程式的特徵測試，沒有外部資料校驗。
 
-## 已知問題與修正目標
+## 原有問題與第 4 步修正狀態
 
-| ID | 現況 | 第 4 步驗收目標 |
+| ID | 原始行為 | 第 4 步修正 |
 | --- | --- | --- |
-| BUG-01 | Menu 的競速防禦連到 `speedrun/attack` | 連到 `speedrun/defend`，畫面確實呈現防禦題 |
-| BUG-02 | Quiz 的目標為 3 分，三語說明均為 20 分 | 目標統一為 20 分，說明與邏輯共用設定；19 分不中止，20 分結束 |
+| BUG-01 | Menu 的競速防禦連到 `speedrun/attack` | 已連到 `speedrun/defend`，三語入口與題幹皆已驗證 |
+| BUG-02 | Quiz 的目標為 3 分，三語說明均為 20 分 | 已統一為 20 分；共用 gameRules 設定，三語以 placeholder 顯示目標，19／20 分邊界已驗證 |
 
 兩項皆不在第一步修正，也不以通過測試將錯誤行為固定為正確規格。
+第 4 步修正與證據見 `changes/archive/2026-10-15-fix-speedrun-rules/verification.md`。
 
 ## 原始碼觀察與遷移風險（第 1 步紀錄）
 
@@ -46,7 +47,7 @@ npm run test:baseline
 - Redux 與 React Redux 已移除；遊戲邏輯位於 `src/stores/quiz.js`。
 - 作答防護集中在 store action；hook 在離開或結束時清理 interval 和 timeout。
 - 每場遊戲使用獨立的 store，路徑改變與重玩皆建立新場次。
-- BUG-02 的目標常數目前位於 store，仍待第 4 步與說明統一。
+- 當時 BUG-02 的目標常數位於 store；第 4 步已移至共用的 `src/lib/gameRules.js` 並與三語說明統一。
 - 驗證結果見 `changes/archive/2026-10-15-replace-redux-with-zustand/verification.md`。
 
 ### 第 1 步執行結果（歷史紀錄）

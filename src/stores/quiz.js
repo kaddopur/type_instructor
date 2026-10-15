@@ -1,9 +1,7 @@
 import { createStore } from 'zustand/vanilla';
 import getQuiz from '../lib/getQuiz.js';
 import getStatus from '../lib/getStatus.js';
-
-// BUG-02: unify this target with the localized 20-point instructions in step 4.
-export const SCORE_TARGET = 3;
+import { SCORE_TARGET } from '../lib/gameRules.js';
 
 export function createQuizStore(gameType, quizType) {
   return createStore(set => ({

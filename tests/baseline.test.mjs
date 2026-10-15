@@ -3,7 +3,8 @@ import { test } from 'node:test';
 
 const { default: getQuiz } = await import('../src/lib/getQuiz.js');
 const { default: getStatus } = await import('../src/lib/getStatus.js');
-import { createQuizStore, SCORE_TARGET } from '../src/stores/quiz.js';
+import { createQuizStore } from '../src/stores/quiz.js';
+import { SCORE_TARGET } from '../src/lib/gameRules.js';
 
 const types = [
   'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug',
@@ -179,7 +180,6 @@ test('basic completion captures score once and rejects late updates', () => {
 test('speedrun completion uses the configured goal and preserves answer-time seconds', () => {
   const store = createQuizStore('speedrun', 'defend');
   store.getState().start();
-  // Do not encode BUG-02's current numeric target as an accepted rule.
   store.setState({ scores: SCORE_TARGET - 1, timer: 7 });
   const before = store.getState();
   const rightIndex = before.quiz.options.findIndex(option => option.type === before.quiz.answer);
@@ -194,6 +194,41 @@ test('speedrun completion uses the configured goal and preserves answer-time sec
   completed.answer(0);
   completed.advance();
   assert.equal(store.getState(), completed);
+});
+
+test('speedrun continues at 19 and after deductions, finishing only at 20 in both question modes', () => {
+  assert.equal(SCORE_TARGET, 20);
+  for (const kind of ['attack', 'defend']) {
+    const store = createQuizStore('speedrun', kind);
+    store.getState().start();
+    store.setState({ scores: 18, timer: 5 });
+    const answerCorrectly = () => {
+      const state = store.getState();
+      state.answer(state.quiz.options.findIndex(option => option.type === state.quiz.answer));
+    };
+    answerCorrectly();
+    store.getState().advance();
+    assert.equal(store.getState().scores, 19);
+    assert.equal(store.getState().result, null);
+    store.getState().tick();
+    assert.equal(store.getState().timer, 6);
+
+    const state = store.getState();
+    state.answer(state.quiz.options.findIndex(option => option.type !== state.quiz.answer));
+    store.getState().advance();
+    assert.equal(store.getState().scores, 18);
+    assert.equal(store.getState().result, null);
+    answerCorrectly();
+    store.getState().advance();
+    assert.equal(store.getState().scores, 19);
+    assert.equal(store.getState().result, null);
+
+    answerCorrectly();
+    assert.equal(store.getState().scores, 20);
+    assert.equal(store.getState().result, null);
+    store.getState().advance();
+    assert.equal(store.getState().result, 6);
+  }
 });
 
 test('sessions do not share state or pending actions', () => {

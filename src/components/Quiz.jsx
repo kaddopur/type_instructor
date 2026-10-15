@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import I18nPage from './I18nPage.jsx';
 import classnames from 'classnames';
 import useGame from '../hooks/useGame.js';
+import { SCORE_TARGET } from '../lib/gameRules.js';
 import './Quiz.css';
 
 function Quiz({ messages, params: { gameType, quizType }, location: { pathname }, navigate }) {
@@ -18,7 +19,7 @@ function Quiz({ messages, params: { gameType, quizType }, location: { pathname }
   const overlayDiv = (
     <div className="overlay" onClick={start}>
       <h2>{GOAL}</h2>
-      <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN}</span>
+      <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN.replace('{scoreTarget}', SCORE_TARGET)}</span>
     </div>
   );
 

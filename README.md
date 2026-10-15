@@ -34,7 +34,7 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 ## 測試
 
-出題、計分、效果提示、作答防護、結算與場次隔離的 11 個邏輯測試：
+出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
 ```sh
 npm test
@@ -61,18 +61,19 @@ SMOKE_SERVER=dev npm run test:smoke
 - 第 1 步：現有系統 baseline 與邏輯測試已完成並歸檔。
 - 第 2 步：Vite、React 19 與必要的相容性更新已完成並歸檔。
 - 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
-- 第 4 步：修正競速防禦錯誤連結，以及競速目標 3／20 分不一致。
+- 第 4 步：已修正競速防禦入口，並將競速目標與三語說明統一為 20 分，已完成並歸檔。
 - 第 5 步：更新離線工具與 Pages 部署。
 - 第 6 步：完整驗收。
 
-目前兩個已知競速問題仍待第 4 步處理。競速測試使用程式設定的目標值，
-不將目前 3 分的行為視為正確規格。
+競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
+目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
 舊離線工具的一個間接依賴使用相容的 trim-newlines 3.x override 修補，
 之後替換 sw-precache 時一併移除。
 
 玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
 第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
 第 3 步變更與驗證紀錄見 [Zustand migration](openspec/changes/archive/2026-10-15-replace-redux-with-zustand/)。
+第 4 步變更與驗證紀錄見 [Speedrun fixes](openspec/changes/archive/2026-10-15-fix-speedrun-rules/)。
 
 ## 遊戲狀態
 

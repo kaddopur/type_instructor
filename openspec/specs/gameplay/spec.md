@@ -3,9 +3,7 @@
 ## Purpose
 
 記錄技術遷移前應保留的玩法。依據 commit `4f1e318` 的原始碼整理；這不是已完成的瀏覽器驗收，也不是對官方屬性表的獨立認證。已知問題與後續驗收見 `openspec/baseline.md`。
-
 ## Requirements
-
 ### Requirement: Single-type questions
 系統 SHALL 使用現有 18 種屬性產生單屬性題目，每題四個不重複選項，並且只有一個最佳答案。攻擊題選傷害倍率最高者，防禦題選受到傷害倍率最低者。
 
@@ -40,11 +38,19 @@
 - **THEN** 開始倒數，時間歸零後顯示本場最終分數
 
 ### Requirement: Speedrun mode
-系統 SHALL 在玩家關閉開始說明後，從零秒開始累計用時，達到競速目標後顯示以秒為單位的結果。現有實作目標與說明不一致；本 baseline 不將任一數字定義為正確的既有規則，修正目標見 `openspec/baseline.md` 的 BUG-02。
+系統 SHALL 在玩家關閉開始說明後，從零秒開始累計用時，達到 20 分後完成 500 毫秒答題回饋並結束。遊戲邏輯與中英日三語目標說明 SHALL 使用同一個目標設定；結果顯示最後答對當下捕捉的整數秒。
 
 #### Scenario: Speedrun result
-- **WHEN** 本場分數達到競速目標
-- **THEN** 完成答題回饋後停止計時，顯示本場用時
+- **WHEN** 本場分數從 19 分答對增加至 20 分
+- **THEN** 完成答題回饋後停止計時，顯示最後答對當下的本場用時
+
+#### Scenario: Below the goal
+- **WHEN** 分數達到 19 分，或因答錯而扣分
+- **THEN** 遊戲繼續，未達 20 分不得進入結果頁
+
+#### Scenario: Localized goal
+- **WHEN** 玩家以英文、中文或日文進入競速模式
+- **THEN** 開始說明顯示由同一目標設定產生的 20 分目標
 
 ### Requirement: Reset on a new game
 系統 SHALL 在開始或重玩時清除上一場分數、答題標記與暫停狀態，依模式重設時間並顯示開始說明。

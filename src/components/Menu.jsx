@@ -34,7 +34,7 @@ class Menu extends PureComponent {
             <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{ATTACK}</I18nLink>
           </div>
           <div className="menuItem">
-            <I18nLink to="/quizzes/s/speedrun/attack" lang={lang}>{DEFEND}</I18nLink>
+            <I18nLink to="/quizzes/s/speedrun/defend" lang={lang}>{DEFEND}</I18nLink>
           </div>
         </section>
 
