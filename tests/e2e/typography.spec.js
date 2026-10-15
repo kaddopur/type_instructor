@@ -5,26 +5,29 @@ for (const viewport of [
   { width: 844, height: 390 },
   { width: 1280, height: 900 },
 ]) {
-  for (const [route, selector] of [
-    ['', '.Home h1, .home-hero p, .home-actions a, .home-notice'],
-    ['menu', '.page-title, .mode-card h2, .mode-card p, .menuItem a, .personal-best, .page-footer'],
-    ['lang', '.page-title, .language-choice, .page-footer'],
-    ['about', '.Landing h1, .Landing h2, .Landing h3, .Landing p, .Landing button, .Landing a'],
-    [
-      'quizzes/s/basic/attack/result/24',
-      '.result-summary span, .result-summary strong, .result-action, .page-footer',
-    ],
-    [
-      'quizzes/s/speedrun/defend/result/18',
-      '.result-summary span, .result-summary strong, .result-action, .page-footer',
-    ],
-    ['quizzes/s/basic/attack', '.dialog-panel h2, .dialog-goal, .dialog-action, .mode-label'],
-  ]) {
-    test(
-      'every page keeps text sizes and rendered font metrics consistent across languages' +
-        ` at ${viewport.width}x${viewport.height} / ${route || 'home'}`,
-      async ({ page }) => {
-        await page.setViewportSize(viewport);
+  test(
+    'every page keeps text sizes and rendered font metrics consistent across languages' +
+      ` at ${viewport.width}x${viewport.height}`,
+    async ({ page }) => {
+      await page.setViewportSize(viewport);
+      for (const [route, selector] of [
+        ['', '.Home h1, .home-hero p, .home-actions a, .home-notice'],
+        [
+          'menu',
+          '.page-title, .mode-card h2, .mode-card p, .menuItem a, .personal-best, .page-footer',
+        ],
+        ['lang', '.page-title, .language-choice, .page-footer'],
+        ['about', '.Landing h1, .Landing h2, .Landing h3, .Landing p, .Landing button, .Landing a'],
+        [
+          'quizzes/s/basic/attack/result/24',
+          '.result-summary span, .result-summary strong, .result-action, .page-footer',
+        ],
+        [
+          'quizzes/s/speedrun/defend/result/18',
+          '.result-summary span, .result-summary strong, .result-action, .page-footer',
+        ],
+        ['quizzes/s/basic/attack', '.dialog-panel h2, .dialog-goal, .dialog-action, .mode-label'],
+      ]) {
         const expected = {};
         async function compareText(selector, state) {
           await page.evaluate(() => document.fonts.ready);
@@ -64,9 +67,9 @@ for (const viewport of [
           await page.locator('.quiz-exit').click();
           await compareText('.exit-dialog h2, .exit-dialog p, .exit-dialog .exit-action', 'exit');
         }
-      },
-    );
-  }
+      }
+    },
+  );
 }
 
 test('pixel UI uses compact Latin glyphs rather than full-width Latin fallbacks', async ({

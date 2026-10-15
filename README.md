@@ -177,7 +177,7 @@ Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離�
 | `pnpm typecheck`              | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移    |
 | `pnpm test`／`pnpm test:unit` | Vitest 單次執行，27 個案例                           |
 | `pnpm test:unit:watch`        | 開發時持續執行單元測試                               |
-| `pnpm test:e2e`               | Playwright 完整矩陣，416 個案例                      |
+| `pnpm test:e2e`               | Playwright 完整矩陣，248 個案例                      |
 | `pnpm test:e2e:smoke`         | Chromium 的 7 個關鍵流程，篩選 `@smoke`              |
 | `pnpm test:a11y`              | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y`       |
 
@@ -200,12 +200,12 @@ pnpm test:e2e
 ### CI 共用檢查與瀏覽器測試平行執行
 
 `checks` 集中執行一次格式檢查、lint、型別檢查與單元測試。
-另外兩組 `build` 工作分別執行 Playwright 分片，目前各 208 個案例。
+另外兩組 `build` 工作分別執行 Playwright 分片，目前各 124 個案例。
 三組工作平行開始，全部通過才允許部署；只有第一個瀏覽器分片上傳 Pages 產物。
-本機 `pnpm test:e2e` 仍執行完整 416 個案例。
+本機 `pnpm test:e2e` 仍執行完整 248 個案例。
 
-Playwright 使用 `fullyParallel` 以個別案例分配工作；布局與字型檢查依尺寸、路由拆成
-獨立案例，每個案例仍保留三語比較。案例數增加來自拆分既有檢查，沒有縮減瀏覽器或語言範圍。
+Playwright 使用 `fullyParallel` 以個別案例分配工作；布局與字型檢查依尺寸拆成
+獨立案例，同一尺寸的路由與三語比較保留在同一個 context，避免過多冷啟動。案例數增加來自拆分既有檢查，沒有縮減瀏覽器或語言範圍。
 兩個分片各分配一種 WebKit，避免 WebKit 案例集中在同一組。
 CI 安裝 Chromium 時只下載 headless shell，Firefox 與 WebKit 照常安裝。
 

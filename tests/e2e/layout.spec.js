@@ -227,58 +227,58 @@ for (const viewport of [
   { width: 844, height: 390 },
   { width: 1280, height: 900 },
 ]) {
-  for (const [route, selector] of [
-    ['', '.Home h1, .Home .start a, .Home .lang a, footer a'],
-    ['menu', '.menuItem a, footer a'],
-    ['lang', '.langItem a, footer a'],
-    ['quizzes/s/basic/attack/result/7', '.resultItem a, footer a'],
-    ['quizzes/s/speedrun/defend/result/7', '.resultItem a, footer a'],
-    ...['basic', 'speedrun'].flatMap((mode) =>
-      ['attack', 'defend'].map((kind) => [
-        `quizzes/s/${mode}/${kind}`,
-        '[role="dialog"], [role="dialog"] button, [role="dialog"] a',
-      ]),
-    ),
-  ]) {
-    test(
-      'all routes preserve layout geometry across languages' +
-        ` at ${viewport.width}x${viewport.height} / ${route || 'home'}`,
-      { tag: '@layout' },
-      async ({ page }) => {
-        await page.clock.install();
-        await page.addInitScript(() => {
-          Math.random = () => 0.5 / 18;
+  test(
+    'all routes preserve layout geometry across languages' +
+      ` at ${viewport.width}x${viewport.height}`,
+    { tag: '@layout' },
+    async ({ page }) => {
+      await page.clock.install();
+      await page.addInitScript(() => {
+        Math.random = () => 0.5 / 18;
+      });
+      async function geometry(selector) {
+        return page.locator(selector).evaluateAll((nodes) =>
+          nodes.map((node) => {
+            const rect = node.getBoundingClientRect();
+            const style = getComputedStyle(node);
+            return {
+              center: rect.x + rect.width / 2,
+              top: rect.y,
+              height: rect.height,
+              width: node.matches('footer a') ? 0 : rect.width,
+              radius: style.borderTopLeftRadius,
+              fontSize: style.fontSize,
+            };
+          }),
+        );
+      }
+      function compare(actual, expected, label) {
+        expect(actual.length, label).toBe(expected.length);
+        actual.forEach((box, index) => {
+          for (const key of ['center', 'top', 'width', 'height']) {
+            expect(
+              Math.abs(box[key] - expected[index][key]),
+              `${label} ${index} ${key}`,
+            ).toBeLessThanOrEqual(1);
+          }
+          expect(box.radius, label).toBe(expected[index].radius);
+          expect(box.fontSize, label).toBe(expected[index].fontSize);
         });
-        async function geometry(selector) {
-          return page.locator(selector).evaluateAll((nodes) =>
-            nodes.map((node) => {
-              const rect = node.getBoundingClientRect();
-              const style = getComputedStyle(node);
-              return {
-                center: rect.x + rect.width / 2,
-                top: rect.y,
-                height: rect.height,
-                width: node.matches('footer a') ? 0 : rect.width,
-                radius: style.borderTopLeftRadius,
-                fontSize: style.fontSize,
-              };
-            }),
-          );
-        }
-        function compare(actual, expected, label) {
-          expect(actual.length, label).toBe(expected.length);
-          actual.forEach((box, index) => {
-            for (const key of ['center', 'top', 'width', 'height']) {
-              expect(
-                Math.abs(box[key] - expected[index][key]),
-                `${label} ${index} ${key}`,
-              ).toBeLessThanOrEqual(1);
-            }
-            expect(box.radius, label).toBe(expected[index].radius);
-            expect(box.fontSize, label).toBe(expected[index].fontSize);
-          });
-        }
-        await page.setViewportSize(viewport);
+      }
+      await page.setViewportSize(viewport);
+      for (const [route, selector] of [
+        ['', '.Home h1, .Home .start a, .Home .lang a, footer a'],
+        ['menu', '.menuItem a, footer a'],
+        ['lang', '.langItem a, footer a'],
+        ['quizzes/s/basic/attack/result/7', '.resultItem a, footer a'],
+        ['quizzes/s/speedrun/defend/result/7', '.resultItem a, footer a'],
+        ...['basic', 'speedrun'].flatMap((mode) =>
+          ['attack', 'defend'].map((kind) => [
+            `quizzes/s/${mode}/${kind}`,
+            '[role="dialog"], [role="dialog"] button, [role="dialog"] a',
+          ]),
+        ),
+      ]) {
         const expected = {};
         for (const lang of ['en', 'zh', 'ja']) {
           await page.goto(`./#/${lang}/${route}`);
@@ -299,7 +299,7 @@ for (const viewport of [
           expected.answered ??= answered;
           compare(answered, expected.answered, `${lang}/${route} feedback`);
         }
-      },
-    );
-  }
+      }
+    },
+  );
 }
