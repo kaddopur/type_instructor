@@ -44,13 +44,13 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 核心出題使用原生 `Math.max/min`；Lodash 僅用於抽樣與洗牌。
 
-出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
+出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個 Vitest 邏輯測試（Node 環境）：
 
 ```sh
 pnpm test
 ```
 
-`pnpm test:baseline` 執行相同測試。測試直接使用專案相依套件與原始碼。
+`pnpm test:unit` 單次執行相同測試，`pnpm test:unit:watch` 啟用 watch。測試直接使用專案相依套件與原始碼。
 
 瀏覽器 smoke tests 涵蓋三語導頁、一般模式攻防、作答回饋、結果重玩、
 倒數結束、競速結算、快速重複點擊、回饋中切換模式、桌面／手機視窗、

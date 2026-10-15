@@ -12,3 +12,4 @@ dist
 npm-debug.log
 playwright-report
 test-results
+.vitest

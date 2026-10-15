@@ -1,8 +1,8 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
+import type { QuizType } from '../src/lib/types.ts';
 
-const { default: getQuiz } = await import('../src/lib/getQuiz.ts');
-const { default: getStatus } = await import('../src/lib/getStatus.ts');
+import getQuiz from '../src/lib/getQuiz.ts';
+import getStatus from '../src/lib/getStatus.ts';
 import { createQuizStore } from '../src/stores/quiz.ts';
 import { SCORE_TARGET } from '../src/lib/gameRules.ts';
 
@@ -12,7 +12,7 @@ const types = [
   'ice', 'dragon', 'dark', 'fairy'
 ];
 
-function question(mode, enemyIndex) {
+function question(mode: QuizType, enemyIndex: number) {
   const original = Math.random;
   // Only pin enemy selection. Lodash still samples and shuffles real options.
   Math.random = () => (enemyIndex + 0.5) / types.length;
@@ -25,23 +25,23 @@ function question(mode, enemyIndex) {
 
 test('all 18 attack and defense targets have four unique options and one best answer', () => {
   const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
-  for (const mode of ['attack', 'defend']) {
+  for (const mode of ['attack', 'defend'] as const) {
     for (const [enemyIndex, enemy] of types.entries()) {
       const quiz = question(mode, enemyIndex);
       const label = `${mode}/${enemy}`;
-      assert.equal(quiz.enemy.type, enemy, label);
-      assert.equal(quiz.enemy.title, mode === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
-      assert.equal(quiz.options.length, 4, label);
-      assert.equal(new Set(quiz.options.map(option => option.type)).size, 4, label);
-      assert.ok(quiz.options.every(option => types.includes(option.type)), label);
+      expect(quiz.enemy.type, label).toBe(enemy);
+      expect(quiz.enemy.title).toBe(mode === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
+      expect(quiz.options.length, label).toBe(4);
+      expect(new Set(quiz.options.map(option => option.type)).size, label).toBe(4);
+      expect(quiz.options.every(option => types.includes(option.type)), label).toBeTruthy();
       const answer = quiz.options.find(option => option.type === quiz.answer);
-      assert.ok(answer, label);
+      if (!answer) throw new Error(`Missing answer: ${label}`);
       const expected = mode === 'attack' ? 2 : (immuneAttacks.has(enemy) ? 0 : 0.5);
-      assert.equal(answer.damage, expected, label);
+      expect(answer.damage, label).toBe(expected);
       for (const option of quiz.options) {
-        assert.ok([0, 0.5, 1, 2].includes(option.damage), label);
+        expect([0, 0.5, 1, 2].includes(option.damage), label).toBeTruthy();
         if (option !== answer) {
-          assert.ok(mode === 'attack' ? option.damage < answer.damage : option.damage > answer.damage, label);
+          expect(mode === 'attack' ? option.damage < answer.damage : option.damage > answer.damage, label).toBeTruthy();
         }
       }
     }
@@ -50,45 +50,45 @@ test('all 18 attack and defense targets have four unique options and one best an
 
 test('representative matchups preserve attack/defense matrix orientation', () => {
   const attackNormal = question('attack', types.indexOf('normal'));
-  assert.equal(attackNormal.answer, 'fighting');
+  expect(attackNormal.answer).toBe('fighting');
   const defenseElectric = question('defend', types.indexOf('electric'));
-  assert.equal(defenseElectric.answer, 'ground');
+  expect(defenseElectric.answer).toBe('ground');
   const defenseDragon = question('defend', types.indexOf('dragon'));
-  assert.equal(defenseDragon.answer, 'fairy');
+  expect(defenseDragon.answer).toBe('fairy');
 });
 
 test('new sessions start fresh in both modes and both question types', () => {
-  for (const mode of ['basic', 'speedrun']) {
-    for (const kind of ['attack', 'defend']) {
+  for (const mode of ['basic', 'speedrun'] as const) {
+    for (const kind of ['attack', 'defend'] as const) {
       const store = createQuizStore(mode, kind);
       const state = store.getState();
-      assert.equal(state.timer, mode === 'basic' ? 60 : 0);
-      assert.equal(state.scores, 0);
-      assert.equal(state.status, '');
-      assert.equal(state.freeze, false);
-      assert.equal(state.finish, false);
-      assert.equal(state.result, null);
-      assert.equal(state.overlay, true);
-      assert.equal(state.quiz.enemy.title, kind === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
+      expect(state.timer).toBe(mode === 'basic' ? 60 : 0);
+      expect(state.scores).toBe(0);
+      expect(state.status).toBe('');
+      expect(state.freeze).toBe(false);
+      expect(state.finish).toBe(false);
+      expect(state.result).toBe(null);
+      expect(state.overlay).toBe(true);
+      expect(state.quiz.enemy.title).toBe(kind === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
     }
   }
 });
 
 test('start and timer ticks preserve score and question in both modes', () => {
-  for (const mode of ['basic', 'speedrun']) {
+  for (const mode of ['basic', 'speedrun'] as const) {
     const store = createQuizStore(mode, 'attack');
     const initial = store.getState();
     initial.tick();
-    assert.equal(store.getState(), initial);
+    expect(store.getState()).toBe(initial);
     initial.start();
-    assert.equal(store.getState().overlay, false);
+    expect(store.getState().overlay).toBe(false);
     store.getState().tick();
     const ticked = store.getState();
-    assert.equal(ticked.timer, mode === 'basic' ? 59 : 1);
-    assert.equal(ticked.scores, 0);
-    assert.equal(ticked.quiz, initial.quiz);
-    assert.equal(initial.overlay, true);
-    assert.equal(initial.timer, mode === 'basic' ? 60 : 0);
+    expect(ticked.timer).toBe(mode === 'basic' ? 59 : 1);
+    expect(ticked.scores).toBe(0);
+    expect(ticked.quiz).toBe(initial.quiz);
+    expect(initial.overlay).toBe(true);
+    expect(initial.timer).toBe(mode === 'basic' ? 60 : 0);
   }
 });
 
@@ -99,19 +99,19 @@ test('wrong answer deducts a point, allows negatives, and retains the question a
   const index = initial.quiz.options.findIndex(option => option.type !== initial.quiz.answer);
   initial.answer(index);
   const wrong = store.getState();
-  assert.equal(wrong.scores, -1);
-  assert.equal(wrong.freeze, true);
-  assert.equal(wrong.finish, false);
-  assert.equal(wrong.status, getStatus(initial.quiz.options[index].damage));
-  assert.equal(wrong.quiz.options[index].clicked, true);
-  assert.equal(wrong.quiz.options[index].correct, false);
-  assert.equal(initial.quiz.options[index].clicked, undefined);
+  expect(wrong.scores).toBe(-1);
+  expect(wrong.freeze).toBe(true);
+  expect(wrong.finish).toBe(false);
+  expect(wrong.status).toBe(getStatus(initial.quiz.options[index].damage));
+  expect(wrong.quiz.options[index].clicked).toBe(true);
+  expect(wrong.quiz.options[index].correct).toBe(false);
+  expect(initial.quiz.options[index].clicked).toBe(undefined);
   wrong.advance();
   const resumed = store.getState();
-  assert.equal(resumed.freeze, false);
-  assert.equal(resumed.status, '');
-  assert.equal(resumed.quiz, wrong.quiz);
-  assert.equal(resumed.scores, -1);
+  expect(resumed.freeze).toBe(false);
+  expect(resumed.status).toBe('');
+  expect(resumed.quiz).toBe(wrong.quiz);
+  expect(resumed.scores).toBe(-1);
 });
 
 test('correct answer after a mistake adds one point and advances after feedback', () => {
@@ -125,19 +125,19 @@ test('correct answer after a mistake adds one point and advances after feedback'
   const rightIndex = resumed.quiz.options.findIndex(option => option.type === resumed.quiz.answer);
   resumed.answer(rightIndex);
   const right = store.getState();
-  assert.equal(right.scores, 0);
-  assert.equal(right.freeze, true);
-  assert.equal(right.finish, true);
-  assert.equal(right.quiz.options[rightIndex].correct, true);
-  assert.equal(right.quiz.options[wrongIndex].clicked, true);
+  expect(right.scores).toBe(0);
+  expect(right.freeze).toBe(true);
+  expect(right.finish).toBe(true);
+  expect(right.quiz.options[rightIndex].correct).toBe(true);
+  expect(right.quiz.options[wrongIndex].clicked).toBe(true);
   right.advance();
   const next = store.getState();
-  assert.equal(next.freeze, false);
-  assert.equal(next.finish, false);
-  assert.equal(next.status, '');
-  assert.equal(next.scores, 0);
-  assert.notEqual(next.quiz, right.quiz);
-  assert.ok(next.quiz.options.every(option => !option.clicked));
+  expect(next.freeze).toBe(false);
+  expect(next.finish).toBe(false);
+  expect(next.status).toBe('');
+  expect(next.scores).toBe(0);
+  expect(next.quiz).not.toBe(right.quiz);
+  expect(next.quiz.options.every(option => !option.clicked)).toBeTruthy();
 });
 
 test('answer guards reject pre-start, invalid, frozen and previously selected inputs', () => {
@@ -145,21 +145,24 @@ test('answer guards reject pre-start, invalid, frozen and previously selected in
   const initial = store.getState();
   initial.answer(0);
   initial.advance();
-  assert.equal(store.getState(), initial);
+  expect(store.getState()).toBe(initial);
   initial.start();
   const started = store.getState();
-  for (const index of [-1, 4, 0.5, '0', null, undefined]) started.answer(index);
-  assert.equal(store.getState(), started);
+  for (const index of [-1, 4, 0.5, '0', null, undefined]) {
+    // @ts-expect-error JavaScript callers can bypass the numeric argument type.
+    started.answer(index);
+  }
+  expect(store.getState()).toBe(started);
   const wrongIndex = started.quiz.options.findIndex(option => option.type !== started.quiz.answer);
   started.answer(wrongIndex);
   const wrong = store.getState();
   wrong.answer(wrongIndex);
   wrong.answer((wrongIndex + 1) % 4);
-  assert.equal(store.getState(), wrong);
+  expect(store.getState()).toBe(wrong);
   wrong.advance();
   const resumed = store.getState();
   resumed.answer(wrongIndex);
-  assert.equal(store.getState(), resumed);
+  expect(store.getState()).toBe(resumed);
 });
 
 test('basic completion captures score once and rejects late updates', () => {
@@ -168,13 +171,13 @@ test('basic completion captures score once and rejects late updates', () => {
   store.setState({ timer: 1, scores: 7 });
   store.getState().tick();
   const completed = store.getState();
-  assert.equal(completed.timer, 0);
-  assert.equal(completed.result, 7);
+  expect(completed.timer).toBe(0);
+  expect(completed.result).toBe(7);
   completed.tick();
   completed.answer(0);
   completed.advance();
   completed.start();
-  assert.equal(store.getState(), completed);
+  expect(store.getState()).toBe(completed);
 });
 
 test('speedrun completion uses the configured goal and preserves answer-time seconds', () => {
@@ -184,21 +187,21 @@ test('speedrun completion uses the configured goal and preserves answer-time sec
   const before = store.getState();
   const rightIndex = before.quiz.options.findIndex(option => option.type === before.quiz.answer);
   before.answer(rightIndex);
-  assert.equal(store.getState().result, null);
+  expect(store.getState().result).toBe(null);
   store.getState().tick();
-  assert.equal(store.getState().timer, 8);
+  expect(store.getState().timer).toBe(8);
   store.getState().advance();
   const completed = store.getState();
-  assert.equal(completed.result, 7);
+  expect(completed.result).toBe(7);
   completed.tick();
   completed.answer(0);
   completed.advance();
-  assert.equal(store.getState(), completed);
+  expect(store.getState()).toBe(completed);
 });
 
 test('speedrun continues at 19 and after deductions, finishing only at 20 in both question modes', () => {
-  assert.equal(SCORE_TARGET, 20);
-  for (const kind of ['attack', 'defend']) {
+  expect(SCORE_TARGET).toBe(20);
+  for (const kind of ['attack', 'defend'] as const) {
     const store = createQuizStore('speedrun', kind);
     store.getState().start();
     store.setState({ scores: 18, timer: 5 });
@@ -208,26 +211,26 @@ test('speedrun continues at 19 and after deductions, finishing only at 20 in bot
     };
     answerCorrectly();
     store.getState().advance();
-    assert.equal(store.getState().scores, 19);
-    assert.equal(store.getState().result, null);
+    expect(store.getState().scores).toBe(19);
+    expect(store.getState().result).toBe(null);
     store.getState().tick();
-    assert.equal(store.getState().timer, 6);
+    expect(store.getState().timer).toBe(6);
 
     const state = store.getState();
     state.answer(state.quiz.options.findIndex(option => option.type !== state.quiz.answer));
     store.getState().advance();
-    assert.equal(store.getState().scores, 18);
-    assert.equal(store.getState().result, null);
+    expect(store.getState().scores).toBe(18);
+    expect(store.getState().result).toBe(null);
     answerCorrectly();
     store.getState().advance();
-    assert.equal(store.getState().scores, 19);
-    assert.equal(store.getState().result, null);
+    expect(store.getState().scores).toBe(19);
+    expect(store.getState().result).toBe(null);
 
     answerCorrectly();
-    assert.equal(store.getState().scores, 20);
-    assert.equal(store.getState().result, null);
+    expect(store.getState().scores).toBe(20);
+    expect(store.getState().result).toBe(null);
     store.getState().advance();
-    assert.equal(store.getState().result, 6);
+    expect(store.getState().result).toBe(6);
   }
 });
 
@@ -239,16 +242,16 @@ test('sessions do not share state or pending actions', () => {
   const fresh = newStore.getState();
   oldStore.getState().advance();
   oldStore.getState().tick();
-  assert.equal(newStore.getState(), fresh);
-  assert.equal(fresh.scores, 0);
-  assert.equal(fresh.timer, 0);
-  assert.equal(fresh.overlay, true);
-  assert.equal(fresh.freeze, false);
-  assert.ok(fresh.quiz.options.every(option => !option.clicked));
+  expect(newStore.getState()).toBe(fresh);
+  expect(fresh.scores).toBe(0);
+  expect(fresh.timer).toBe(0);
+  expect(fresh.overlay).toBe(true);
+  expect(fresh.freeze).toBe(false);
+  expect(fresh.quiz.options.every(option => !option.clicked)).toBeTruthy();
 });
 
 test('damage feedback maps all single-type multipliers', () => {
-  for (const [value, status] of [[0, 'EFFECTIVE_0'], [0.5, 'EFFECTIVE_1_2'], [1, 'EFFECTIVE_1'], [2, 'EFFECTIVE_2']]) {
-    assert.equal(getStatus(value), status);
+  for (const [value, status] of [[0, 'EFFECTIVE_0'], [0.5, 'EFFECTIVE_1_2'], [1, 'EFFECTIVE_1'], [2, 'EFFECTIVE_2']] as const) {
+    expect(getStatus(value)).toBe(status);
   }
 });

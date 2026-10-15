@@ -18,6 +18,7 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4",
+    "vitest": "^5.0.4",
     "workbox-build": "^7.4.1"
   },
   "dependencies": {
@@ -39,11 +40,12 @@
     "start": "vite",
     "build": "vite build && node scripts/build-sw.js",
     "preview": "vite preview",
-    "test": "node --test tests/baseline.test.mjs",
-    "test:baseline": "node --test tests/baseline.test.mjs",
+    "test": "pnpm test:unit",
     "test:smoke": "playwright test",
     "test:acceptance": "playwright test --config playwright.acceptance.config.js",
-    "test:a11y": "playwright test accessibility.spec.js"
+    "test:a11y": "playwright test accessibility.spec.js",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
   },
   "type": "module",
   "engines": {
