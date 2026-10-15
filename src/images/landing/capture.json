@@ -1,0 +1,19 @@
+{
+  "sourceRevision": "b62975ffa7076080dfd24cc91a6d33abd08bc351",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "engine": "Chromium",
+  "languages": [
+    "en",
+    "zh",
+    "ja"
+  ],
+  "routes": [
+    "menu",
+    "quizzes/s/basic/attack",
+    "quizzes/s/basic/defend"
+  ],
+  "note": "Unmodified browser screenshots of the built game; fixed randomness and clock for reproducibility."
+}

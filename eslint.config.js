@@ -15,7 +15,7 @@ export default [
   },
   ...tseslint.configs.recommended.map(config => ({ ...config, files: ['**/*.{ts,tsx}'] })),
   { files: ['src/**/*.{js,jsx,ts,tsx}'], languageOptions: { globals: globals.browser } },
-  { files: ['*.js', 'scripts/**/*.js', 'tests/**/*.{js,mjs}'], languageOptions: { globals: { ...globals.node, ...globals.browser } } },
+  { files: ['*.js', 'scripts/**/*.{js,mjs}', 'tests/**/*.{js,mjs}'], languageOptions: { globals: { ...globals.node, ...globals.browser } } },
   { files: ['public/**/*.js'], languageOptions: { globals: globals.serviceworker } },
   {
     files: ['src/**/*.{js,jsx,ts,tsx}'],
