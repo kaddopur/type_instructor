@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
+import { trackPageView } from '../lib/analytics.js';
 import messages from '../lib/messages.js';
 import { normalizeLanguage } from '../lib/routes.ts';
 
@@ -15,6 +16,7 @@ const I18nPage = (ChildComponent) => {
       const heading = document.querySelector('main h1');
       const pageTitle = heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor';
       document.title = `${pageTitle === 'Type Instructor' ? messages[lang].APP_DESCRIPTION : pageTitle} | Type Instructor`;
+      trackPageView();
       if (!document.querySelector('[role="dialog"]')) {
         document.querySelector('main')?.querySelector(
           'a[href]:not([tabindex="-1"]), button:not(:disabled):not([aria-disabled="true"]):not([tabindex="-1"])'
