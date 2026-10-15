@@ -13,7 +13,8 @@ const I18nPage = (ChildComponent) => {
     useEffect(() => {
       document.documentElement.lang = lang;
       const heading = document.querySelector('main h1');
-      document.title = `${heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor'} | Pokémon`;
+      const pageTitle = heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor';
+      document.title = `${pageTitle === 'Type Instructor' ? messages[lang].APP_DESCRIPTION : pageTitle} | Type Instructor`;
       if (!document.querySelector('[role="dialog"]')) {
         document.querySelector('main')?.querySelector(
           'a[href]:not([tabindex="-1"]), button:not(:disabled):not([aria-disabled="true"]):not([tabindex="-1"])'

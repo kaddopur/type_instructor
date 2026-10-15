@@ -1,6 +1,6 @@
-# Type Instructor of Pokémon
+# Type Instructor
 
-單屬性攻防記憶遊戲，支援英文、繁體中文與日文，以及一般／競速模式。
+Pokémon 單屬性攻防記憶遊戲，支援英文、繁體中文與日文，以及一般／競速模式。
 保留原本的像素介面，已完成 Vite／React 遷移與遊戲流程驗收。
 
 ## 開發

@@ -1,10 +1,6 @@
 {
   "en": {
     "eyebrow": "A small game. A useful memory.",
-    "title": [
-      "Know your types.",
-      "Make the right move."
-    ],
     "intro": "Practice Pokémon type matchups, one question at a time. Choose an attack that deals the most damage, or a type that takes the least. No account, no setup—just start playing.",
     "play": "Play the game",
     "howLink": "How to play",
@@ -59,10 +55,6 @@
   },
   "zh": {
     "eyebrow": "一個小遊戲，練習記住屬性相剋。",
-    "title": [
-      "記住屬性相剋，",
-      "下一題就選對。"
-    ],
     "intro": "用一題一題的小挑戰，練習 Pokémon 的屬性相剋。選出最有效的攻擊屬性，或受到傷害最少的自身屬性。不用註冊，直接開始。",
     "play": "開始遊戲",
     "howLink": "查看玩法",
@@ -117,10 +109,6 @@
   },
   "ja": {
     "eyebrow": "短いゲームで、タイプ相性を覚えよう。",
-    "title": [
-      "タイプ相性を覚えて、",
-      "次の一手を選ぼう。"
-    ],
     "intro": "Pokémon のタイプ相性を、一問ずつ練習するゲームです。最も効果的な攻撃タイプや、受けるダメージが最も少ない自分のタイプを選びます。登録せずにすぐ遊べます。",
     "play": "ゲームを始める",
     "howLink": "遊び方を見る",

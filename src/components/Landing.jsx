@@ -20,7 +20,7 @@ const screenshots = {
 };
 const repository = 'https://github.com/kaddopur/type_instructor';
 
-function Landing({ lang, messages: { HOME } }) {
+function Landing({ lang, messages: { HOME, APP_DESCRIPTION, FAN_NOTICE } }) {
   const text = copy[lang];
   const images = screenshots[lang];
   return (
@@ -36,8 +36,10 @@ function Landing({ lang, messages: { HOME } }) {
       <section className="landing-hero landing-width" aria-labelledby="landing-title">
         <div>
           <p className="landing-eyebrow">{text.eyebrow}</p>
-          <h1 id="landing-title">{text.title[0]}<br />{text.title[1]}</h1>
+          <h1 id="landing-title">Type Instructor</h1>
+          <p className="landing-subtitle">{APP_DESCRIPTION}</p>
           <p className="landing-intro">{text.intro}</p>
+          <p className="landing-notice">{FAN_NOTICE}</p>
           <div className="landing-actions">
             <Button asChild variant="primary"><I18nLink to="/menu" lang={lang}>{text.play}</I18nLink></Button>
             <Button variant="ghost" onClick={() => document.getElementById('how-to-play')?.scrollIntoView({ block: 'start' })}>{text.howLink}</Button>

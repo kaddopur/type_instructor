@@ -63,3 +63,6 @@
   .landing-closing { padding: 32px 20px; }
   .landing-closing > a { width: 100%; max-width: 280px; }
 }
+
+.landing-subtitle { margin-bottom: 20px; font-size: 20px; font-weight: 600; }
+.landing-notice { margin-top: 16px; color: var(--color-muted); font-size: 14px; }

@@ -41,3 +41,14 @@ retain a source link to https://github.com/kaddopur/type_instructor.
 - **WHEN** a player activates the introduction's source link
 - **THEN** the repository opens safely in a new tab
 
+### Requirement: Independent project identity
+Home and the introduction SHALL use Type Instructor as the primary name, with a
+localized subtitle identifying Pokémon type-matchup practice. Both SHALL visibly
+state that this is an unofficial fan project without affiliation, authorization
+or sponsorship. Browser titles and the installed app name SHALL use Type Instructor
+as the project identity. Language controls SHALL be ordered English, Chinese, Japanese.
+
+#### Scenario: Identify the project
+- **WHEN** a player opens Home or the introduction in any supported language
+- **THEN** the primary name, descriptive subtitle and localized unofficial notice are visible
+- **AND** Home controls remain inside the usable viewport without scrolling
