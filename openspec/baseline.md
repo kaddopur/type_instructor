@@ -1,0 +1,70 @@
+# 遷移 baseline 與驗收紀錄
+
+來源：`4f1e318`（2016-09-26）。建立日期：2026-10-15。
+
+## 範圍與依據
+
+- `specs/gameplay/spec.md`：出題、計分、回饋、模式、重玩。
+- `specs/navigation-and-language/spec.md`：頁面、hash URL、三種語言。
+- 實作依據：`src/lib/getQuiz.js`、`src/lib/getStatus.js`、`src/ducks/quizzes.js`、`src/components/{Quiz,Menu,Result,Lang,I18nLink,I18nPage}.js`、`src/index.js`、語系 JSON。
+- 此步只有文件、測試及測試指令；正式環境的程式與相依版本不變。
+- 自動化測試直接執行既有出題與 reducer，沒有 mock Lodash。屬性倍率是程式的特徵測試，沒有外部資料校驗。
+
+## 已知問題與修正目標
+
+| ID | 現況 | 第 4 步驗收目標 |
+| --- | --- | --- |
+| BUG-01 | Menu 的競速防禦連到 `speedrun/attack` | 連到 `speedrun/defend`，畫面確實呈現防禦題 |
+| BUG-02 | Quiz 的目標為 3 分，三語說明均為 20 分 | 目標統一為 20 分，說明與邏輯共用設定；19 分不中止，20 分結束 |
+
+兩項皆不在第一步修正，也不以通過測試將錯誤行為固定為正確規格。
+
+## 其他觀察與遷移風險
+
+- 防止重複作答的 guard 在 Quiz 元件，reducer 本身沒有防重複 dispatch；reducer 測試不代表點擊 guard 已驗證。
+- 卸載只清理 interval，答題 timeout 沒有清理；第 3 步應驗證離開後不再換題或導頁。
+- `getQuiz` 可接收上一個敵人以避免重複，但目前呼叫端沒有傳入；遷移不新增「連續題目不能重複」規則。
+- 競速結算使用答題時捕捉的整數秒；遷移維持整數秒顯示，並驗證最後一題不讀到其他場次的時間。
+- 網站宣告 service worker 與 manifest，建置產生離線快取；目前尚未實際驗證離線與舊版更新，第 5 步驗收。
+
+## 自動化測試
+
+需要 Node.js 22.15 以上（本次使用 22.23.2）。已有專案相依套件時執行：
+
+```sh
+npm run test:baseline
+```
+
+若尚未安裝舊版專案，可只在暫存目錄安裝既有的 Lodash，獨立驗證純邏輯，避免在第一步安裝整套舊建置鏈：
+
+```sh
+baseline_deps=$(mktemp -d)
+npm install --prefix "$baseline_deps" --no-package-lock --ignore-scripts lodash@4.15.0
+NODE_PATH="$baseline_deps/node_modules" npm run test:baseline
+```
+
+測試中的 Node resolve hook 只用來載入現有的 extensionless ES module imports；Vite 遷移後可改由正式測試環境載入。這個指令不會驗證 React 元件或瀏覽器生命週期。
+
+### 本次執行結果
+
+- `openspec validate --specs --strict --no-interactive`：2 份規格通過，0 失敗。
+- `NODE_PATH=/tmp/type-instructor-baseline-deps/node_modules npm run test:baseline`：7 個測試通過，0 失敗。使用 Node 22.23.2 與暫存安裝的 Lodash 4.15.0，沒有安裝舊 CRA 建置鏈。
+- Node 會提示舊專案未宣告 module type；不影響此次測試，package module 設定留待 Vite 遷移處理。
+- 尚未啟動舊 React 應用、執行正式建置或完成瀏覽器驗收。
+
+## 後續瀏覽器驗收清單
+
+以下尚未執行。一般／競速 × 攻擊／防禦四種組合皆須覆蓋；三語各走一遍完整流程。
+
+- [ ] 根首頁英文預設；首頁 → 語言 → 選單 → 遊戲 → 結果 → 重玩／選單／首頁。
+- [ ] 選對模式與題幹；競速防禦符合 BUG-01 的修正目標。
+- [ ] 開始說明顯示時不計時；關閉一次只啟動一個計時器。
+- [ ] 答對加一分、答錯減一分、允許負分、顯示倍率和翻譯提示。
+- [ ] 回饋 500 毫秒內點擊無效；錯誤選項不能重複計分；錯後保留原題，對後換題。
+- [ ] 一般模式從 60 倒數到零，回饋期間照常計時，結算分數正確且只導頁一次。
+- [ ] 競速從零累計，符合 BUG-02 的 19／20 分邊界，結算用時正確。
+- [ ] 重玩清除舊題、分數與標記，保留語言、模式與攻防種類。
+- [ ] 回饋中離開、快速返回與重玩，沒有殘留 timeout／interval；React StrictMode 不重複計時。
+- [ ] 正式建置的 hash 深連結、重新整理、返回與 Pages 子路徑資源正常。
+- [ ] 手機／桌面版面、三語文字、字型與圖片正常。
+- [ ] 首次連線後離線可玩，舊 service worker 能更新，新版不被舊快取遮蔽。
