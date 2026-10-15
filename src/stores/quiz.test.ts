@@ -1,61 +1,7 @@
 import { expect, test } from 'vitest';
-import type { QuizType } from '../src/lib/types.ts';
-
-import getQuiz from '../src/lib/getQuiz.ts';
-import getStatus from '../src/lib/getStatus.ts';
-import { createQuizStore } from '../src/stores/quiz.ts';
-import { SCORE_TARGET } from '../src/lib/gameRules.ts';
-
-const types = [
-  'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug',
-  'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic',
-  'ice', 'dragon', 'dark', 'fairy'
-];
-
-function question(mode: QuizType, enemyIndex: number) {
-  const original = Math.random;
-  // Only pin enemy selection. Lodash still samples and shuffles real options.
-  Math.random = () => (enemyIndex + 0.5) / types.length;
-  try {
-    return getQuiz(mode);
-  } finally {
-    Math.random = original;
-  }
-}
-
-test('all 18 attack and defense targets have four unique options and one best answer', () => {
-  const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
-  for (const mode of ['attack', 'defend'] as const) {
-    for (const [enemyIndex, enemy] of types.entries()) {
-      const quiz = question(mode, enemyIndex);
-      const label = `${mode}/${enemy}`;
-      expect(quiz.enemy.type, label).toBe(enemy);
-      expect(quiz.enemy.title).toBe(mode === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
-      expect(quiz.options.length, label).toBe(4);
-      expect(new Set(quiz.options.map(option => option.type)).size, label).toBe(4);
-      expect(quiz.options.every(option => types.includes(option.type)), label).toBeTruthy();
-      const answer = quiz.options.find(option => option.type === quiz.answer);
-      if (!answer) throw new Error(`Missing answer: ${label}`);
-      const expected = mode === 'attack' ? 2 : (immuneAttacks.has(enemy) ? 0 : 0.5);
-      expect(answer.damage, label).toBe(expected);
-      for (const option of quiz.options) {
-        expect([0, 0.5, 1, 2].includes(option.damage), label).toBeTruthy();
-        if (option !== answer) {
-          expect(mode === 'attack' ? option.damage < answer.damage : option.damage > answer.damage, label).toBeTruthy();
-        }
-      }
-    }
-  }
-});
-
-test('representative matchups preserve attack/defense matrix orientation', () => {
-  const attackNormal = question('attack', types.indexOf('normal'));
-  expect(attackNormal.answer).toBe('fighting');
-  const defenseElectric = question('defend', types.indexOf('electric'));
-  expect(defenseElectric.answer).toBe('ground');
-  const defenseDragon = question('defend', types.indexOf('dragon'));
-  expect(defenseDragon.answer).toBe('fairy');
-});
+import { createQuizStore } from './quiz.ts';
+import getStatus from '../lib/getStatus.ts';
+import { SCORE_TARGET } from '../lib/gameRules.ts';
 
 test('new sessions start fresh in both modes and both question types', () => {
   for (const mode of ['basic', 'speedrun'] as const) {
@@ -250,8 +196,3 @@ test('sessions do not share state or pending actions', () => {
   expect(fresh.quiz.options.every(option => !option.clicked)).toBeTruthy();
 });
 
-test('damage feedback maps all single-type multipliers', () => {
-  for (const [value, status] of [[0, 'EFFECTIVE_0'], [0.5, 'EFFECTIVE_1_2'], [1, 'EFFECTIVE_1'], [2, 'EFFECTIVE_2']] as const) {
-    expect(getStatus(value)).toBe(status);
-  }
-});

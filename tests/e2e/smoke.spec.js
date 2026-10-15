@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { SCORE_TARGET } from '../src/lib/gameRules.ts';
+import { SCORE_TARGET } from '../../src/lib/gameRules.ts';
 
 async function pauseClock(page) {
   await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });

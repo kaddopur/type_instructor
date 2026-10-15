@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const languages = {};
 for (const [lang, file] of [['en', 'strings.json'], ['zh', 'strings_zh.json'], ['ja', 'strings_ja.json']]) {
-  languages[lang] = JSON.parse(await readFile(new URL(`../src/lang/${file}`, import.meta.url)));
+  languages[lang] = JSON.parse(await readFile(new URL(`../../src/lang/${file}`, import.meta.url)));
 }
 
 async function tabTo(page, target) {

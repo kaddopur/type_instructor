@@ -7,7 +7,7 @@ for (const [lang, file, label] of [
   ['zh', 'strings_zh.json', '中文'],
   ['ja', 'strings_ja.json', '日本語']
 ]) {
-  languages[lang] = { label, ...JSON.parse(await readFile(new URL(`../src/lang/${file}`, import.meta.url))) };
+  languages[lang] = { label, ...JSON.parse(await readFile(new URL(`../../src/lang/${file}`, import.meta.url))) };
 }
 
 for (const [lang, text] of Object.entries(languages)) {

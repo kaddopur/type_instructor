@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 const development = process.env.SMOKE_SERVER === 'dev';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/e2e',
   testMatch: ['smoke.spec.js', 'offline.spec.js', 'accessibility.spec.js'],
   workers: 1,
   use: {
