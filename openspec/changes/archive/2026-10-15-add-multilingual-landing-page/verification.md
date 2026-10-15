@@ -47,3 +47,20 @@ wheel movement (PageDown for mobile WebKit, whose Playwright driver does not
 implement wheel input), rather than relying on programmatic element scrolling. A Chromium
 iPhone-sized touch swipe moved scrollTop from 0 to 761 on the development
 server and from 0 to 592 on the production preview.
+
+## Parallel CI follow-up
+
+Commit `c7a463d` splits the complete browser suite into two matrix jobs using
+Playwright shards 1/2 and 2/2. Each runs 72 cases; comparing their collected test
+identities with the unsharded list confirmed no omissions or duplication.
+
+- `CI=1 pnpm test:e2e --shard=1/2`: 72 passed (1.2 minutes locally).
+- `CI=1 pnpm test:e2e --shard=2/2`: 72 passed (1.2 minutes locally).
+- Workflow YAML parsed successfully; the matrix contains two shards and deploy
+  depends on the entire matrix job. Only shard 1 uploads the Pages artifact.
+- `openspec validate --all --strict`: all 12 specifications passed.
+
+The local shard commands ran sequentially because they share the preview port.
+GitHub Actions runs them on separate runners in parallel. Actual CI duration
+will be measured after pushing. Requirements are recorded in the canonical
+`test-workflows` and `pages-deployment` specifications.
