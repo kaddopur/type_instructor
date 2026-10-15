@@ -46,5 +46,8 @@
     "CHOOSE_ANSWER": "Choose an answer",
     "DAMAGE_MULTIPLIER": "Damage multiplier",
     "CHANGE_LANGUAGE": "Change language",
-    "APP_DESCRIPTION": "Type matchup memory game"
+    "APP_DESCRIPTION": "Type matchup memory game",
+    "SELECT_CHALLENGE": "Choose a challenge",
+    "BASIC_DESCRIPTION": "Score as high as you can in 60 sec",
+    "SPEEDRUN_DESCRIPTION": "Reach 20 points as fast as you can"
 }
