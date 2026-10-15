@@ -1,8 +1,3 @@
-.app-content-scroll {
-  overflow-y: auto;
-  scrollbar-gutter: stable;
-  overscroll-behavior-y: contain;
-}
 .Landing {
   font-family: system-ui, sans-serif;
   font-size: 17px;

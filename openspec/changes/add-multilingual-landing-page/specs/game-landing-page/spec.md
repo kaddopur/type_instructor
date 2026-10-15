@@ -29,10 +29,10 @@ navigation SHALL work throughout the page.
 - **WHEN** the player leaves the introduction for Home or a game page
 - **THEN** the shell restores its normal no-scroll layout
 
-### Requirement: Project link on Home
-Home SHALL show GitHub instead of the author handle and link to
-https://github.com/kaddopur/type_instructor.
+### Requirement: Home without an external author link
+Home SHALL omit its previous author or GitHub link. The introduction footer SHALL
+retain a source link to https://github.com/kaddopur/type_instructor.
 
-#### Scenario: Open source link
-- **WHEN** a player activates Home's GitHub link
+#### Scenario: Open source link from the introduction
+- **WHEN** a player activates the introduction's source link
 - **THEN** the repository opens safely in a new tab

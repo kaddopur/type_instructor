@@ -4,7 +4,7 @@
 
 The user requested a new branch with a responsive landing page introducing the
 game and its rules in English, Traditional Chinese and Japanese, using real
-game screenshots. Home's author link should point to the GitHub project.
+game screenshots. The user later requested removing the repository link from Home.
 
 ## What Changes
 
@@ -12,7 +12,7 @@ game screenshots. Home's author link should point to the GitHub project.
 - Introduce the game, modes, attack/defense questions, scoring and keyboard controls.
 - Capture the actual built game in each language and bundle those screenshots locally.
 - Scope scrolling to the long-form landing page; preserve the game shell's fixed layout.
-- Replace Home's kaddopur/Twitter link with GitHub and the repository URL.
+- Remove Home's author link as requested; retain the source link on the introduction.
 
 ## Capabilities
 

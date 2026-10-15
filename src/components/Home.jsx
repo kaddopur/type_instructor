@@ -28,7 +28,6 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME 
         </section>
         <I18nLink className="home-about" to="/about" lang={lang}>{ABOUT_GAME}</I18nLink>
       </div>
-      <footer><a tabIndex={0} href="https://github.com/kaddopur/type_instructor" target="_blank" rel="noreferrer">GitHub</a></footer>
     </article>
   );
 }

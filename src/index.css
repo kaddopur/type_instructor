@@ -103,6 +103,12 @@
   overflow: hidden;
 }
 
+.app-content.app-content-scroll {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior-y: contain;
+}
+
 .Home {
 
   position: relative;
@@ -146,12 +152,6 @@
   gap: 20px;
   padding-top: 20px;
 }
-.Home footer {
-  align-self: end;
-  font-size: 14px;
-  line-height: 24px;
-  color: var(--color-muted);
-}
 .home-pixels {
   position: absolute;
   top: 20px;
@@ -186,9 +186,6 @@
   .home-actions {
     padding-top: 0;
     gap: 12px;
-  }
-  .Home footer {
-    grid-column: 1 / -1;
   }
 }
 @media (max-height: 480px) and (orientation: landscape) {
