@@ -6,6 +6,7 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
     await page.goto('./#/en/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     const titleSize = await page.locator('.Home h1').evaluate(node => getComputedStyle(node).fontSize);
+    let menuGeometry;
     for (const lang of ['en', 'zh', 'ja']) {
       for (const route of ['', 'menu', 'lang', 'quizzes/s/basic/attack/result/7']) {
         await page.goto(`./#/${lang}/${route}`);
@@ -17,6 +18,18 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
           await expect(page.locator('.Home .start a')).toHaveCSS('font-size', '24px');
           await expect(page.locator('.Home .start a')).toHaveCSS('width', '175px');
           await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '20px');
+        }
+        if (route === 'menu') {
+          const geometry = await page.locator('.Menu .menuItem a').evaluateAll(nodes => nodes.map(node => {
+            const { x, y, width, height } = node.getBoundingClientRect();
+            return { x, y, width, height };
+          }));
+          menuGeometry ??= geometry;
+          geometry.forEach((bounds, index) => {
+            for (const key of ['x', 'y', 'width', 'height']) {
+              expect(Math.abs(bounds[key] - menuGeometry[index][key]), `${lang} menu ${index}: ${key}`).toBeLessThanOrEqual(1);
+            }
+          });
         }
         const footer = page.locator('footer a');
         for (const action of await page.locator('.app-content a').all()) {

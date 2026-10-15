@@ -118,3 +118,9 @@ so Japanese labels no longer mix the two fonts' glyph metrics.
 Rendered-font inspection confirms both result actions (やり直し and メニューに戻る)
 use only Cubic 11. The updated result screenshot was inspected; lint and all 20
 layout/navigation/resource checks passed across four browser projects.
+
+Menu typography and spacing now use fixed local dimensions across languages:
+20px action/footer text, 24px headings, 175px action widths and 24px corners.
+The existing layout check compares all four menu actions' positions and sizes
+across en/zh/ja; lint, typecheck and 20 layout/navigation checks passed.
+The updated English menu screenshot at 390×844 was inspected.
