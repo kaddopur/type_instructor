@@ -91,21 +91,26 @@
 }
 
 @media (max-height: 700px) {
+  .Lang h1 { margin-block: 1em .5em; }
+  .Lang footer { padding: 1em; }
+  .Lang .langItem { margin: .25em; }
+  .Lang .langItem a { min-height: 44px; padding-block: .5em; }
   .Home h1 { padding-block: 1rem; }
   .Home .lang { margin-top: .5rem; }
-  .Home footer, .Menu footer, .Lang footer, .Result footer { padding: 1rem; }
-  .Menu h2, .Lang h1, .Result h1 { margin-block: 1rem .5rem; }
-  .menuItem, .langItem, .resultItem { margin: .25rem; }
+  .Home footer, .Menu footer, .Result footer { padding: 1rem; }
+  .Menu h2, .Result h1 { margin-block: 1rem .5rem; }
+  .menuItem, .resultItem { margin: .25rem; }
   .resultItem a { width: 14rem; }
-  .Home .start a, .menuItem a, .langItem a, .resultItem a {
+  .Home .start a, .menuItem a, .resultItem a {
     min-height: 44px;
     padding-block: .5rem;
   }
 }
 
 @media (max-height: 480px) and (orientation: landscape) {
+  .Lang footer { padding: .5em; }
   .Home h1 { font-size: 1.25rem; }
-  .Home footer, .Menu footer, .Lang footer, .Result footer { padding: .5rem; }
+  .Home footer, .Menu footer, .Result footer { padding: .5rem; }
   .Menu { display: grid; grid-template-columns: 1fr 1fr; }
   .Menu footer { grid-column: 1 / -1; text-align: center; }
 }

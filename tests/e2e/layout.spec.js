@@ -40,3 +40,28 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
     }
   }
 });
+
+test('language buttons keep their size and position when the language changes', { tag: '@layout' }, async ({ page }) => {
+  for (const viewport of [{ width: 390, height: 600 }, { width: 390, height: 844 }, { width: 844, height: 390 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./#/en/lang');
+    await page.evaluate(() => document.fonts.ready);
+    const buttons = page.locator('.langItem a');
+    const original = await buttons.evaluateAll(nodes => nodes.map(node => {
+      const { x, y, width, height } = node.getBoundingClientRect();
+      return { x, y, width, height };
+    }));
+    for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English']]) {
+      await page.getByRole('link', { name: label, exact: true }).click();
+      await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      await page.evaluate(() => document.fonts.ready);
+      for (let index = 0; index < original.length; index++) {
+        const bounds = await buttons.nth(index).boundingBox();
+        for (const key of ['x', 'y', 'width', 'height']) {
+          expect(Math.abs(bounds[key] - original[index][key]), `${lang} button ${index}: ${key}`).toBeLessThanOrEqual(1);
+        }
+      }
+      await expect(page.getByRole('link', { name: label, exact: true })).toHaveAttribute('aria-current', 'page');
+    }
+  }
+});

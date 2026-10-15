@@ -36,7 +36,7 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 - Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
 - ESLint, strict TypeScript checks and 15 Vitest unit tests, including route validation.
 - Production browser smoke subset: seven Chromium tests selected with `@smoke`.
-- Complete E2E suite: 112 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- Complete E2E suite: 116 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
 - Accessibility scans cover all three languages, home/menu/language/results, every mode's
   intro dialog and playable/answered states. No axe rules are disabled.
 - Computed text/background colors are checked for all 18 target types, rendered options
@@ -102,3 +102,11 @@ Japanese fallback verification: lint/typecheck and 16 layout/navigation/resource
 checks passed across the four browser projects. Rendered-font inspection in
 Chromium confirmed Cubic 11 for 基本 and PKMN Strict for ホーム, including ー;
 the 390×600 Japanese menu screenshot was inspected.
+
+## Stable language selection
+
+The language page uses a constant local text size and em-based dimensions, so
+switching the global language font size does not move or resize its controls.
+Compact viewport spacing uses the same local units. A regression check compares
+all three buttons before/after English, Japanese and Chinese selection at three
+viewport sizes across all four browser projects.
