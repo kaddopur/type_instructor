@@ -45,5 +45,6 @@
     "INCORRECT": "Incorrect",
     "CHOOSE_ANSWER": "Choose an answer",
     "DAMAGE_MULTIPLIER": "Damage multiplier",
-    "CHANGE_LANGUAGE": "Change language"
+    "CHANGE_LANGUAGE": "Change language",
+    "APP_DESCRIPTION": "Type matchup memory game"
 }

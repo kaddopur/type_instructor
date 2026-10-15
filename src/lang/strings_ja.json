@@ -45,5 +45,6 @@
     "INCORRECT": "不正解",
     "CHOOSE_ANSWER": "答えを選んでください",
     "DAMAGE_MULTIPLIER": "ダメージ倍率",
-    "CHANGE_LANGUAGE": "言語を変更"
+    "CHANGE_LANGUAGE": "言語を変更",
+    "APP_DESCRIPTION": "タイプ相性を覚えるゲーム"
 }

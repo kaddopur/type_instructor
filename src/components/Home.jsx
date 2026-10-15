@@ -3,25 +3,31 @@ import I18nPage from './I18nPage.jsx';
 import { Button } from '@/components/ui/button';
 import globe from '../images/globe.png';
 
-function Home({ messages: { START, CHANGE_LANGUAGE }, lang }) {
+function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION }, lang }) {
   return (
-    <article className="Home flex min-h-full w-full flex-col items-center bg-[linear-gradient(135deg,#f7ae00_50%,transparent_0),linear-gradient(45deg,#2db6eb_50%,transparent_0)]">
-      <h1 tabIndex={-1} className="grow-[3] px-[32px] py-[64px] text-[clamp(25px,5vw,40px)] leading-[1.4]">Type Instructor of Pokémon</h1>
-      <section className="start grow">
-        <Button asChild className="w-[175px] text-[24px]">
-          <I18nLink to="/menu" lang={lang}>{START}</I18nLink>
-        </Button>
-      </section>
-      <section className="lang mt-6">
-        <Button asChild variant="ghost" size="icon">
-          <I18nLink to="/lang" lang={lang}>
-            <img src={globe} width="32" height="32" alt={CHANGE_LANGUAGE} />
-          </I18nLink>
-        </Button>
-      </section>
-      <footer className="p-16 text-center text-[20px]">
-        <a tabIndex={0} href="https://twitter.com/kaddopur" target="_blank" rel="noreferrer">@kaddopur</a>
-      </footer>
+    <article className="Home">
+      <div className="home-pixels home-pixels-left" aria-hidden="true" />
+      <div className="home-pixels home-pixels-right" aria-hidden="true" />
+      <header className="home-hero">
+        <h1 tabIndex={-1}><span>Type Instructor</span>{' '}<span>of Pokémon</span></h1>
+        <p>{APP_DESCRIPTION}</p>
+      </header>
+      <div className="home-actions">
+        <section className="start">
+          <Button asChild variant="primary" className="w-[240px] max-w-full text-[24px]">
+            <I18nLink to="/menu" lang={lang}>{START}</I18nLink>
+          </Button>
+        </section>
+        <section className="lang">
+          <Button asChild className="min-h-[48px] w-[180px] text-[16px]">
+            <I18nLink to="/lang" lang={lang} aria-label={CHANGE_LANGUAGE}>
+              <img src={globe} width="24" height="24" alt="" />
+              <span aria-hidden="true">{lang === 'en' ? 'English' : lang === 'ja' ? '日本語' : '中文'} ▾</span>
+            </I18nLink>
+          </Button>
+        </section>
+      </div>
+      <footer><a tabIndex={0} href="https://twitter.com/kaddopur" target="_blank" rel="noreferrer">@kaddopur</a></footer>
     </article>
   );
 }
