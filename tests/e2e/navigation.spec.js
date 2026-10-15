@@ -123,6 +123,15 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
   for (const href of await page.locator('link[rel="apple-touch-icon"]').evaluateAll(nodes => nodes.map(node => node.href))) {
     expect((await request.get(href)).headers()['content-type']).toContain('image/png');
   }
+  await page.goto('./#/zh/menu');
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('.Menu')).toHaveCSS('font-family', /"Cubic 11"/);
+  const loadedFonts = await page.evaluate(async () =>
+    (await document.fonts.load('20px "Cubic 11"', '開始攻擊防禦')).map(font => font.status));
+  expect(loadedFonts).toEqual(['loaded']);
+  const fontURL = await page.evaluate(() => performance.getEntriesByType('resource')
+    .find(entry => /Cubic_11.*\.woff2/.test(entry.name))?.name);
+  expect(fontURL).toContain('/type_instructor/');
   if (process.env.E2E_SERVER !== 'dev') {
     const registration = await page.evaluate(async () => {
       const worker = await navigator.serviceWorker.ready;
@@ -132,7 +141,13 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
     expect(registration.script).toBe('http://127.0.0.1:4173/type_instructor/service-worker.js');
     await page.context().setOffline(true);
     await page.reload();
-    await expect(page.locator('.Home')).toBeVisible();
+    await expect(page.locator('.Menu')).toBeVisible();
+    const cachedFont = await page.evaluate(async url => {
+      await document.fonts.ready;
+      const fonts = await document.fonts.load('20px "Cubic 11"', '開始攻擊防禦');
+      return fonts.length === 1 && fonts[0].status === 'loaded' && (await fetch(url)).ok;
+    }, fontURL);
+    expect(cachedFont).toBe(true);
   } else {
     expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)).toBe(0);
   }

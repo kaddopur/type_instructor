@@ -44,7 +44,20 @@
   unicode-range: U+0030-0039, U+3040-309F, U+30A1-30F3;
 }
 
+@font-face {
+  font-family: "Cubic 11";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Cubic_11.woff2") format("woff2");
+  unicode-range: U+2E80-303F, U+3100-312F, U+31A0-31BF, U+3400-4DBF,
+    U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+
 @layer base {
+  :lang(zh) {
+    --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
   html, body {
     overflow: hidden;
   }

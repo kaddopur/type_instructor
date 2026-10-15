@@ -78,3 +78,18 @@ three languages, portrait and landscape, with simulated safe-area padding.
 Browser emulation cannot reproduce iOS Safari's Liquid Glass address bar. Verify
 expanded/collapsed bars and home-screen mode on an actual iPhone before claiming
 this specific device issue is resolved.
+
+## Traditional Chinese font
+
+Chinese routes use a locally bundled Cubic 11 font for CJK characters and
+punctuation, with the original PKMN/GB fonts retained for Latin, digits and kana.
+The unmodified WOFF2 and upstream OFL license are stored under src/fonts; the
+source revision is recorded there. Workbox precaches the font for offline use.
+The existing Chinese UI contains 88 unique Han characters, all covered by Cubic 11.
+The simplified character in 没有效果 was corrected to 沒有效果.
+
+Font verification: lint, TypeScript and all 15 unit tests passed. The 44 targeted
+browser checks (navigation/resources, layout, keyboard and axe) passed across all
+four projects. Chinese font loading and fetching the font after an offline reload
+are checked in the Pages resource test. Chromium's rendered-font inspection
+confirmed Cubic 11 draws the Chinese menu heading; a 390×600 screenshot was inspected.
