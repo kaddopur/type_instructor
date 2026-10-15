@@ -52,3 +52,15 @@ as the project identity. Language controls SHALL be ordered English, Chinese, Ja
 - **WHEN** a player opens Home or the introduction in any supported language
 - **THEN** the primary name, descriptive subtitle and localized unofficial notice are visible
 - **AND** Home controls remain inside the usable viewport without scrolling
+
+### Requirement: Localized PWA installation guidance
+The introduction SHALL explain how to install the web app using Safari on
+an iPhone or iPad, Chrome on Android, and Chrome or Edge on a computer in all
+three languages. It SHALL provide numbered steps, official help links and
+instructions for opening links outside an in-app browser. It SHALL distinguish
+installation from completed offline caching and retain browser play as a fallback.
+
+#### Scenario: Install from the introduction
+- **WHEN** a player reads the installation section in a supported language
+- **THEN** platform-specific instructions and offline prerequisites are available
+- **AND** the instructions fit mobile and desktop widths without horizontal overflow

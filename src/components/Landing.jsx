@@ -93,6 +93,27 @@ function Landing({ lang, messages: { HOME, APP_DESCRIPTION, FAN_NOTICE } }) {
           <div key={title}><h2>{title}</h2><p>{body}</p></div>
         ))}
       </section>
+      <section id="install-app" className="landing-section landing-width landing-install" aria-labelledby="install-title">
+        <h2 id="install-title">{text.installTitle}</h2>
+        <p>{text.installIntro}</p>
+        <ul className="landing-install-options">
+          {text.installOptions.map(({ title, steps }) => (
+            <li key={title}>
+              <h3>{title}</h3>
+              <ol>{steps.map(step => <li key={step}>{step}</li>)}</ol>
+            </li>
+          ))}
+        </ul>
+        <p className="landing-install-note">{text.installBrowserNote}</p>
+        <p className="landing-install-note">{text.installOfflineNote}</p>
+        <nav className="landing-install-guides" aria-label={text.installGuide}>
+          {[
+            ['Safari', 'https://support.apple.com/guide/iphone/iphea86e5236/ios'],
+            ['Chrome', 'https://support.google.com/chrome/answer/9658361'],
+            ['Edge', 'https://support.microsoft.com/en-US/edge/install-manage-or-uninstall-apps-in-microsoft-edge']
+          ].map(([browser, href]) => <a key={browser} href={href} target="_blank" rel="noreferrer">{browser} · {text.installGuide}</a>)}
+        </nav>
+      </section>
       <section className="landing-closing landing-width" aria-labelledby="closing-title">
         <h2 id="closing-title">{text.finalTitle}</h2><p>{text.finalBody}</p>
         <Button asChild variant="primary"><I18nLink to="/menu" lang={lang}>{text.play}</I18nLink></Button>
