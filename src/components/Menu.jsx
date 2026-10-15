@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import I18nLink from './I18nLink.jsx';
 import I18nPage from './I18nPage.jsx';
 import './Menu.css';
@@ -47,19 +46,4 @@ class Menu extends PureComponent {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const {
-    messages
-  } = state;
-
-  const {
-    lang = 'en'
-  } = ownProps.params;
-
-  return {
-    messages: messages[lang],
-    lang
-  };
-};
-
-export default I18nPage(connect(mapStateToProps)(Menu));
+export default I18nPage(Menu);

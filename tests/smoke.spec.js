@@ -1,4 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { SCORE_TARGET } from '../src/stores/quiz.js';
+
+async function pauseClock(page) {
+  await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
+  await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
+}
 
 test('three languages navigate, render games, show feedback, and retry', async ({ page }) => {
   const errors = [];
@@ -51,8 +57,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
 });
 
 test('timer starts once and basic mode reaches its result page', async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
-  await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
+  await pauseClock(page);
   await page.goto('./#/en/quizzes/s/basic/attack');
   await expect(page.locator('.overlay')).toBeVisible();
   await page.clock.runFor(2000);
@@ -67,6 +72,79 @@ test('timer starts once and basic mode reaches its result page', async ({ page }
   await expect(page.locator('.overlay')).toBeVisible();
   await page.clock.runFor(2000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 60');
+});
+
+test('rapid answers and route changes keep game sessions isolated', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await pauseClock(page);
+  // Pin the attacking enemy to electric: ground is the unique immune answer.
+  await page.addInitScript(() => { Math.random = () => 12.5 / 18; });
+  await page.goto('./#/en/quizzes/s/basic/defend');
+  await expect(page.locator('.stemContainer')).toHaveClass(/Bgc-electric/);
+  await page.locator('.optionItem.Bgc-ground').dispatchEvent('click');
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+  await page.locator('.overlay').click();
+
+  await page.locator('.optionItem:not(.Bgc-ground)').first().evaluate(node => {
+    node.click();
+    node.click();
+  });
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.locator('.optionItem.Bgc-ground').click();
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.clock.runFor(499);
+  await expect(page.locator('.stemStatus')).not.toBeEmpty();
+  await page.clock.runFor(1);
+  await expect(page.locator('.stemStatus')).toBeEmpty();
+  await page.locator('.optionItem.Bgc-wrong').click();
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.locator('.optionItem.Bgc-ground').click();
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+
+  // A same-document mode change must replace the store and cancel feedback.
+  await page.evaluate(() => { window.location.hash = '/en/quizzes/s/speedrun/defend'; });
+  await expect(page.locator('.overlay')).toBeVisible();
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await page.clock.runFor(2000);
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await expect(page.locator('.optionDemage')).toHaveCount(0);
+  await page.locator('.overlay').click();
+  await page.clock.runFor(1000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 1');
+  await page.evaluate(() => { window.location.hash = '/en/menu'; });
+  await expect(page.locator('.Menu')).toBeVisible();
+  await page.clock.runFor(60000);
+  await expect(page).toHaveURL(/#\/en\/menu$/);
+  expect(errors).toEqual([]);
+});
+
+test('speedrun completes at the configured goal without stale result navigation', async ({ page }) => {
+  await pauseClock(page);
+  await page.addInitScript(() => { Math.random = () => 12.5 / 18; });
+  // Use the defense deep link while BUG-01's menu link remains pending step 4.
+  await page.goto('./#/en/quizzes/s/speedrun/defend');
+  await page.locator('.overlay').click();
+  for (let score = 1; score <= SCORE_TARGET; score++) {
+    await page.locator('.optionItem.Bgc-ground').click();
+    await expect(page.locator('.stemScores')).toHaveText(`scores: ${score}`);
+    await page.clock.runFor(500);
+    if (score < SCORE_TARGET) await expect(page.locator('.optionDemage')).toHaveCount(0);
+  }
+  await expect(page).toHaveURL(new RegExp(`#/en/quizzes/s/speedrun/defend/result/${Math.floor((SCORE_TARGET - 1) / 2)}$`));
+  await page.getByRole('link', { name: 'Retry', exact: true }).click();
+  await expect(page.locator('.overlay')).toBeVisible();
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+
+  // Leave a fresh answer pending: its timeout must not affect the menu.
+  await page.locator('.overlay').click();
+  await page.locator('.optionItem.Bgc-ground').click();
+  await page.evaluate(() => { window.location.hash = '/en/menu'; });
+  await expect(page.locator('.Menu')).toBeVisible();
+  await page.clock.runFor(2000);
+  await expect(page).toHaveURL(/#\/en\/menu$/);
 });
 
 test('static resources resolve under the configured Pages base', async ({ page, request }) => {

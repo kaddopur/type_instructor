@@ -2,7 +2,7 @@
 
 來源：`4f1e318`（2016-09-26）。建立日期：2026-10-15。
 
-## 範圍與依據
+## 第 1 步範圍與依據（歷史紀錄）
 
 - `specs/gameplay/spec.md`：出題、計分、回饋、模式、重玩。
 - `specs/navigation-and-language/spec.md`：頁面、hash URL、三種語言。
@@ -19,7 +19,7 @@
 
 兩項皆不在第一步修正，也不以通過測試將錯誤行為固定為正確規格。
 
-## 其他觀察與遷移風險
+## 原始碼觀察與遷移風險（第 1 步紀錄）
 
 - 防止重複作答的 guard 在 Quiz 元件，reducer 本身沒有防重複 dispatch；reducer 測試不代表點擊 guard 已驗證。
 - 卸載只清理 interval，答題 timeout 沒有清理；第 3 步應驗證離開後不再換題或導頁。
@@ -37,8 +37,17 @@ npm run test:baseline
 ```
 
 測試直接載入原始碼，不再需要 Node resolve hook 或暫存安裝的 Lodash。
-這個指令不會驗證 React 元件或瀏覽器生命週期；第 2 步新增的瀏覽器 smoke
-驗證請見該 change 的 verification.md，以下清單保留完整遷移的驗收範圍。
+第 3 步將測試改為直接執行 Zustand store，原有出題、計分、回饋案例保留，
+另驗證作答防護與場次隔離。此指令不會驗證 React 元件或瀏覽器生命週期；
+瀏覽器驗證見第 2、3 步的 verification.md，以下清單保留完整遷移的驗收範圍。
+
+### 第 3 步實作狀態
+
+- Redux 與 React Redux 已移除；遊戲邏輯位於 `src/stores/quiz.js`。
+- 作答防護集中在 store action；hook 在離開或結束時清理 interval 和 timeout。
+- 每場遊戲使用獨立的 store，路徑改變與重玩皆建立新場次。
+- BUG-02 的目標常數目前位於 store，仍待第 4 步與說明統一。
+- 驗證結果見 `changes/archive/2026-10-15-replace-redux-with-zustand/verification.md`。
 
 ### 第 1 步執行結果（歷史紀錄）
 
@@ -49,7 +58,8 @@ npm run test:baseline
 
 ## 後續瀏覽器驗收清單
 
-以下尚未執行。一般／競速 × 攻擊／防禦四種組合皆須覆蓋；三語各走一遍完整流程。
+以下是第 6 步的完整驗收範圍，尚未作全項驗收。已完成的部分驗證以各 change
+紀錄為準。一般／競速 × 攻擊／防禦四種組合皆須覆蓋；三語各走一遍完整流程。
 
 - [ ] 根首頁英文預設；首頁 → 語言 → 選單 → 遊戲 → 結果 → 重玩／選單／首頁。
 - [ ] 選對模式與題幹；競速防禦符合 BUG-01 的修正目標。

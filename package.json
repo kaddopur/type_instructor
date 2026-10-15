@@ -14,9 +14,8 @@
     "normalize.css": "^8.0.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-redux": "^9.3.0",
     "react-router": "^8.4.0",
-    "redux": "^5.0.1"
+    "zustand": "^5.0.15"
   },
   "scripts": {
     "dev": "vite",

@@ -34,7 +34,7 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 ## 測試
 
-出題、計分與效果提示的 7 個 baseline 測試：
+出題、計分、效果提示、作答防護、結算與場次隔離的 11 個邏輯測試：
 
 ```sh
 npm test
@@ -43,7 +43,8 @@ npm test
 `npm run test:baseline` 執行相同測試。測試直接使用專案相依套件與原始碼。
 
 瀏覽器 smoke tests 涵蓋三語導頁、一般模式攻防、作答回饋、結果重玩、
-倒數結束、桌面／手機視窗、Pages 子路徑資源、service worker 註冊與首次離線重新整理：
+倒數結束、競速結算、快速重複點擊、回饋中切換模式、桌面／手機視窗、
+Pages 子路徑資源、service worker 註冊與首次離線重新整理：
 
 ```sh
 npx playwright install chromium
@@ -58,15 +59,24 @@ SMOKE_SERVER=dev npm run test:smoke
 ## 遷移進度
 
 - 第 1 步：現有系統 baseline 與邏輯測試已完成並歸檔。
-- 第 2 步：Vite、React 19 與必要的 Router／Redux bindings 相容性更新。
-- 第 3 步：移除 Redux，改用 Zustand 與遊戲 hook。
+- 第 2 步：Vite、React 19 與必要的相容性更新已完成並歸檔。
+- 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
 - 第 4 步：修正競速防禦錯誤連結，以及競速目標 3／20 分不一致。
 - 第 5 步：更新離線工具與 Pages 部署。
 - 第 6 步：完整驗收。
 
-目前兩個已知競速問題仍待第 4 步處理。Redux 的遊戲狀態仍保留至第 3 步。
+目前兩個已知競速問題仍待第 4 步處理。競速測試使用程式設定的目標值，
+不將目前 3 分的行為視為正確規格。
 舊離線工具的一個間接依賴使用相容的 trim-newlines 3.x override 修補，
 之後替換 sw-precache 時一併移除。
 
 玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
-本次變更與驗證紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
+第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
+第 3 步變更與驗證紀錄見 [Zustand migration](openspec/changes/archive/2026-10-15-replace-redux-with-zustand/)。
+
+## 遊戲狀態
+
+每場遊戲使用獨立的 [Zustand store](src/stores/quiz.js)，直接管理開始、計時、
+作答與回饋後的狀態更新；開始前、回饋期間、已選過的選項和結束後的輸入不計分。
+[useGame](src/hooks/useGame.js) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
+語言與模式沿用 URL，翻譯來自靜態 JSON；目前不持久保存遊戲狀態。

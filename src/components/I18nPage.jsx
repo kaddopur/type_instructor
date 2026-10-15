@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
+import messages from '../lib/messages.js';
 
 const I18nPage = (ChildComponent) => {
   function LocalizedPage(props) {
@@ -13,7 +14,8 @@ const I18nPage = (ChildComponent) => {
       document.documentElement.lang = lang;
     }, [lang]);
 
-    return <ChildComponent {...props} params={params} location={location} navigate={navigate} />;
+    return <ChildComponent {...props} params={params} location={location} navigate={navigate}
+      messages={messages[lang]} lang={lang} />;
   }
 
   return LocalizedPage;
