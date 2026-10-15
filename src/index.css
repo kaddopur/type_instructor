@@ -154,10 +154,6 @@
 .home-pixels-left {
   left: 20px;
 }
-.home-pixels-right {
-  right: 40px;
-  transform: scaleX(-1);
-}
 @media (max-height: 480px) {
   .Home {
     grid-template-rows: 1fr auto;
