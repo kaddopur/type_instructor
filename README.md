@@ -5,7 +5,7 @@
 
 ## 開發
 
-使用 Node.js 22.23.2（見 `.nvmrc`）；Router 要求至少 22.22，專案限定 Node 22。
+使用 Node.js 24.19.0（見 `.nvmrc`）；專案限定 Node 24，CI 讀取相同版本。
 套件管理使用 pnpm 11.22.0（見 packageManager）；`.npmrc` 使用公開 npm registry。
 沿用 pnpm-workspace.yaml 的套件發佈時間例外設定，僅保留 pnpm-lock.yaml 作為依賴鎖定檔。
 
