@@ -36,6 +36,8 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 ## 測試
 
+`pnpm lint` 檢查 JavaScript／JSX、未使用變數與 React Hooks；CI 使用相同規則。
+
 出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
 ```sh
