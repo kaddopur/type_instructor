@@ -191,12 +191,13 @@ pnpm test:e2e --shard=2/2
 
 [Pages workflow](.github/workflows/pages.yml) 使用固定 Node／pnpm 版本與 `--frozen-lockfile` 安裝。
 
-- 對 `master` 的 PR：驗證但不部署。
-- 推送至 `master`，或在 `master` 手動執行 workflow：兩組驗證皆成功後部署 `dist/`。
+- 對 `main` 的 PR：驗證但不部署。
+- 推送至 `main`，或在 `main` 手動執行 workflow：兩組驗證皆成功後部署 `dist/`。
 - 在其他分支手動執行 workflow：驗證但不部署。
 
 新環境或 fork 請先到 GitHub Settings → Pages → Build and deployment，將 Source 設為 **GitHub Actions**。
 部署使用官方 Pages 產物及 OIDC，發布至 `github-pages` 環境，同時間只允許一個部署執行。
+`github-pages` 環境的允許部署分支也必須設為 `main`；變更預設分支時，需同步調整 workflow 與這條環境規則。
 可從 Actions 的「Validate and deploy Pages」查看結果。
 
 ## 規格與歷史紀錄

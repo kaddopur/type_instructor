@@ -49,7 +49,7 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 - Phone-size screenshots of the home screen, start dialog and quiz were visually inspected.
 
 There is no SSR or server runtime. The Vite base and hash routes are unchanged;
-GitHub Actions continues to build `dist`, test it, and deploy only merged master changes.
+GitHub Actions continues to build `dist`, test it, and deploy only merged main changes.
 The branch's new UI is not claimed as published until its PR is merged and deployment succeeds.
 
 ## Test organization
