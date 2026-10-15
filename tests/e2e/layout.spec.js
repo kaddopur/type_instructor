@@ -12,7 +12,11 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
         // Emulate nonzero safe-area space; desktop WebKit does not show Safari chrome.
         await page.addStyleTag({ content: '.app-shell { padding: 24px 20px 34px; }' });
         await page.evaluate(() => document.fonts.ready);
-        if (!route) await expect(page.locator('.Home h1')).toHaveCSS('font-size', titleSize);
+        if (!route) {
+          await expect(page.locator('.Home h1')).toHaveCSS('font-size', titleSize);
+          await expect(page.locator('.Home .start a')).toHaveCSS('font-size', '24px');
+          await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '20px');
+        }
         const footer = page.locator('footer a');
         for (const action of await page.locator('.app-content a').all()) {
           const bounds = await action.boundingBox();
