@@ -31,8 +31,7 @@
   font-weight: normal;
   font-style: normal;
   font-family: "pokemon_gbregular";
-  src: url("./fonts/pokemon_gb-webfont.woff2") format("woff2"),
-  url("./fonts/pokemon_gb-webfont.woff") format("woff");
+  src: url("./fonts/pokemon_gb-webfont.woff2") format("woff2");
 }
 
 @font-face {
