@@ -8,6 +8,6 @@ const getStatus = (damage: number) => {
   } else if (damage > 1) {
     return 'EFFECTIVE_2';
   }
-}
+};
 
 export default getStatus;

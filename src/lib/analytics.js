@@ -8,7 +8,9 @@ export function trackPageView() {
 
   if (previousLocation === undefined) {
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
     window.gtag('js', new Date());
     // Also disable history-based page views in GA4 Enhanced Measurement (README).
     window.gtag('config', measurementId, { send_page_view: false });
@@ -22,7 +24,7 @@ export function trackPageView() {
     send_to: measurementId,
     page_location: pageLocation,
     page_title: document.title,
-    page_referrer: previousLocation ?? document.referrer
+    page_referrer: previousLocation ?? document.referrer,
   });
   previousLocation = pageLocation;
 }

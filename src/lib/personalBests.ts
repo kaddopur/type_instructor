@@ -2,8 +2,14 @@ import type { GameType, QuizType } from './types.ts';
 
 export function getPersonalBest(mode: GameType, kind: QuizType): number | null {
   try {
-    const value: unknown = JSON.parse(localStorage.getItem(`type-instructor:best:${mode}:${kind}`) ?? 'null');
-    return typeof value === 'number' && Number.isSafeInteger(value) && (mode === 'basic' || value >= 0) ? value : null;
+    const value: unknown = JSON.parse(
+      localStorage.getItem(`type-instructor:best:${mode}:${kind}`) ?? 'null',
+    );
+    return typeof value === 'number' &&
+      Number.isSafeInteger(value) &&
+      (mode === 'basic' || value >= 0)
+      ? value
+      : null;
   } catch {
     return null;
   }

@@ -1,0 +1,14 @@
+# Generated output and package-manager files
+node_modules/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+
+# Historical records, third-party fixtures and source assets
+openspec/changes/archive/
+tests/e2e/fixtures/
+src/fonts/
+src/images/

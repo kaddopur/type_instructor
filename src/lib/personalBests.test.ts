@@ -5,7 +5,7 @@ beforeEach(() => {
   const entries = new Map<string, string>();
   vi.stubGlobal('localStorage', {
     getItem: (key: string) => entries.get(key) ?? null,
-    setItem: (key: string, value: string) => entries.set(key, value)
+    setItem: (key: string, value: string) => entries.set(key, value),
   });
 });
 afterEach(() => vi.unstubAllGlobals());
@@ -39,8 +39,12 @@ test('ignores invalid stored data and invalid results', () => {
 
 test('storage failures do not interrupt play or the menu', () => {
   vi.stubGlobal('localStorage', {
-    getItem: () => { throw new Error('Storage unavailable'); },
-    setItem: () => { throw new Error('Storage unavailable'); }
+    getItem: () => {
+      throw new Error('Storage unavailable');
+    },
+    setItem: () => {
+      throw new Error('Storage unavailable');
+    },
   });
   expect(getPersonalBest('basic', 'attack')).toBeNull();
   expect(() => savePersonalBest('basic', 'attack', 5)).not.toThrow();

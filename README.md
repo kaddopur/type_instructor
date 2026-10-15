@@ -10,11 +10,11 @@ Pokémon 的相關權利屬於各權利人。
 
 先看玩法與實際遊戲畫面，再從介紹頁按「開始遊戲」：
 
-| 語言 | 遊戲介紹 |
-|---|---|
+| 語言    | 遊戲介紹                                                                |
+| ------- | ----------------------------------------------------------------------- |
 | English | [About the game](https://kaddopur.github.io/type_instructor/#/en/about) |
-| 中文 | [遊戲介紹](https://kaddopur.github.io/type_instructor/#/zh/about) |
-| 日本語 | [ゲーム紹介](https://kaddopur.github.io/type_instructor/#/ja/about) |
+| 中文    | [遊戲介紹](https://kaddopur.github.io/type_instructor/#/zh/about)       |
+| 日本語  | [ゲーム紹介](https://kaddopur.github.io/type_instructor/#/ja/about)     |
 
 也可以直接開啟[遊戲首頁](https://kaddopur.github.io/type_instructor/#/zh/)。
 
@@ -28,10 +28,10 @@ Pokémon 的相關權利屬於各權利人。
 防禦題針對同一攻擊屬性，先練免疫、下一輪練抗性，再交替輪替；沒有免疫時練抗性。
 抗性題不放入免疫選項，請選四個選項中受到傷害最少的屬性。重玩會重設題序與輪替紀錄。
 
-| 模式 | 目標 |
-|---|---|
+| 模式     | 目標                                     |
+| -------- | ---------------------------------------- |
 | 一般遊玩 | 在 60 秒內取得最高分，最後分數可能為負分 |
-| 時間競速 | 盡快達到 20 分，結果顯示經過秒數 |
+| 時間競速 | 盡快達到 20 分，結果顯示經過秒數         |
 
 按下開始對話框的「開始」後才會計時。鍵盤可用 Tab／Shift+Tab 移動焦點，
 Enter 開啟連結，Enter／空白鍵開始或作答。開始對話框內按 Escape 可返回選單。
@@ -64,11 +64,11 @@ Enter 開啟連結，Enter／空白鍵開始或作答。開始對話框內按 Es
 
 Type Instructor 是可安裝的網頁 App（PWA），可以從主畫面或電腦上的圖示開啟。
 
-| 裝置／瀏覽器 | 安裝方式 |
-|---|---|
+| 裝置／瀏覽器          | 安裝方式                                                            |
+| --------------------- | ------------------------------------------------------------------- |
 | iPhone／iPad · Safari | 分享選單 → 加入主畫面；若有「打開為網頁 App」，保持開啟後按「加入」 |
-| Android · Chrome | 右上角選單 → 安裝應用程式或加到主畫面，再依畫面指示完成 |
-| 電腦 · Chrome／Edge | 使用瀏覽器的安裝選項，完整選單步驟見介紹頁 |
+| Android · Chrome      | 右上角選單 → 安裝應用程式或加到主畫面，再依畫面指示完成             |
+| 電腦 · Chrome／Edge   | 使用瀏覽器的安裝選項，完整選單步驟見介紹頁                          |
 
 從 Threads 等 App 內開啟時，請先改用 Safari、Chrome 或 Edge。
 選單名稱可能隨版本不同；無法安裝時仍能直接在瀏覽器遊玩。
@@ -113,6 +113,28 @@ pnpm dev
 開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動開發伺服器。
 套件來源與發佈時間政策分別設定於 [.npmrc](.npmrc) 及 [pnpm-workspace.yaml](pnpm-workspace.yaml)。
 
+### 程式碼格式
+
+使用 Prettier 統一格式，保留 ESLint 檢查程式錯誤與 React Hooks。
+Tailwind 官方外掛會依 `src/index.css` 的主題與斷點排序 class，
+包含 `className` 與 `cn`、`clsx`、`cva` 呼叫中的類別。
+
+```sh
+pnpm format        # 整理格式
+pnpm format:check  # 只檢查，不修改
+```
+
+安裝依賴時會設定 pre-commit hook（提交前檢查）。執行 `git commit` 時，
+`lint-staged` 會先對暫存的 JS／TS 執行 `eslint --fix`，再用 Prettier 整理格式，
+最後重跑 ESLint 確認結果。其他支援的檔案只執行 Prettier。
+工具能修正的內容會自動加入這次提交；仍有錯誤時會阻擋提交，請修正後重試。
+只暫存部分修改時，工具會保留未暫存的內容，不會一起提交。
+可用 `pnpm lint:staged` 手動執行相同流程，或用 `pnpm lint:fix` 修正整個專案。
+
+CI 仍會檢查完整專案；VS Code 安裝 Prettier 擴充套件後，儲存檔案會自動整理。
+產生檔、鎖定檔、歷史 OpenSpec 歸檔、第三方測試資料與圖片／字型不參與格式整理。
+完整範圍見 [.prettierignore](.prettierignore)。
+
 ### 技術與程式結構
 
 React 19、Vite 8、React Router、Zustand 與 Tailwind CSS 4。元件樣式使用 Tailwind；全域 CSS 僅保留主題、字型、共用斷點與基礎規則。
@@ -148,15 +170,16 @@ Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離�
 
 ## 測試
 
-| 指令 | 用途 |
-|---|---|
-| `pnpm lint` | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
-| `pnpm typecheck` | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移 |
-| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，23 個案例 |
-| `pnpm test:unit:watch` | 開發時持續執行單元測試 |
-| `pnpm test:e2e` | Playwright 完整矩陣，160 個案例 |
-| `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
-| `pnpm test:a11y` | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y` |
+| 指令                          | 用途                                                 |
+| ----------------------------- | ---------------------------------------------------- |
+| `pnpm format:check`           | 檢查程式碼、設定與文件格式                           |
+| `pnpm lint`                   | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
+| `pnpm typecheck`              | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移    |
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，23 個案例                           |
+| `pnpm test:unit:watch`        | 開發時持續執行單元測試                               |
+| `pnpm test:e2e`               | Playwright 完整矩陣，160 個案例                      |
+| `pnpm test:e2e:smoke`         | Chromium 的 7 個關鍵流程，篩選 `@smoke`              |
+| `pnpm test:a11y`              | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y`       |
 
 單元測試放在原始碼旁（`src/**/*.test.ts`），使用 Node 環境，涵蓋題袋覆蓋與跨輪防重複、
 防禦輪替、傷害倍率、計分、19／20 分邊界、場次隔離及路由驗證。Playwright 僅收集 `tests/e2e/**/*.spec.js`，涵蓋完整頁面、

@@ -18,14 +18,25 @@ const I18nPage = (ChildComponent) => {
       document.title = `${pageTitle === 'Type Instructor' ? messages[lang].APP_DESCRIPTION : pageTitle} | Type Instructor`;
       trackPageView();
       if (!document.querySelector('[role="dialog"]')) {
-        document.querySelector('main')?.querySelector(
-          'a[href]:not([tabindex="-1"]), button:not(:disabled):not([aria-disabled="true"]):not([tabindex="-1"])'
-        )?.focus({ preventScroll: true });
+        document
+          .querySelector('main')
+          ?.querySelector(
+            'a[href]:not([tabindex="-1"]), button:not(:disabled):not([aria-disabled="true"]):not([tabindex="-1"])',
+          )
+          ?.focus({ preventScroll: true });
       }
     }, [lang, location.pathname]);
 
-    return <ChildComponent {...props} params={params} location={location} navigate={navigate}
-      messages={messages[lang]} lang={lang} />;
+    return (
+      <ChildComponent
+        {...props}
+        params={params}
+        location={location}
+        navigate={navigate}
+        messages={messages[lang]}
+        lang={lang}
+      />
+    );
   }
 
   return LocalizedPage;

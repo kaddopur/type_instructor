@@ -15,24 +15,25 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HashRouter>
       <AppShell>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:lang/" element={<Home />} />
-        <Route path="/:lang/about" element={<Landing />} />
-        <Route path="/:lang/menu" element={<Menu />} />
-        <Route path="/:lang/lang" element={<Lang />} />
-        <Route path="/:lang/quizzes/:category/:gameType/:quizType" element={<GameRoute />}>
-          <Route index element={<Quiz />} />
-          <Route path="result/:value" element={<Result />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/en/" replace />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/:lang/" element={<Home />} />
+          <Route path="/:lang/about" element={<Landing />} />
+          <Route path="/:lang/menu" element={<Menu />} />
+          <Route path="/:lang/lang" element={<Lang />} />
+          <Route path="/:lang/quizzes/:category/:gameType/:quizType" element={<GameRoute />}>
+            <Route index element={<Quiz />} />
+            <Route path="result/:value" element={<Result />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/en/" replace />} />
+        </Routes>
       </AppShell>
     </HashRouter>
-  </StrictMode>
+  </StrictMode>,
 );
 
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}service-worker.js`, { updateViaCache: 'none' })
-    .catch(error => console.warn('Service worker registration failed:', error));
+  navigator.serviceWorker
+    .register(`${import.meta.env.BASE_URL}service-worker.js`, { updateViaCache: 'none' })
+    .catch((error) => console.warn('Service worker registration failed:', error));
 }

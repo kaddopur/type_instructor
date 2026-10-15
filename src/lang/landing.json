@@ -6,11 +6,7 @@
     "howLink": "How to play",
     "heroAlt": "Actual English attack quiz: the enemy is Poison, with a separate question asking which attack type is most effective.",
     "screenshotLabel": "Captured from the actual game",
-    "facts": [
-      "18 types",
-      "2 game modes",
-      "3 languages"
-    ],
+    "facts": ["18 types", "2 game modes", "3 languages"],
     "howTitle": "Three steps. One better memory.",
     "steps": [
       {
@@ -91,11 +87,7 @@
     "howLink": "查看玩法",
     "heroAlt": "實際中文攻擊題畫面：敵方屬性是毒，下方獨立詢問哪種攻擊屬性最有效。",
     "screenshotLabel": "實際遊戲畫面",
-    "facts": [
-      "18 種屬性",
-      "2 種模式",
-      "3 種語言"
-    ],
+    "facts": ["18 種屬性", "2 種模式", "3 種語言"],
     "howTitle": "三個步驟，慢慢記熟。",
     "steps": [
       {
@@ -176,11 +168,7 @@
     "howLink": "遊び方を見る",
     "heroAlt": "実際の日本語の攻撃問題。敵はどくタイプで、最も効果的な攻撃タイプをカードの下で尋ねています。",
     "screenshotLabel": "実際のゲーム画面",
-    "facts": [
-      "18 タイプ",
-      "2 モード",
-      "3 言語"
-    ],
+    "facts": ["18 タイプ", "2 モード", "3 言語"],
     "howTitle": "3 ステップで、少しずつ覚える。",
     "steps": [
       {

@@ -7,12 +7,21 @@ import { promisify } from 'node:util';
 
 const execute = promisify(execFile);
 const base = '/type_instructor/';
-const legacyWorker = await readFile(new URL('../fixtures/legacy-service-worker.js', import.meta.url));
-const legacyHTML = '<!doctype html><h1>Legacy build</h1><script>navigator.serviceWorker.register("service-worker.js")</script>';
+const legacyWorker = await readFile(
+  new URL('../fixtures/legacy-service-worker.js', import.meta.url),
+);
+const legacyHTML =
+  '<!doctype html><h1>Legacy build</h1><script>navigator.serviceWorker.register("service-worker.js")</script>';
 const contentTypes = {
-  '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css',
-  '.json': 'application/json', '.png': 'image/png', '.ico': 'image/x-icon',
-  '.woff': 'font/woff', '.woff2': 'font/woff2', '.svg': 'image/svg+xml'
+  '.html': 'text/html',
+  '.js': 'application/javascript',
+  '.css': 'text/css',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.svg': 'image/svg+xml',
 };
 
 export async function serveOfflineBuilds() {
@@ -24,10 +33,16 @@ export async function serveOfflineBuilds() {
   let server;
 
   try {
-    for (const [directory, marker] of [[next, 'next'], [broken, 'broken']]) {
+    for (const [directory, marker] of [
+      [next, 'next'],
+      [broken, 'broken'],
+    ]) {
       await cp(current, directory, { recursive: true });
       const html = await readFile(join(directory, 'index.html'), 'utf8');
-      await writeFile(join(directory, 'index.html'), html.replace('<html ', `<html data-build="${marker}" `));
+      await writeFile(
+        join(directory, 'index.html'),
+        html.replace('<html ', `<html data-build="${marker}" `),
+      );
       if (directory === broken) {
         await cp(join(current, 'cover-256x256.png'), join(directory, 'missing-precache-asset.png'));
       }
@@ -50,12 +65,15 @@ export async function serveOfflineBuilds() {
           response.writeHead(404).end();
           return;
         }
-        const contents = phase === 'legacy' && filename === 'service-worker.js' ? legacyWorker
-          : phase === 'legacy' && filename === 'index.html' ? legacyHTML
-          : await readFile(path);
+        const contents =
+          phase === 'legacy' && filename === 'service-worker.js'
+            ? legacyWorker
+            : phase === 'legacy' && filename === 'index.html'
+              ? legacyHTML
+              : await readFile(path);
         response.writeHead(200, {
           'Content-Type': contentTypes[extname(filename)] || 'application/octet-stream',
-          'Cache-Control': 'no-store'
+          'Cache-Control': 'no-store',
         });
         response.end(contents);
       } catch (error) {
@@ -69,13 +87,15 @@ export async function serveOfflineBuilds() {
 
     return {
       url: `http://127.0.0.1:${server.address().port}${base}`,
-      select: value => { phase = value; },
+      select: (value) => {
+        phase = value;
+      },
       close: async () => {
-        const closed = new Promise(done => server.close(done));
+        const closed = new Promise((done) => server.close(done));
         server.closeAllConnections();
         await closed;
         await rm(temporary, { recursive: true, force: true });
-      }
+      },
     };
   } catch (error) {
     server?.close();

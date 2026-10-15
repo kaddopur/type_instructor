@@ -14,7 +14,7 @@ const { count, size, warnings } = await generateSW({
   skipWaiting: true,
   clientsClaim: true,
   inlineWorkboxRuntime: true,
-  importScripts: ['legacy-cache-cleanup.js']
+  importScripts: ['legacy-cache-cleanup.js'],
 });
 
 if (warnings.length) throw new Error(warnings.join('\n'));
