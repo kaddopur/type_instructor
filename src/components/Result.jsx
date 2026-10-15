@@ -1,48 +1,23 @@
 import I18nLink from './I18nLink.jsx';
 import I18nPage from './I18nPage.jsx';
-import './Result.css';
+import { Button } from '@/components/ui/button';
 
-function Result(props) {
-  const {
-    messages: {
-      YOUR_SCORES,
-      YOUR_TIME,
-      RETRY,
-      MENU,
-      HOME
-    },
-    lang,
-    params: {
-      value,
-      category,
-      gameType,
-      quizType
-    }
-  } = props;
-
-  let titleDiv = null;
-
-  if (gameType === 'basic') {
-    titleDiv = <h1>{YOUR_SCORES}<br/>{value}</h1>;
-  } else if (gameType === 'speedrun') {
-    titleDiv = <h1>{YOUR_TIME}<br/>{`${value}s`}</h1>;
-  }
-
+function Result({ messages: { YOUR_SCORES, YOUR_TIME, RETRY, MENU, HOME }, lang,
+  params: { value, category, gameType, quizType } }) {
   return (
-    <nav className="Result">
-      <section>
-        {titleDiv}
-        <div className="resultItem">
-          <I18nLink to={`/quizzes/${category}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink>
+    <nav className="Result flex min-h-dvh w-full flex-col items-center" aria-label={gameType === 'basic' ? YOUR_SCORES : YOUR_TIME}>
+      <section className="flex grow-[10] flex-col items-center">
+        <h1 tabIndex={-1} className="mt-8 mb-4 text-center text-[1.2rem] leading-loose [text-shadow:0_.18rem_#0003]">
+          {gameType === 'basic' ? YOUR_SCORES : YOUR_TIME}<br />{gameType === 'basic' ? value : `${value}s`}
+        </h1>
+        <div className="resultItem m-2">
+          <Button asChild><I18nLink to={`/quizzes/${category}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink></Button>
         </div>
-        <div className="resultItem">
-          <I18nLink to="/menu" lang={lang}>{MENU}</I18nLink>
+        <div className="resultItem m-2">
+          <Button asChild><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
         </div>
       </section>
-
-      <footer>
-        <I18nLink to="/" lang={lang}>{HOME}</I18nLink>
-      </footer>
+      <footer className="grow p-8"><I18nLink to="/" lang={lang}>{HOME}</I18nLink></footer>
     </nav>
   );
 }
