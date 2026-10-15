@@ -7,4 +7,4 @@
 - [x] 5. Refresh the start dialog.
 - [x] 6. Refresh Quiz and progress feedback.
 - [x] 7. Refresh results.
-- [ ] 8. Verify, document and archive the complete redesign; prepare PR handoff.
+- [x] 8. Verify, document and archive the complete redesign; prepare PR handoff.

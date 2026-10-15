@@ -19,7 +19,7 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION }, lang }) {
           </Button>
         </section>
         <section className="lang">
-          <Button asChild className="min-h-[48px] w-[180px] text-[16px]">
+          <Button asChild className="h-[56px] min-h-0 w-[220px] whitespace-nowrap text-[16px]">
             <I18nLink to="/lang" lang={lang} aria-label={CHANGE_LANGUAGE}>
               <img src={globe} width="24" height="24" alt="" />
               <span aria-hidden="true">{lang === 'en' ? 'English' : lang === 'ja' ? '日本語' : '中文'} ▾</span>

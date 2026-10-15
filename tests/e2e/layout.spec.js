@@ -16,8 +16,8 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
         if (!route) {
           await expect(page.locator('.Home h1')).toHaveCSS('font-size', titleSize);
           await expect(page.locator('.Home .start a')).toHaveCSS('font-size', '24px');
-          await expect(page.locator('.Home .start a')).toHaveCSS('width', '175px');
-          await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '20px');
+          await expect(page.locator('.Home .start a')).toHaveCSS('width', '240px');
+          await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '14px');
         }
         if (route === 'menu') {
           const geometry = await page.locator('.Menu .menuItem a').evaluateAll(nodes => nodes.map(node => {

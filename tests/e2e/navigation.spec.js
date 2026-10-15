@@ -118,8 +118,20 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
   const response = await request.get(manifestURL);
   expect(response.ok()).toBe(true);
   const manifest = await response.json();
-  const icon = await request.get(new URL(manifest.icons[0].src, response.url()).href);
-  expect(icon.headers()['content-type']).toContain('image/png');
+  for (const icon of manifest.icons) {
+    const asset = await request.get(new URL(icon.src, response.url()).href);
+    expect(asset.headers()['content-type']).toContain('image/png');
+    const bytes = await asset.body();
+    expect(`${bytes.readUInt32BE(16)}x${bytes.readUInt32BE(20)}`).toBe(icon.sizes);
+  }
+  for (const href of await page.locator('link[rel="icon"]').evaluateAll(nodes => nodes.map(node => node.href))) {
+    const asset = await request.get(href);
+    expect(asset.ok()).toBe(true);
+    if (href.endsWith('.svg')) {
+      expect(asset.headers()['content-type']).toContain('image/svg+xml');
+      expect(await asset.text()).toContain('Type Instructor');
+    }
+  }
   for (const href of await page.locator('link[rel="apple-touch-icon"]').evaluateAll(nodes => nodes.map(node => node.href))) {
     expect((await request.get(href)).headers()['content-type']).toContain('image/png');
   }

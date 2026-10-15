@@ -16,6 +16,7 @@ colors while making navigation, hierarchy and feedback consistent across locales
 6. Quiz hierarchy, fixed feedback, answer symbols and 20-point progress.
 7. Result emphasis and clear retry/navigation hierarchy.
 8. Browser/layout/accessibility/offline verification, documentation and archive.
+   The user also requested a matching favicon; update browser, Apple and PWA icons.
 
 ## Capabilities
 

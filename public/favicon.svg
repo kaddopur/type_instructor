@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <title>Type Instructor</title>
+  <path fill="#242424" d="M2 0h12v1h1v1h1v12h-1v1h-1v1H2v-1H1v-1H0V2h1V1h1z"/>
+  <path fill="#ffd447" d="M2 1h12v1h1v12h-1v1H2v-1H1V2h1z"/>
+  <path fill="#2db6eb" d="M12 10h3v4h-1v1h-4v-3h2z"/>
+  <path fill="#242424" d="M4 4h8v2H9v6H7V6H4z"/>
+</svg>

@@ -84,7 +84,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
             onClick={() => selectAnswer(index)}>
             <span className="optionText">
               {messages[type.toUpperCase()]}
-              {clicked ? <span className="optionDamage" aria-hidden="true">{correct ? '✓' : '✕'} ×{damage}</span> : null}
+              {clicked ? <><span className="answer-symbol" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage" aria-hidden="true">{damage}</span></> : null}
             </span>
           </Button>
         ))}

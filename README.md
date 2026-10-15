@@ -184,3 +184,12 @@ axe 掃描 WCAG 2 A／AA 與 2.1 AA 規則，涵蓋三語頁面、開始 Dialog 
 玩法仍有既定時間限制，若要提供不限時練習需另行設計。
 
 步驟與驗收紀錄見 [UI migration](docs/ui-migration.md)。
+
+
+## 新版像素介面
+
+新版使用暖白背景、黃藍點綴與模式卡片，保留本機像素字型、屬性色、
+Safari 安全區域及三語一致的布局。競速進度條以 20 分為目標；計分規則維持不變。
+Favicon、Safari 主畫面與 PWA 圖示共用黃藍像素 T。
+
+實際瀏覽器截圖、八步驟紀錄與驗證限制見 [UI refresh](docs/ui-refresh/README.md)。

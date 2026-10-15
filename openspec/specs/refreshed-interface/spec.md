@@ -1,5 +1,9 @@
-## ADDED Requirements
+# refreshed-interface Specification
 
+## Purpose
+Define the approved pixel UI hierarchy, localized navigation, progress feedback and matching app icons.
+
+## Requirements
 ### Requirement: Consistent pixel navigation
 The interface SHALL use shared warm-canvas, white-surface, charcoal-outline and
 yellow-primary tokens. Home SHALL group start/language actions; Menu SHALL show
@@ -31,3 +35,13 @@ projects; physical-device limits SHALL be stated explicitly.
 #### Scenario: Browser acceptance
 - **WHEN** the production build is validated
 - **THEN** complete games, layout invariance, accessibility and offline checks pass
+
+### Requirement: Matching app icons
+Browser favicon, Apple touch icon and PWA manifest icons SHALL use the local
+pixel-T artwork with yellow, charcoal and blue. SVG/ICO/PNG delivery SHALL work
+under the Pages base and be included in offline precaching.
+
+#### Scenario: Icon delivery
+- **WHEN** the application loads browser and manifest icons
+- **THEN** all referenced assets resolve and raster dimensions match their declarations
+

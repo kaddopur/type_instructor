@@ -13,3 +13,7 @@ score visible. Store/timers and 500ms answer boundaries remain authoritative.
 Small viewports use compact spacing; landscape places mode cards side by side
 and uses a compact quiz layout. The AppShell retains dynamic viewport ownership
 and all safe-area insets. Browser emulation does not prove iPhone Safari chrome.
+
+The user also requested a favicon during implementation. A local pixel-T SVG
+is the source for browser, Apple and manifest icons; old cropped-title icons
+are replaced. PNG sizes and all icon paths are checked with the resource suite.
