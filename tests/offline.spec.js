@@ -71,7 +71,7 @@ test('legacy and current workers update safely, survive failed installs, and pla
     await expect(page.locator('.Home')).toBeVisible();
     await page.evaluate(() => { location.hash = '/zh/menu'; });
     await page.getByRole('link', { name: '防禦', exact: true }).first().click();
-    await page.locator('.overlay').click();
+    await page.getByTestId('start-game').click();
     await page.locator('.optionItem').first().click();
     await expect(page.locator('.stemScores')).toHaveText(/分數: -?1$/);
     const scores = await page.locator('.stemScores').textContent();

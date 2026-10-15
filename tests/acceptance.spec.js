@@ -37,7 +37,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await expect(page.locator('.overlay span')).toHaveText(mode === 'basic' ? text.GOAL_BASIC : text.GOAL_SPEEDRUN.replace('{scoreTarget}', 20));
         await page.clock.runFor(2000);
         await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 60 : 0}`);
-        await page.locator('.overlay').evaluate(node => { node.click(); node.click(); });
+        await page.getByTestId('start-game').evaluate(node => { node.click(); node.click(); });
 
         const boxes = await page.locator('.optionItem').evaluateAll(nodes => nodes.map(node => {
           const rect = node.getBoundingClientRect();
@@ -61,12 +61,12 @@ for (const [lang, text] of Object.entries(languages)) {
         const damage = Number(await page.locator('.optionDamage').textContent());
         const status = { 0: 'EFFECTIVE_0', 0.5: 'EFFECTIVE_1_2', 1: 'EFFECTIVE_1', 2: 'EFFECTIVE_2' }[damage];
         await expect(page.locator('.stemStatus')).toHaveText(text[status]);
-        await page.locator(correct).click(); // Rejected during feedback.
+        await page.locator(correct).dispatchEvent('click'); // Even synthetic inputs are rejected during feedback.
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
         await page.clock.runFor(499);
         await expect(page.locator('.stemStatus')).not.toBeEmpty();
         await page.clock.runFor(1);
-        await page.locator('.optionItem.Bgc-wrong').click(); // Rejected after feedback too.
+        await page.locator('.optionItem.Bgc-wrong').dispatchEvent('click'); // Rejected after feedback too.
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
         await page.locator(correct).click();
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 0`);

@@ -1,5 +1,6 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 
@@ -43,13 +44,14 @@
   unicode-range: U+0030-0039, U+3040-309F, U+30A1-30F3;
 }
 
-body {
-  font-family: "pkmn_s", "pokemon_gbregular", monospace;
-}
-
-a {
-  color: initial;
-  text-decoration: none;
-
-  user-select: none;
+@layer base {
+  body {
+    font-family: var(--font-pixel);
+    background: white;
+    color: black;
+  }
+  a {
+    text-decoration: none;
+    user-select: none;
+  }
 }

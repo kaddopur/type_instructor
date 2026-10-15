@@ -7,9 +7,7 @@ import Lang from './components/Lang.jsx';
 import Quiz from './components/Quiz.jsx';
 import Result from './components/Result.jsx';
 import GameRoute from './components/GameRoute.tsx';
-import 'normalize.css';
 import './index.css';
-import './color.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

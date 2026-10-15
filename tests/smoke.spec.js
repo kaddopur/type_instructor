@@ -17,7 +17,7 @@ test('unknown languages and invalid game URLs recover without crashing or leavin
 
   await page.goto('./#/unknown/quizzes/s/basic/attack');
   await expect(page.locator('.overlay span')).toHaveText('answer in 60 sec');
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
   await page.clock.runFor(1000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 59');
 
@@ -81,7 +81,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
       await expect(page.locator('.overlay')).toBeVisible();
       await expect(page.locator('.stemTimer')).toContainText('60');
       await expect(page.locator('.optionItem')).toHaveCount(4);
-      await page.locator('.overlay').click();
+      await page.getByTestId('start-game').click();
       await expect(page.locator('.overlay')).toHaveCount(0);
       await page.locator('.optionItem').first().click();
       await expect(page.locator('.optionDamage')).toHaveCount(1);
@@ -109,7 +109,7 @@ test('timer starts once and basic mode reaches its result page', async ({ page }
   await expect(page.locator('.overlay')).toBeVisible();
   await page.clock.runFor(2000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 60');
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
   await page.clock.runFor(1000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 59');
   await page.clock.runFor(59000);
@@ -131,20 +131,20 @@ test('rapid answers and route changes keep game sessions isolated', async ({ pag
   await expect(page.locator('.stemContainer')).toHaveClass(/Bgc-electric/);
   await page.locator('.optionItem.Bgc-ground').dispatchEvent('click');
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
 
   await page.locator('.optionItem:not(.Bgc-ground)').first().evaluate(node => {
     node.click();
     node.click();
   });
   await expect(page.locator('.stemScores')).toHaveText('scores: -1');
-  await page.locator('.optionItem.Bgc-ground').click();
+  await page.locator('.optionItem.Bgc-ground').dispatchEvent('click');
   await expect(page.locator('.stemScores')).toHaveText('scores: -1');
   await page.clock.runFor(499);
   await expect(page.locator('.stemStatus')).not.toBeEmpty();
   await page.clock.runFor(1);
   await expect(page.locator('.stemStatus')).toBeEmpty();
-  await page.locator('.optionItem.Bgc-wrong').click();
+  await page.locator('.optionItem.Bgc-wrong').dispatchEvent('click');
   await expect(page.locator('.stemScores')).toHaveText('scores: -1');
   await page.locator('.optionItem.Bgc-ground').click();
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
@@ -157,7 +157,7 @@ test('rapid answers and route changes keep game sessions isolated', async ({ pag
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
   await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
   await expect(page.locator('.optionDamage')).toHaveCount(0);
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
   await page.clock.runFor(1000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 1');
   await page.evaluate(() => { window.location.hash = '/en/menu'; });
@@ -174,7 +174,7 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
   await page.locator('.Menu section').nth(1).getByRole('link', { name: 'Defend', exact: true }).click();
   await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
   await expect(page.locator('.overlay span')).toHaveText('score 20');
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
   for (let score = 1; score <= SCORE_TARGET; score++) {
     await page.locator('.optionItem.Bgc-ground').click();
     await expect(page.locator('.stemScores')).toHaveText(`scores: ${score}`);
@@ -195,7 +195,7 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
 
   // Leave a fresh answer pending: its timeout must not affect the menu.
-  await page.locator('.overlay').click();
+  await page.getByTestId('start-game').click();
   await page.locator('.optionItem.Bgc-ground').click();
   await page.evaluate(() => { window.location.hash = '/en/menu'; });
   await expect(page.locator('.Menu')).toBeVisible();
