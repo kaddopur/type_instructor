@@ -7,7 +7,7 @@
 
 ## 2. Release handoff
 
-- [ ] 2.1 Archive the acceptance change and commit the reviewable result.
-- [ ] 2.2 Push and open a PR; resolve remote CI failures before merging.
-- [ ] 2.3 Merge the passing PR and verify the Pages deployment and live game.
-- [ ] 2.4 Record final release references, results, and remaining operational limitations.
+- [x] 2.1 Archive the acceptance change and commit the reviewable result.
+- [x] 2.2 Push and open a PR; resolve remote CI failures before merging.
+- [x] 2.3 Merge the passing PR and verify the Pages deployment and live game.
+- [x] 2.4 Record final release references, results, and remaining operational limitations.

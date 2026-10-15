@@ -83,4 +83,4 @@ pnpm test:baseline
 - [x] 手機／桌面版面、三語文字、字型與圖片正常。
 - [x] 首次連線後離線可玩，舊 service worker 能更新，新版不被舊快取遮蔽。
 
-第 6 步證據與發布結果見 `changes/complete-migration-acceptance/verification.md`。
+第 6 步證據與發布結果見 `changes/archive/2026-10-15-complete-migration-acceptance/verification.md`。

@@ -1,7 +1,7 @@
 # pages-deployment Specification
 
 ## Purpose
-TBD - created by archiving change modernize-offline-deployment. Update Purpose after archive.
+Define validated master-only GitHub Pages publication through Actions.
 ## Requirements
 ### Requirement: Validated Pages artifact
 GitHub Actions SHALL install the pinned pnpm version, use its frozen lockfile and

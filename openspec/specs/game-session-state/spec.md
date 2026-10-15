@@ -1,7 +1,7 @@
 # game-session-state Specification
 
 ## Purpose
-TBD - created by archiving change replace-redux-with-zustand. Update Purpose after archive.
+Define isolated Zustand game sessions, guarded actions, and timer cleanup.
 ## Requirements
 ### Requirement: Zustand ownership
 The application SHALL manage game state with Zustand and contain no Redux runtime,

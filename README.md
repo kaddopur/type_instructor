@@ -64,8 +64,10 @@ SMOKE_SERVER=dev pnpm test:smoke
 - 第 2 步：Vite、React 19 與必要的相容性更新已完成並歸檔。
 - 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
 - 第 4 步：已修正競速防禦入口，並將競速目標與三語說明統一為 20 分，已完成並歸檔。
-- 第 5 步：Workbox 離線更新與 Pages workflow 已完成並歸檔；尚未發布至線上。
-- 第 6 步：本機完整驗收已通過，遠端 CI 與正式發布進行中。
+- 第 5 步：Workbox 離線更新與 Pages workflow 已完成並歸檔。
+- 第 6 步：本機與遠端 CI 完整驗收通過，已歸檔、合併、部署並驗證正式站。
+
+正式遊戲：[Type Instructor](https://kaddopur.github.io/type_instructor/)。遷移 PR：[#2](https://github.com/kaddopur/type_instructor/pull/2)。
 
 競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
 目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
@@ -121,4 +123,4 @@ pnpm test:acceptance
 CI 會在原有 smoke tests 後執行此矩陣，全部通過才會部署。
 
 驗收也涵蓋四個答案的可見範圍，並修正舊版在寬螢幕裁掉第二排答案的問題。
-詳見 [第 6 步驗證與發布紀錄](openspec/changes/complete-migration-acceptance/verification.md)。
+詳見 [第 6 步驗證與發布紀錄](openspec/changes/archive/2026-10-15-complete-migration-acceptance/verification.md)。

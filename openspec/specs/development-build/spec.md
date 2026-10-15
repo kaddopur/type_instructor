@@ -1,7 +1,7 @@
 # development-build Specification
 
 ## Purpose
-TBD - created by archiving change migrate-vite-react. Update Purpose after archive.
+Document reproducible pnpm installation, Vite builds, and production resource compatibility.
 ## Requirements
 ### Requirement: Reproducible installation
 The project SHALL declare a supported Node version and pinned pnpm version, use

@@ -1,7 +1,7 @@
 # offline-updates Specification
 
 ## Purpose
-TBD - created by archiving change modernize-offline-deployment. Update Purpose after archive.
+Define offline gameplay, scope-safe worker upgrades, and failed-install recovery.
 ## Requirements
 ### Requirement: Offline game assets
 The production build SHALL precache all local application resources using Workbox

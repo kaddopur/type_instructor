@@ -46,9 +46,36 @@ four projects. Desktop Chromium and mobile WebKit screenshots were also inspecte
 
 ## Release progress
 
-Local changes are ready for a PR. Remaining: remote CI, merge, Pages deployment,
-live verification, final archive, and release references. The Pages source was
-read-only checked as workflow; no Pages settings mutation was needed.
+PR #2: https://github.com/kaddopur/type_instructor/pull/2
+
+Remote Ubuntu CI passed logic tests, 7 production smoke tests, and all 52 acceptance
+cases: https://github.com/kaddopur/type_instructor/actions/runs/38676470901
+
+The tested implementation head was b27285d9e2092926112550ce2aa985fa89df0ade.
+PR #2 merged as 10aa46dc8b82416b940a34c3640bfea656bf5471 after passing checks.
+The github-pages environment permits master, and Pages is already set to workflow;
+no Pages/environment settings mutation was needed.
+
+Master build and deployment passed:
+https://github.com/kaddopur/type_instructor/actions/runs/38676795520
+
+Published site: https://kaddopur.github.io/type_instructor/
+
+Live Chromium verification passed: homepage, actual defense menu route, displayed
+20-point goal, all 20 correct answers, the 9-second result from the controlled
+clock, clean retry, service-worker control with updateViaCache=none, offline reload,
+and an offline answer. No uncaught page errors were observed. Live mobile WebKit
+Chinese defense also displayed all four choices within its viewport.
+
+The published JavaScript and stylesheet filenames and complete SHA-256 hashes
+matched the locally tested build:
+
+| Asset | SHA-256 |
+| --- | --- |
+| index-DGO7NqMb.js | 7030d7d86abbb9ae1107b2f68336e7fc93c0b59684e00c3801a500dadc9d0fde |
+| index-DxLf-clC.css | 0d9c905c0734d4db4dfcd4bf333986145d50874966d19118720d5016bb64ce2e |
+
+Final archive/documentation commits do not change these runtime assets.
 
 ## Practical limits
 
