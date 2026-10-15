@@ -1,0 +1,3 @@
+- [x] 1. Update navigation requirements and the language link destination.
+- [x] 2. Update affected gameplay/navigation checks and cover keyboard selection, the current language, Home focus and picker geometry.
+- [x] 3. Validate, record evidence and archive.

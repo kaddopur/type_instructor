@@ -10,7 +10,7 @@ function Lang({ messages: { LANGUAGE, HOME }, lang }) {
         {[['en', 'English'], ['zh', '中文'], ['ja', '日本語']].map(([code, label]) => (
           <div key={code} className="langItem">
             <Button asChild className="language-choice">
-              <I18nLink to="/lang" lang={code} hrefLang={code} aria-current={lang === code ? 'page' : undefined}>
+              <I18nLink to="/" lang={code} hrefLang={code} aria-current={lang === code ? 'page' : undefined}>
                 <span className="language-check" aria-hidden="true">{lang === code ? '✓' : ''}</span>
                 <span>{label}</span><span aria-hidden="true" />
               </I18nLink>

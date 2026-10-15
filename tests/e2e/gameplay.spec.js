@@ -26,7 +26,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await expect(page.getByRole('heading', { name: 'Type Instructor', exact: true })).toBeVisible();
         await page.getByRole('link', { name: /change language/i }).click();
         await page.getByRole('link', { name: text.label, exact: true }).click();
-        await page.locator('footer a').click();
+        await expect(page.locator('.Home .start a')).toBeFocused();
         await page.getByRole('link', { name: text.START, exact: true }).click();
         await page.locator('.Menu section').nth(mode === 'basic' ? 0 : 1)
           .getByRole('link', { name: text[kind.toUpperCase()], exact: true }).click();

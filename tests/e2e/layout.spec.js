@@ -123,7 +123,7 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
   }
 });
 
-test('language buttons keep their size and position when the language changes', { tag: '@layout' }, async ({ page }) => {
+test('language selection returns Home with Start focused and preserves picker geometry', { tag: '@layout' }, async ({ page }) => {
   for (const viewport of [{ width: 390, height: 600 }, { width: 390, height: 844 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(viewport);
     await page.goto('./#/en/lang');
@@ -133,9 +133,15 @@ test('language buttons keep their size and position when the language changes', 
       const { x, y, width, height } = node.getBoundingClientRect();
       return { x, y, width, height };
     }));
-    for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English']]) {
-      await page.getByRole('link', { name: label, exact: true }).click();
+    for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English'], ['en', 'English']]) {
+      await page.getByRole('link', { name: label, exact: true }).focus();
+      await page.keyboard.press('Enter');
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/$`));
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      await expect(page.locator('.Home .start a')).toBeFocused();
+      await expect(page.locator('.Home .start a')).toHaveAttribute('href', `#/${lang}/menu`);
+      await page.locator('.Home .lang a').click();
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
       await page.evaluate(() => document.fonts.ready);
       for (let index = 0; index < original.length; index++) {
         const bounds = await buttons.nth(index).boundingBox();

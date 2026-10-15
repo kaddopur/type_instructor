@@ -67,11 +67,10 @@ test('three languages navigate, render games, show feedback, and retry', { tag: 
     await expect(page.getByRole('heading', { name: 'Type Instructor', exact: true })).toBeVisible();
     await page.getByRole('link', { name: /change language/i }).click();
     await page.getByRole('link', { name: text.language, exact: true }).click();
-    await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
+    await expect(page).toHaveURL(new RegExp(`#/${lang}/$`));
     await expect(page.locator('html')).toHaveAttribute('lang', lang);
     await expect(page.locator('html')).toHaveCSS('font-size', '20px');
-    // Return through the language page's home link.
-    await page.locator('footer a').click();
+    await expect(page.getByRole('link', { name: text.start, exact: true })).toBeFocused();
     await page.getByRole('link', { name: text.start, exact: true }).click();
 
     for (const kind of ['attack', 'defend']) {
