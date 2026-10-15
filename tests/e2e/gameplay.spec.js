@@ -22,7 +22,7 @@ for (const [lang, text] of Object.entries(languages)) {
         // Normal target: fighting is the unique attack answer; ghost is immune in defense.
         await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
         await page.goto('./');
-        await expect(page.getByRole('heading', { name: 'Type Instructor of Pokémon' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Type Instructor', exact: true })).toBeVisible();
         await page.getByRole('link', { name: /change language/i }).click();
         await page.getByRole('link', { name: text.label, exact: true }).click();
         await page.locator('footer a').click();

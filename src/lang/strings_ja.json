@@ -46,12 +46,13 @@
     "CHOOSE_ANSWER": "答えを選んでください",
     "DAMAGE_MULTIPLIER": "ダメージ倍率",
     "CHANGE_LANGUAGE": "言語を変更",
-    "APP_DESCRIPTION": "タイプ相性を覚えるゲーム",
+    "APP_DESCRIPTION": "Pokémon のタイプ相性を覚える練習",
     "SELECT_CHALLENGE": "チャレンジを選ぶ",
     "BASIC_DESCRIPTION": "60 秒でハイスコアに挑戦",
     "SPEEDRUN_DESCRIPTION": "20 点に達するまでの速さを競う",
     "PROGRESS": "20 点までの進み具合",
     "ATTACK_QUESTION": "どの攻撃タイプが\n最も効果的？",
     "DEFEND_QUESTION": "どのタイプなら受ける\nダメージが最も少ない？",
-    "ABOUT_GAME": "ゲーム紹介"
+    "ABOUT_GAME": "ゲーム紹介",
+    "FAN_NOTICE": "非公式のファン作品です。Pokémon 公式とは関係がなく、公認・許諾・協賛を受けていません。"
 }

@@ -1,13 +1,79 @@
-# Type Instructor of Pokémon
+# Type Instructor
 
-單屬性攻防記憶遊戲，支援英文、繁體中文與日文，以及一般／競速模式。
-保留原本的像素介面，已完成 Vite／React 遷移與遊戲流程驗收。
+Pokémon 屬性相剋記憶練習。從四個選項中選出最有效的攻擊屬性，或受到傷害最少的自身屬性。
+不用註冊，手機與電腦都能玩，支援英文、繁體中文與日文。
 
-## 開發
+**非官方粉絲作品，與 Pokémon 官方無關，亦未獲其授權或贊助。**
+Pokémon 的相關權利屬於各權利人。
 
-使用 Node.js 24.19.0（見 `.nvmrc`）；專案限定 Node 24，CI 讀取相同版本。
-套件管理使用 pnpm 11.22.0（見 packageManager）；`.npmrc` 使用公開 npm registry。
-沿用 pnpm-workspace.yaml 的套件發佈時間例外設定，僅保留 pnpm-lock.yaml 作為依賴鎖定檔。
+## 開始遊玩
+
+先看玩法與實際遊戲畫面，再從介紹頁按「開始遊戲」：
+
+| 語言 | 遊戲介紹 |
+|---|---|
+| English | [About the game](https://kaddopur.github.io/type_instructor/#/en/about) |
+| 中文 | [遊戲介紹](https://kaddopur.github.io/type_instructor/#/zh/about) |
+| 日本語 | [ゲーム紹介](https://kaddopur.github.io/type_instructor/#/ja/about) |
+
+也可以直接開啟[遊戲首頁](https://kaddopur.github.io/type_instructor/#/zh/)。
+
+### 玩法與計分
+
+1. 選擇一般遊玩或時間競速，再選攻擊或防禦。
+2. 看清楚敵方屬性或敵方攻擊屬性，再從四個選項中作答。
+3. 答對加 1 分，答錯扣 1 分。答錯後可在回饋結束時嘗試其他選項，答對則進入下一題。
+
+| 模式 | 目標 |
+|---|---|
+| 一般遊玩 | 在 60 秒內取得最高分，最後分數可能為負分 |
+| 時間競速 | 盡快達到 20 分，結果顯示經過秒數 |
+
+按下開始對話框的「開始」後才會計時。鍵盤可用 Tab／Shift+Tab 移動焦點，
+Enter 開啟連結，Enter／空白鍵開始或作答。開始對話框內按 Escape 可返回選單。
+
+## 安裝到手機或電腦
+
+Type Instructor 是可安裝的網頁 App（PWA），可以從主畫面或電腦上的圖示開啟。
+
+| 裝置／瀏覽器 | 安裝方式 |
+|---|---|
+| iPhone／iPad · Safari | 分享選單 → 加入主畫面；若有「打開為網頁 App」，保持開啟後按「加入」 |
+| Android · Chrome | 右上角選單 → 安裝應用程式或加到主畫面，再依畫面指示完成 |
+| 電腦 · Chrome／Edge | 使用瀏覽器的安裝選項，完整選單步驟見介紹頁 |
+
+從 Threads 等 App 內開啟時，請先改用 Safari、Chrome 或 Edge。
+選單名稱可能隨版本不同；無法安裝時仍能直接在瀏覽器遊玩。
+完整步驟及官方說明連結見[介紹頁的安裝區塊](https://kaddopur.github.io/type_instructor/#/zh/about)。
+
+### 離線使用與更新
+
+首次連網開啟正式版、完成資源快取後，頁面、字型、遊戲截圖與遊戲操作都可離線使用。
+**安裝成功不代表離線下載已完成。** 如果瀏覽器清除了網站資料，需要再次連網下載。
+開發模式不註冊 service worker，也不提供離線快取。
+
+新版會在背景安裝，不會強制重新整理正在玩的頁面；下次重新載入時使用新版，並開始新的場次。
+若新版缺少資源而安裝失敗，舊版本與舊快取仍可使用。
+快取更新會清理同 scope 的舊 sw-precache，其他網站的快取不受影響。
+
+## 畫面與無障礙操作
+
+Home 與遊戲頁維持固定布局，About 介紹頁可捲動；手機版使用動態視窗高度與安全區域。
+主名稱統一為 Type Instructor，副標與非官方聲明支援三語，語言選項依英文、中文、日文排列。
+介面採暖白背景與黃藍點綴，保留像素標題、18 種屬性色及本機 CJK 字型；長篇說明使用系統字型。
+
+- 進入頁面時聚焦第一個可操作元件；遊戲開始與換題後聚焦第一個可作答選項。
+- 開始對話框限制焦點範圍；重玩連結與第一個答案提供題目或結果的無障礙描述。
+- 答對／答錯同時提供文字、符號與傷害倍率，並透過狀態訊息播報；計時器不會每秒播報。
+- 回饋期間及已選過的答案會阻擋重複輸入；屬性色文字對比至少為 4.5:1。
+
+預覽與實際遊戲截圖見[介紹頁紀錄](docs/landing-page/README.md)及[像素介面紀錄](docs/ui-refresh/README.md)。
+瀏覽器自動測試不等同完整無障礙稽核；尚未完成實機安裝或人工螢幕閱讀器驗證。
+
+## 本機開發
+
+使用 Node.js 24.19.0（見 [.nvmrc](.nvmrc)）及 pnpm 11.22.0（見 [package.json](package.json)）。
+專案限定 Node 24，CI 使用相同版本；依賴鎖定檔為 `pnpm-lock.yaml`。
 
 ```sh
 nvm use
@@ -16,12 +82,26 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動 Vite。
-使用 hash URL，例如 `#/zh/menu`，以相容 GitHub Pages 的靜態託管。
-未知語系使用英文，遊戲路由只接受單屬性（s）、basic／speedrun 與 attack／defend。
+開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動開發伺服器。
+套件來源與發佈時間政策分別設定於 [.npmrc](.npmrc) 及 [pnpm-workspace.yaml](pnpm-workspace.yaml)。
+
+### 技術與程式結構
+
+React 19、Vite 8、React Router、Zustand、Tailwind CSS 4 與共用 CSS。
+核心邏輯、store、hook 和共用 UI 使用 TypeScript；既有頁面包含 JSX。
+Button／Dialog 採用 shadcn/ui 的 Radix 版本原始碼，MIT 授權見 [UI 授權](src/components/ui/LICENSE.md)。
+
+- [gameRules.ts](src/lib/gameRules.ts)：集中定義競速目標 20 分，供遊戲邏輯與三語目標說明共用。
+- [quiz.ts](src/stores/quiz.ts)：每場遊戲建立獨立狀態，管理開始、作答、計分、回饋與結束。
+- [useGame.ts](src/hooks/useGame.ts)：管理計時器並在離開時清理；重玩或更換遊戲路徑會建立新場次。
+- [src/lang](src/lang)：三語遊戲與介紹頁文案。語言、模式沿用 URL，不持久保存遊戲場次或紀錄。
+- [src/fonts](src/fonts)：本機字型與 Cubic 11 來源／授權紀錄。
+
+路由使用 hash，例如 `#/zh/menu`、`#/zh/about`，相容 GitHub Pages 靜態託管。
+未知語系使用英文；遊戲路由只接受單屬性 `s`、`basic`／`speedrun`、`attack`／`defend`。
 錯誤遊戲參數會回到目錄；結果需為安全整數，競速秒數不可為負；未匹配路徑回英文首頁。
 
-## 建置與預覽
+### 建置、預覽與截圖
 
 ```sh
 pnpm build
@@ -29,179 +109,71 @@ pnpm preview
 ```
 
 正式輸出位於 `dist/`，預覽位址為 http://localhost:4173/type_instructor/ 。
-Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用此路徑。
-正式建置會使用 Workbox 產生 service-worker.js 並預先快取本機資源；開發模式不註冊 worker。
-已移除 sw-precache、舊快取 polyfill 與相關 dependency override。
+Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離線資源皆使用此子路徑。
+正式建置由 Workbox 產生 `service-worker.js`，並預先快取本機資源。
 
-舊的 `npm run deploy` 指令已移除；它會改寫 Git 歷史，且依賴舊的 `build/` 輸出。
-改由下方 GitHub Actions workflow 部署 dist，不需另外推送產物分支。
+`pnpm screenshots:landing` 會建置遊戲，使用 Chromium 重拍三語的選單、攻擊與防禦題，共九張實際截圖。
+圖片直接擷取遊戲，來源紀錄位於 `src/images/landing/capture.json`。
+重拍前需安裝 Playwright Chromium；操作方式見[截圖更新說明](docs/landing-page/README.md)。
 
 ## 測試
 
-`pnpm lint` 檢查 JavaScript／TypeScript 與 React Hooks；`pnpm typecheck` 使用 strict TypeScript，
-包含核心邏輯、store、hook、共用 UI 與原始碼旁的 unit tests。既有 JS 頁面逐步遷移。
-
 | 指令 | 用途 |
 |---|---|
-| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，Node 環境，15 個案例 |
-| `pnpm test:unit:watch` | Vitest watch，開發時持續執行 |
+| `pnpm lint` | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
+| `pnpm typecheck` | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移 |
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，15 個案例 |
+| `pnpm test:unit:watch` | 開發時持續執行單元測試 |
 | `pnpm test:e2e` | Playwright 完整矩陣，144 個案例 |
 | `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
-| `pnpm test:a11y` | 四種設定的 32 個無障礙案例，篩選 `@a11y` |
+| `pnpm test:a11y` | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y` |
 
-```text
-src/
-  lib/
-    getQuiz.test.ts
-    getStatus.test.ts
-    routes.test.ts
-  stores/
-    quiz.test.ts
-tests/
-  e2e/
-    navigation.spec.js
-    gameplay.spec.js
-    accessibility.spec.js
-    offline.spec.js
-    landing.spec.js
-    fixtures/legacy-service-worker.js
-    support/offline-server.js
-vitest.config.js
-playwright.config.js
-```
-
-Unit tests 與原始碼放在一起（`src/**/*.test.ts`），涵蓋出題、效果、計分、輸入防護、
-19／20 分邊界、結算、場次隔離與路由驗證。Vitest 共用 Vite 設定，只收集這些測試。
-核心出題使用原生 `Math.max/min`；Lodash 僅用於抽樣與洗牌。
-
-Playwright 僅收集 `tests/e2e/**/*.spec.js`，驗證完整頁面、鍵盤流程、axe、
-屬性色對比、Pages 子路徑資源、worker 更新與離線遊玩。`@offline` 可篩選離線整合案例。
+單元測試放在原始碼旁（`src/**/*.test.ts`），使用 Node 環境，涵蓋出題、傷害倍率、計分、
+19／20 分邊界、場次隔離及路由驗證。Playwright 僅收集 `tests/e2e/**/*.spec.js`，涵蓋完整頁面、
+遊戲流程、三語布局、鍵盤操作、axe 掃描、介紹頁、Pages 子路徑資源及離線版本更新。
 
 ```sh
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
 
-快速開發只需安裝 Chromium，再執行 `pnpm test:e2e:smoke`。
-`E2E_SERVER=dev pnpm test:e2e:smoke` 使用 Vite 開發伺服器；預設使用正式 build／preview。
-開發模式不註冊 worker，因此離線整合案例只適用正式版，會在開發模式跳過。
-若已安裝 Google Chrome，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用它執行 Chromium project。
-測試自行啟動與停止伺服器，固定使用 `/type_instructor/` 子路徑。
+完整矩陣包含桌面 Chromium、Firefox、WebKit，以及 iPhone 13 尺寸的 WebKit 模擬。
+測試自行啟停伺服器，預設使用正式建置與預覽；手機模擬不代表 iOS 或 Android 實機驗證。
 
-CI 使用兩組平行 jobs，各自執行 lint、typecheck、unit tests，
-再以 Playwright `--shard=1/2`、`--shard=2/2` 分攤完整 E2E 矩陣（目前各 72 個案例）。
-完整矩陣已包含 smoke 與 a11y，CI 不另外重跑這些子集合。
-兩組都通過後才允許部署；只有第一組上傳 Pages 產物，避免重複上傳。
-本機 `pnpm test:e2e` 維持執行全部 144 個案例。
-分片使用 [Playwright 內建 sharding](https://playwright.dev/docs/test-sharding)，
-可用 `pnpm test:e2e --shard=1/2` 或 `--shard=2/2` 單獨重跑。
+快速開發可先安裝 Chromium，執行 `pnpm test:e2e:smoke`。
+`E2E_SERVER=dev pnpm test:e2e:smoke` 使用開發伺服器；開發模式會跳過正式版專用的離線案例。
+已安裝 Google Chrome 時，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用該瀏覽器執行 Chromium project。
 
-## 遷移進度
+### CI 分成兩組平行執行
 
-- 第 1 步：現有系統 baseline 與邏輯測試已完成並歸檔。
-- 第 2 步：Vite、React 19 與必要的相容性更新已完成並歸檔。
-- 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
-- 第 4 步：已修正競速防禦入口，並將競速目標與三語說明統一為 20 分，已完成並歸檔。
-- 第 5 步：Workbox 離線更新與 Pages workflow 已完成並歸檔。
-- 第 6 步：本機與遠端 CI 完整驗收通過，已歸檔、合併、部署並驗證正式站。
+兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 72 個。
+兩組都通過才允許部署；只有第一組上傳 Pages 產物。本機 `pnpm test:e2e` 仍執行全部案例。
 
-正式遊戲：[Type Instructor](https://kaddopur.github.io/type_instructor/)。遷移 PR：[#2](https://github.com/kaddopur/type_instructor/pull/2)。
+```sh
+pnpm test:e2e --shard=1/2
+pnpm test:e2e --shard=2/2
+```
 
-競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
-目標值集中於 [gameRules.ts](src/lib/gameRules.ts)，遊戲邏輯與中英日說明共用此設定。
-
-玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
-第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
-第 3 步變更與驗證紀錄見 [Zustand migration](openspec/changes/archive/2026-10-15-replace-redux-with-zustand/)。
-第 4 步變更與驗證紀錄見 [Speedrun fixes](openspec/changes/archive/2026-10-15-fix-speedrun-rules/)。
-第 5 步變更與驗證紀錄見 [Offline and deployment](openspec/changes/archive/2026-10-15-modernize-offline-deployment/)。
-
-## 遊戲狀態
-
-每場遊戲使用獨立的 [Zustand store](src/stores/quiz.ts)，直接管理開始、計時、
-作答與回饋後的狀態更新；開始前、回饋期間、已選過的選項和結束後的輸入不計分。
-[useGame](src/hooks/useGame.ts) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
-語言與模式沿用 URL，翻譯來自靜態 JSON；目前不持久保存遊戲狀態。
-
-## 離線與版本更新
-
-首次連線開啟正式版、完成快取後，重新整理與遊戲操作皆可離線使用。
-worker 保留原本的網址與 scope；新版本安裝成功後會接手，但不強制重新整理正在玩的頁面。
-玩家下次重新載入時才使用新版，並開始新的遊戲場次。
-
-啟用新版 worker 時，只刪除同 scope 的舊 sw-precache 快取；其他網站快取不受影響。
-若新版缺少必要資源而安裝失敗，舊 worker 與舊快取仍可離線使用。
-目前的 Workbox 快取由 Workbox 清理過期內容，無需玩家手動清除瀏覽器資料。
+以上指令可單獨重跑分片；本機共用預覽連接埠，請依序執行。
+完整矩陣已包含 smoke 與 a11y，CI 不另外重跑這兩個子集合。
 
 ## GitHub Pages 部署
 
-[Pages workflow](.github/workflows/pages.yml) 使用 `.nvmrc`、固定 pnpm 版本與 frozen lockfile。
-對 master 的 PR 會執行邏輯測試、正式建置與瀏覽器測試；通過後才能部署 dist 產物。
-push 到 master 或在 master 手動執行 workflow 會部署到 github-pages environment。
-其他分支的手動執行僅驗證，不部署；同時間只允許一個部署執行。
+[Pages workflow](.github/workflows/pages.yml) 使用固定 Node／pnpm 版本與 `--frozen-lockfile` 安裝。
 
-發布前，在 GitHub Settings → Pages → Build and deployment 將 Source 設為 **GitHub Actions**。
-2026-10-15 第 6 步檢查時，此 repo 已設定為 GitHub Actions 來源。
-新環境或 fork 若尚未切換，請先完成上方設定。
-「Validate and deploy Pages」可在 master 手動執行；之後 master 的 push 會自動部署。
-部署後於 Actions 的 github-pages environment 查看正式網址與結果。
+- 對 `master` 的 PR：驗證但不部署。
+- 推送至 `master`，或在 `master` 手動執行 workflow：兩組驗證皆成功後部署 `dist/`。
+- 在其他分支手動執行 workflow：驗證但不部署。
 
-完整驗收與發布紀錄見下方第 6 步文件；Pages 來源由使用者切換，本次沒有改動該設定。
+新環境或 fork 請先到 GitHub Settings → Pages → Build and deployment，將 Source 設為 **GitHub Actions**。
+部署使用官方 Pages 產物及 OIDC，發布至 `github-pages` 環境，同時間只允許一個部署執行。
+可從 Actions 的「Validate and deploy Pages」查看結果。
 
-## 完整驗收
+## 規格與歷史紀錄
 
-```sh
-pnpm exec playwright install chromium firefox webkit
-pnpm test:e2e
-```
+目前行為以 [OpenSpec 規格](openspec/specs/)為準；開發與驗證紀錄保留於 [OpenSpec 歸檔](openspec/changes/archive/)。
+[Baseline](openspec/baseline.md) 記錄遷移前狀態；Vite／React、Zustand、競速規則、離線部署及驗收的六步遷移已完成。
 
-共 144 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
-28 個鍵盤流程／axe／屬性色對比案例，四個 worker 更新與離線案例，以及十二個安全區域與跨語言布局案例、24 個介紹頁案例。設定包含桌面 Chromium、Firefox、WebKit，
-以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
-CI 執行此矩陣，全部通過才會部署。
-
-驗收也涵蓋四個答案的可見範圍，並修正舊版在寬螢幕裁掉第二排答案的問題。
-詳見 [第 6 步驗證與發布紀錄](openspec/changes/archive/2026-10-15-complete-migration-acceptance/verification.md)。
-
-## UI 與無障礙操作
-
-全站使用 Tailwind CSS 4 與共用像素風格；字型宣告保留在 `src/index.css`。
-18 種屬性色集中於 Tailwind theme，`src/lib/typeStyles.ts` 使用完整 class 對照，
-確保正式建置能產生隨機出題需要的每種顏色。文字依背景選黑／白，維持至少 4.5:1 的對比。
-已移除各頁的舊 CSS、normalize.css 與 classnames。
-
-Button／Dialog 改寫自 shadcn/ui new-york 的 Radix 版本，採本機原始碼，
-保留其 MIT 授權於 `src/components/ui/LICENSE.md`。`components.json` 與 `@/` alias 供後續維護。
-本次沒有加入 UI 不使用的圖示或動畫套件。
-
-- 使用 Tab／Shift+Tab 移動，Enter／Space 開始或作答。
-- 開始 Dialog 會聚焦開始按鈕並限制焦點範圍；Escape 或目錄連結返回目錄，不啟動計時。
-- 各頁進入時聚焦第一個可操作元件：首頁 Start、目錄第一個入口、結果頁重玩；遊戲開始與換題後聚焦第一個可作答選項。第一個選項與重玩連結的無障礙描述分別包含題幹、結算結果。
-- 答對／答錯有三語文字與持續的 live status；計時器不會每秒觸發播報。
-- 回饋中與已選過的答案會標示不可作答，store 仍阻擋重複輸入。
-
-```sh
-pnpm test:a11y
-```
-
-此指令在四種設定執行共 32 個無障礙案例；加上 `--project=chromium-desktop` 可只執行 Chromium 的八個案例。
-axe 掃描 WCAG 2 A／AA 與 2.1 AA 規則，涵蓋三語頁面、開始 Dialog 與作答後狀態。
-自動測試不等同完整 WCAG 合規稽核，也不代表已完成人工螢幕閱讀器或手機實機驗證。
-玩法仍有既定時間限制，若要提供不限時練習需另行設計。
-
-步驟與驗收紀錄見 [UI migration](docs/ui-migration.md)。
-
-
-## 新版像素介面
-
-新版使用暖白背景、黃藍點綴與模式卡片，保留本機像素字型、屬性色、
-Safari 安全區域及三語一致的布局。競速進度條以 20 分為目標；計分規則維持不變。
-Favicon、Safari 主畫面與 PWA 圖示共用黃藍像素 T。
-
-實際瀏覽器截圖、八步驟紀錄與驗證限制見 [UI refresh](docs/ui-refresh/README.md)。
-
-## 三語遊戲介紹頁
-
-Home 的「遊戲介紹」可開啟 `#/zh/about`，也支援 `#/en/about` 與 `#/ja/about`。
-介紹頁提供玩法、模式、操作說明與實際遊戲截圖，支援手機及桌面。
-預覽、截圖更新方式與驗證範圍見 [介紹頁紀錄](docs/landing-page/README.md)。
+- [UI 元件與無障礙遷移](docs/ui-migration.md)
+- [像素介面更新與預覽](docs/ui-refresh/README.md)
+- [三語介紹頁、PWA 教學、截圖與驗證紀錄](docs/landing-page/README.md)

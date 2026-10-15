@@ -22,7 +22,7 @@ for (const lang of ['en', 'zh', 'ja']) {
       await page.setViewportSize(viewport);
       await page.goto(`./#/${lang}/about/`);
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
-      await expect(page.locator('h1')).toContainText(copy[lang].title[0]);
+      await expect(page.locator('h1')).toHaveText('Type Instructor');
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator('.app-content')).toHaveCSS('overflow-y', 'auto');
       if (browserName === 'webkit' && isMobile) {
@@ -67,7 +67,7 @@ test('landing language navigation preserves the introduction route', async ({ pa
     await expect(page).toHaveURL(new RegExp(`#/${lang}/about$`));
   }
   await page.goto('./#/unknown/about');
-  await expect(page.locator('h1')).toContainText(copy.en.title[0]);
+  await expect(page.locator('h1')).toHaveText('Type Instructor');
 });
 
 test('three-language landing accessibility scans', { tag: '@a11y' }, async ({ page }) => {
@@ -92,7 +92,7 @@ test('landing and all localized screenshots work offline after caching', { tag: 
   for (const lang of ['en', 'zh', 'ja']) {
     await page.goto(`./#/${lang}/about`);
     await page.reload();
-    await expect(page.locator('h1')).toContainText(copy[lang].title[0]);
+    await expect(page.locator('h1')).toHaveText('Type Instructor');
     await checkImages(page, lang);
   }
 });

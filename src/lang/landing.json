@@ -1,10 +1,6 @@
 {
   "en": {
     "eyebrow": "A small game. A useful memory.",
-    "title": [
-      "Know your types.",
-      "Make the right move."
-    ],
     "intro": "Practice Pokémon type matchups, one question at a time. Choose an attack that deals the most damage, or a type that takes the least. No account, no setup—just start playing.",
     "play": "Play the game",
     "howLink": "How to play",
@@ -55,14 +51,41 @@
     "finalBody": "Start with a 60-second round, or see how fast you can reach 20 points.",
     "source": "Source on GitHub",
     "languageLabel": "Page language",
-    "footer": "An unofficial fan project. Pokémon belongs to its respective owners."
+    "footer": "An unofficial fan project. Pokémon belongs to its respective owners.",
+    "installTitle": "Install on your phone or computer",
+    "installIntro": "Type Instructor is an installable web app (PWA). Add it to your home screen or computer to open it directly from its icon.",
+    "installOptions": [
+      {
+        "title": "iPhone / iPad · Safari",
+        "steps": [
+          "Open this website in Safari.",
+          "Open the Share menu and choose Add to Home Screen.",
+          "If Open as Web App appears, leave it on, then tap Add."
+        ]
+      },
+      {
+        "title": "Android · Chrome",
+        "steps": [
+          "Open this website in Chrome.",
+          "Open the top-right menu and choose Install app or Add to Home screen.",
+          "Choose Install if prompted, then follow the instructions."
+        ]
+      },
+      {
+        "title": "Computer · Chrome / Edge",
+        "steps": [
+          "Open this website in Chrome or Edge.",
+          "Chrome: menu → Cast, save, and share → Install page as app. Edge: menu → More tools → Apps → Install this site as an app.",
+          "Confirm the name Type Instructor and choose Install."
+        ]
+      }
+    ],
+    "installBrowserNote": "Opening from Threads or another app? Open the page in Safari, Chrome or Edge first. Menu names vary by browser version. If installation is unavailable, you can still play in your browser.",
+    "installOfflineNote": "Offline play needs a completed first online load and resource cache. Installing the app alone does not finish this download. If the browser clears website data, reconnect to download it again.",
+    "installGuide": "Official installation guide"
   },
   "zh": {
     "eyebrow": "一個小遊戲，練習記住屬性相剋。",
-    "title": [
-      "記住屬性相剋，",
-      "下一題就選對。"
-    ],
     "intro": "用一題一題的小挑戰，練習 Pokémon 的屬性相剋。選出最有效的攻擊屬性，或受到傷害最少的自身屬性。不用註冊，直接開始。",
     "play": "開始遊戲",
     "howLink": "查看玩法",
@@ -113,14 +136,41 @@
     "finalBody": "先玩一回 60 秒挑戰，或看看自己多久能達到 20 分。",
     "source": "在 GitHub 查看原始碼",
     "languageLabel": "介紹頁語言",
-    "footer": "非官方粉絲作品。Pokémon 的相關權利屬於各權利人。"
+    "footer": "非官方粉絲作品。Pokémon 的相關權利屬於各權利人。",
+    "installTitle": "安裝到手機或電腦",
+    "installIntro": "Type Instructor 是可安裝的網頁 App（PWA）。加入主畫面或安裝到電腦後，就能直接從圖示開啟遊戲。",
+    "installOptions": [
+      {
+        "title": "iPhone／iPad · Safari",
+        "steps": [
+          "用 Safari 開啟本網站。",
+          "開啟「分享」選單，選擇「加入主畫面」。",
+          "如果看到「打開為網頁 App」，保持開啟，再按「加入」。"
+        ]
+      },
+      {
+        "title": "Android · Chrome",
+        "steps": [
+          "用 Chrome 開啟本網站。",
+          "開啟右上角選單，選擇「安裝應用程式」或「加到主畫面」。",
+          "如果出現「安裝」選項，選取後依畫面指示完成。"
+        ]
+      },
+      {
+        "title": "電腦 · Chrome／Edge",
+        "steps": [
+          "用 Chrome 或 Edge 開啟本網站。",
+          "Chrome：選單 → 投放、儲存及分享 → 將頁面安裝為應用程式。Edge：選單 → 更多工具 → 應用程式 → 將此網站安裝為應用程式。",
+          "確認名稱為 Type Instructor，再按「安裝」。"
+        ]
+      }
+    ],
+    "installBrowserNote": "如果從 Threads 或其他 App 內開啟，請先改用 Safari、Chrome 或 Edge。選單名稱可能隨瀏覽器版本不同；無法安裝時，仍可直接在瀏覽器玩。",
+    "installOfflineNote": "離線遊玩需要先在連網時完成首次載入與資源快取。安裝成功不代表下載已完成；如果瀏覽器清除了網站資料，需要再次連網下載。",
+    "installGuide": "官方安裝說明"
   },
   "ja": {
     "eyebrow": "短いゲームで、タイプ相性を覚えよう。",
-    "title": [
-      "タイプ相性を覚えて、",
-      "次の一手を選ぼう。"
-    ],
     "intro": "Pokémon のタイプ相性を、一問ずつ練習するゲームです。最も効果的な攻撃タイプや、受けるダメージが最も少ない自分のタイプを選びます。登録せずにすぐ遊べます。",
     "play": "ゲームを始める",
     "howLink": "遊び方を見る",
@@ -171,6 +221,37 @@
     "finalBody": "まずは 60 秒のチャレンジから。慣れたら、20 点までの速さを競いましょう。",
     "source": "GitHub でソースを見る",
     "languageLabel": "紹介ページの言語",
-    "footer": "非公式のファン作品です。Pokémon に関する権利は各権利者に帰属します。"
+    "footer": "非公式のファン作品です。Pokémon に関する権利は各権利者に帰属します。",
+    "installTitle": "スマートフォンやPCにインストール",
+    "installIntro": "Type Instructor はインストールできるウェブアプリ（PWA）です。ホーム画面やPCに追加すると、アイコンから直接ゲームを開けます。",
+    "installOptions": [
+      {
+        "title": "iPhone／iPad · Safari",
+        "steps": [
+          "Safari でこのサイトを開きます。",
+          "共有メニューから「ホーム画面に追加」を選びます。",
+          "「Webアプリとして開く」が表示されたらオンのままにして、「追加」をタップします。"
+        ]
+      },
+      {
+        "title": "Android · Chrome",
+        "steps": [
+          "Chrome でこのサイトを開きます。",
+          "右上のメニューから「アプリをインストール」または「ホーム画面に追加」を選びます。",
+          "「インストール」が表示されたら選び、画面の案内に従います。"
+        ]
+      },
+      {
+        "title": "PC · Chrome／Edge",
+        "steps": [
+          "Chrome または Edge でこのサイトを開きます。",
+          "Chrome：メニュー → キャスト、保存、共有 → ページをアプリとしてインストール。Edge：メニュー → その他のツール → アプリ → このサイトをアプリとしてインストール。",
+          "名前が Type Instructor になっていることを確認し、「インストール」を選びます。"
+        ]
+      }
+    ],
+    "installBrowserNote": "Threads などのアプリ内で開いた場合は、先に Safari、Chrome、Edge のいずれかで開き直してください。メニュー名はバージョンによって異なります。インストールできなくても、ブラウザで遊べます。",
+    "installOfflineNote": "オフラインで遊ぶには、オンラインで初回の読み込みとリソースの保存を完了する必要があります。インストールだけではダウンロードは完了しません。ブラウザがサイトデータを削除した場合は、再度接続してダウンロードしてください。",
+    "installGuide": "公式のインストール手順"
   }
 }

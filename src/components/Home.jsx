@@ -3,13 +3,13 @@ import I18nPage from './I18nPage.jsx';
 import { Button } from '@/components/ui/button';
 import globe from '../images/globe.png';
 
-function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME }, lang }) {
+function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME, FAN_NOTICE }, lang }) {
   return (
     <article className="Home">
       <div className="home-pixels home-pixels-left" aria-hidden="true" />
       <div className="home-pixels home-pixels-right" aria-hidden="true" />
       <header className="home-hero">
-        <h1 tabIndex={-1}><span>Type Instructor</span>{' '}<span>of Pokémon</span></h1>
+        <h1 tabIndex={-1}>Type Instructor</h1>
         <p>{APP_DESCRIPTION}</p>
       </header>
       <div className="home-actions">
@@ -28,6 +28,7 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME 
         </section>
         <I18nLink className="home-about" to="/about" lang={lang}>{ABOUT_GAME}</I18nLink>
       </div>
+      <footer className="home-notice">{FAN_NOTICE}</footer>
     </article>
   );
 }

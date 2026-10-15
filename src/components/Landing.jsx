@@ -20,7 +20,7 @@ const screenshots = {
 };
 const repository = 'https://github.com/kaddopur/type_instructor';
 
-function Landing({ lang, messages: { HOME } }) {
+function Landing({ lang, messages: { HOME, APP_DESCRIPTION, FAN_NOTICE } }) {
   const text = copy[lang];
   const images = screenshots[lang];
   return (
@@ -36,8 +36,10 @@ function Landing({ lang, messages: { HOME } }) {
       <section className="landing-hero landing-width" aria-labelledby="landing-title">
         <div>
           <p className="landing-eyebrow">{text.eyebrow}</p>
-          <h1 id="landing-title">{text.title[0]}<br />{text.title[1]}</h1>
+          <h1 id="landing-title">Type Instructor</h1>
+          <p className="landing-subtitle">{APP_DESCRIPTION}</p>
           <p className="landing-intro">{text.intro}</p>
+          <p className="landing-notice">{FAN_NOTICE}</p>
           <div className="landing-actions">
             <Button asChild variant="primary"><I18nLink to="/menu" lang={lang}>{text.play}</I18nLink></Button>
             <Button variant="ghost" onClick={() => document.getElementById('how-to-play')?.scrollIntoView({ block: 'start' })}>{text.howLink}</Button>
@@ -90,6 +92,27 @@ function Landing({ lang, messages: { HOME } }) {
         {[[text.controlsTitle, text.controlsBody], [text.feedbackTitle, text.feedbackBody], [text.offlineTitle, text.offlineBody]].map(([title, body]) => (
           <div key={title}><h2>{title}</h2><p>{body}</p></div>
         ))}
+      </section>
+      <section id="install-app" className="landing-section landing-width landing-install" aria-labelledby="install-title">
+        <h2 id="install-title">{text.installTitle}</h2>
+        <p>{text.installIntro}</p>
+        <ul className="landing-install-options">
+          {text.installOptions.map(({ title, steps }) => (
+            <li key={title}>
+              <h3>{title}</h3>
+              <ol>{steps.map(step => <li key={step}>{step}</li>)}</ol>
+            </li>
+          ))}
+        </ul>
+        <p className="landing-install-note">{text.installBrowserNote}</p>
+        <p className="landing-install-note">{text.installOfflineNote}</p>
+        <nav className="landing-install-guides" aria-label={text.installGuide}>
+          {[
+            ['Safari', 'https://support.apple.com/guide/iphone/iphea86e5236/ios'],
+            ['Chrome', 'https://support.google.com/chrome/answer/9658361'],
+            ['Edge', 'https://support.microsoft.com/en-US/edge/install-manage-or-uninstall-apps-in-microsoft-edge']
+          ].map(([browser, href]) => <a key={browser} href={href} target="_blank" rel="noreferrer">{browser} · {text.installGuide}</a>)}
+        </nav>
       </section>
       <section className="landing-closing landing-width" aria-labelledby="closing-title">
         <h2 id="closing-title">{text.finalTitle}</h2><p>{text.finalBody}</p>
