@@ -24,7 +24,8 @@
     "preview": "vite preview",
     "test": "node --test tests/baseline.test.mjs",
     "test:baseline": "node --test tests/baseline.test.mjs",
-    "test:smoke": "playwright test"
+    "test:smoke": "playwright test",
+    "test:acceptance": "playwright test --config playwright.acceptance.config.js"
   },
   "type": "module",
   "engines": {

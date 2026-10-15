@@ -65,7 +65,7 @@ SMOKE_SERVER=dev pnpm test:smoke
 - 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
 - 第 4 步：已修正競速防禦入口，並將競速目標與三語說明統一為 20 分，已完成並歸檔。
 - 第 5 步：Workbox 離線更新與 Pages workflow 已完成並歸檔；尚未發布至線上。
-- 第 6 步：完整驗收。
+- 第 6 步：本機完整驗收已通過，遠端 CI 與正式發布進行中。
 
 競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
 目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
@@ -101,9 +101,24 @@ push 到 master 或在 master 手動執行 workflow 會部署到 github-pages en
 其他分支的手動執行僅驗證，不部署；同時間只允許一個部署執行。
 
 發布前，在 GitHub Settings → Pages → Build and deployment 將 Source 設為 **GitHub Actions**。
-2026-10-15 唯讀檢查顯示此 repo 目前仍以 gh-pages 分支為來源；這次沒有修改線上設定。
-先將這次變更 review／合併至 master，再切換來源並於 Actions 手動執行
-「Validate and deploy Pages」。之後 master 的 push 會自動部署。
+2026-10-15 第 6 步檢查時，此 repo 已設定為 GitHub Actions 來源。
+新環境或 fork 若尚未切換，請先完成上方設定。
+「Validate and deploy Pages」可在 master 手動執行；之後 master 的 push 會自動部署。
 部署後於 Actions 的 github-pages environment 查看正式網址與結果。
 
-本次只完成本機驗證與 workflow，沒有 push、觸發遠端部署或變更 GitHub Pages 設定。
+完整驗收與發布紀錄見下方第 6 步文件；Pages 來源由使用者切換，本次沒有改動該設定。
+
+## 完整驗收
+
+```sh
+pnpm exec playwright install chromium firefox webkit
+pnpm test:acceptance
+```
+
+共 52 個驗收案例：三種語言 × 四種玩法 × 四種瀏覽器／視窗設定（48 個完整遊戲流程），
+以及四種設定各一個舊／新 worker 更新與離線案例。設定包含桌面 Chromium、Firefox、WebKit，
+以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
+CI 會在原有 smoke tests 後執行此矩陣，全部通過才會部署。
+
+驗收也涵蓋四個答案的可見範圍，並修正舊版在寬螢幕裁掉第二排答案的問題。
+詳見 [第 6 步驗證與發布紀錄](openspec/changes/complete-migration-acceptance/verification.md)。
