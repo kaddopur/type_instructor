@@ -66,7 +66,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
     await page.setViewportSize(lang === 'zh' ? { width: 390, height: 844 } : { width: 1280, height: 900 });
     await page.goto('./');
     await expect(page.getByRole('heading', { name: 'Type Instructor of Pokémon' })).toBeVisible();
-    await page.getByRole('link', { name: 'change language' }).click();
+    await page.getByRole('link', { name: /change language/i }).click();
     await page.getByRole('link', { name: text.language, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
     await expect(page.locator('html')).toHaveAttribute('lang', lang);

@@ -12,6 +12,7 @@ import './index.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HashRouter>
+      <main id="main-content">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:lang/" element={<Home />} />
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         </Route>
         <Route path="*" element={<Navigate to="/en/" replace />} />
       </Routes>
+      </main>
     </HashRouter>
   </StrictMode>
 );

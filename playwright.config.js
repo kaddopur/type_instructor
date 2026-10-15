@@ -4,7 +4,7 @@ const development = process.env.SMOKE_SERVER === 'dev';
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['smoke.spec.js', 'offline.spec.js'],
+  testMatch: ['smoke.spec.js', 'offline.spec.js', 'accessibility.spec.js'],
   workers: 1,
   use: {
     baseURL: 'http://127.0.0.1:4173/type_instructor/',

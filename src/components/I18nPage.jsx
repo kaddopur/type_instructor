@@ -13,7 +13,10 @@ const I18nPage = (ChildComponent) => {
     useEffect(() => {
       document.documentElement.style.fontSize = lang === 'en' ? '100%' : '125%';
       document.documentElement.lang = lang;
-    }, [lang]);
+      const heading = document.querySelector('main h1');
+      document.title = `${heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor'} | Pokémon`;
+      if (!document.querySelector('[role="dialog"]')) heading?.focus({ preventScroll: true });
+    }, [lang, location.pathname]);
 
     return <ChildComponent {...props} params={params} location={location} navigate={navigate}
       messages={messages[lang]} lang={lang} />;

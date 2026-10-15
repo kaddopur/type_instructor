@@ -22,7 +22,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
         await page.goto('./');
         await expect(page.getByRole('heading', { name: 'Type Instructor of Pokémon' })).toBeVisible();
-        await page.getByRole('link', { name: 'change language' }).click();
+        await page.getByRole('link', { name: /change language/i }).click();
         await page.getByRole('link', { name: text.label, exact: true }).click();
         await page.locator('footer a').click();
         await page.getByRole('link', { name: text.START, exact: true }).click();
@@ -60,7 +60,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
         const damage = Number(await page.locator('.optionDamage').textContent());
         const status = { 0: 'EFFECTIVE_0', 0.5: 'EFFECTIVE_1_2', 1: 'EFFECTIVE_1', 2: 'EFFECTIVE_2' }[damage];
-        await expect(page.locator('.stemStatus')).toHaveText(text[status]);
+        await expect(page.locator('.stemStatus')).toContainText(text[status]);
         await page.locator(correct).dispatchEvent('click'); // Even synthetic inputs are rejected during feedback.
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
         await page.clock.runFor(499);

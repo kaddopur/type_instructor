@@ -40,5 +40,10 @@
     "EFFECTIVE_1": "普通",
     "EFFECTIVE_2": "効果は抜群",
     "ENEMY_ATTACK": "敵を攻撃する",
-    "ENEMY_DEFEND": "敵の攻撃を防御する"
+    "ENEMY_DEFEND": "敵の攻撃を防御する",
+    "CORRECT": "正解",
+    "INCORRECT": "不正解",
+    "CHOOSE_ANSWER": "答えを選んでください",
+    "DAMAGE_MULTIPLIER": "ダメージ倍率",
+    "CHANGE_LANGUAGE": "言語を変更"
 }

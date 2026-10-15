@@ -54,4 +54,9 @@
     text-decoration: none;
     user-select: none;
   }
+  a:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 4px;
+    box-shadow: 0 0 0 2px white;
+  }
 }
