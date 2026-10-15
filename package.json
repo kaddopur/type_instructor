@@ -41,11 +41,11 @@
     "build": "vite build && node scripts/build-sw.js",
     "preview": "vite preview",
     "test": "pnpm test:unit",
-    "test:smoke": "playwright test",
-    "test:acceptance": "playwright test --config playwright.acceptance.config.js",
-    "test:a11y": "playwright test accessibility.spec.js",
+    "test:a11y": "playwright test --grep @a11y",
     "test:unit": "vitest run",
-    "test:unit:watch": "vitest"
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:smoke": "playwright test --project=chromium-desktop --grep @smoke"
   },
   "type": "module",
   "engines": {

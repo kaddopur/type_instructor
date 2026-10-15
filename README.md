@@ -38,36 +38,57 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 ## 測試
 
-`pnpm lint` 檢查 JavaScript／TypeScript、未使用變數與 React Hooks。
-`pnpm typecheck` 使用 strict TypeScript 檢查核心出題、計分、store 與 hook；既有 JS 元件逐步遷移。
-兩者均在 CI 執行。
+`pnpm lint` 檢查 JavaScript／TypeScript 與 React Hooks；`pnpm typecheck` 使用 strict TypeScript，
+包含核心邏輯、store、hook、共用 UI 與原始碼旁的 unit tests。既有 JS 頁面逐步遷移。
 
-Unit tests 放在 `src` 原始碼旁（`*.test.ts`），Playwright 瀏覽器測試與其 fixtures／support 集中在 `tests/e2e`。
-Vitest 僅收集前者，Playwright 僅收集後者。
+| 指令 | 用途 |
+|---|---|
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，Node 環境，15 個案例 |
+| `pnpm test:unit:watch` | Vitest watch，開發時持續執行 |
+| `pnpm test:e2e` | Playwright 完整矩陣，108 個案例 |
+| `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
+| `pnpm test:a11y` | 四種設定的 28 個無障礙案例，篩選 `@a11y` |
 
+```text
+src/
+  lib/
+    getQuiz.test.ts
+    getStatus.test.ts
+    routes.test.ts
+  stores/
+    quiz.test.ts
+tests/
+  e2e/
+    navigation.spec.js
+    gameplay.spec.js
+    accessibility.spec.js
+    offline.spec.js
+    fixtures/legacy-service-worker.js
+    support/offline-server.js
+vitest.config.js
+playwright.config.js
+```
+
+Unit tests 與原始碼放在一起（`src/**/*.test.ts`），涵蓋出題、效果、計分、輸入防護、
+19／20 分邊界、結算、場次隔離與路由驗證。Vitest 共用 Vite 設定，只收集這些測試。
 核心出題使用原生 `Math.max/min`；Lodash 僅用於抽樣與洗牌。
 
-出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 15 個 Vitest 邏輯測試（含語系與路由驗證）（Node 環境）：
+Playwright 僅收集 `tests/e2e/**/*.spec.js`，驗證完整頁面、鍵盤流程、axe、
+屬性色對比、Pages 子路徑資源、worker 更新與離線遊玩。`@offline` 可篩選離線整合案例。
 
 ```sh
-pnpm test
+pnpm exec playwright install chromium firefox webkit
+pnpm test:e2e
 ```
 
-`pnpm test:unit` 單次執行相同測試，`pnpm test:unit:watch` 啟用 watch。測試直接使用專案相依套件與原始碼。
+快速開發只需安裝 Chromium，再執行 `pnpm test:e2e:smoke`。
+`E2E_SERVER=dev pnpm test:e2e:smoke` 使用 Vite 開發伺服器；預設使用正式 build／preview。
+開發模式不註冊 worker，因此離線整合案例只適用正式版，會在開發模式跳過。
+若已安裝 Google Chrome，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用它執行 Chromium project。
+測試自行啟動與停止伺服器，固定使用 `/type_instructor/` 子路徑。
 
-瀏覽器 smoke tests 涵蓋三語導頁、一般模式攻防、作答回饋、結果重玩、
-倒數結束、競速結算、快速重複點擊、回饋中切換模式、桌面／手機視窗、
-Pages 子路徑資源、離線遊玩、舊 worker 接替、安裝失敗回復，以及版本更新時不中斷遊戲：
-
-```sh
-pnpm exec playwright install chromium
-pnpm test:smoke
-SMOKE_SERVER=dev pnpm test:smoke
-```
-
-正式 build／preview 有 15 個瀏覽器測試（包含無效路由、鍵盤流程、axe 掃描與屬性色對比）；開發模式執行 14 個並跳過需要正式 worker 的更新測試。
-若本機已安裝 Google Chrome，可在測試指令前加 `PLAYWRIGHT_CHANNEL=chrome`，
-使用該瀏覽器而不另行下載 Chromium。測試會自行啟動與停止伺服器。
+CI 先執行 lint、typecheck、unit tests，再跑一次完整 E2E 矩陣。
+完整矩陣已包含 smoke 與 a11y，CI 不另外重跑這些子集合。
 
 ## 遷移進度
 
@@ -125,13 +146,13 @@ push 到 master 或在 master 手動執行 workflow 會部署到 github-pages en
 
 ```sh
 pnpm exec playwright install chromium firefox webkit
-pnpm test:acceptance
+pnpm test:e2e
 ```
 
-共 80 個驗收案例：三種語言 × 四種玩法 × 四種瀏覽器／視窗設定（48 個完整遊戲流程），
-加上四個 worker 更新與離線案例，以及 28 個鍵盤流程、axe 掃描與屬性色對比案例。設定包含桌面 Chromium、Firefox、WebKit，
+共 108 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
+28 個鍵盤流程／axe／屬性色對比案例，以及四個 worker 更新與離線案例。設定包含桌面 Chromium、Firefox、WebKit，
 以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
-CI 會在原有 smoke tests 後執行此矩陣，全部通過才會部署。
+CI 執行此矩陣，全部通過才會部署。
 
 驗收也涵蓋四個答案的可見範圍，並修正舊版在寬螢幕裁掉第二排答案的問題。
 詳見 [第 6 步驗證與發布紀錄](openspec/changes/archive/2026-10-15-complete-migration-acceptance/verification.md)。
@@ -157,7 +178,7 @@ Button／Dialog 改寫自 shadcn/ui new-york 的 Radix 版本，採本機原始�
 pnpm test:a11y
 ```
 
-此指令執行 Chromium 的七個無障礙案例；完整驗收會在四種設定都執行。
+此指令在四種設定執行共 28 個無障礙案例；加上 `--project=chromium-desktop` 可只執行 Chromium 的七個案例。
 axe 掃描 WCAG 2 A／AA 與 2.1 AA 規則，涵蓋三語頁面、開始 Dialog 與作答後狀態。
 自動測試不等同完整 WCAG 合規稽核，也不代表已完成人工螢幕閱讀器或手機實機驗證。
 玩法仍有既定時間限制，若要提供不限時練習需另行設計。

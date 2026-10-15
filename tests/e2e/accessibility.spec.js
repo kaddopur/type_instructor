@@ -18,7 +18,7 @@ async function tabTo(page, target) {
 }
 
 for (const [lang, text] of Object.entries(languages)) {
-  test(`${lang}: keyboard-only dialog, answers, completion and retry`, async ({ page }) => {
+  test(`${lang}: keyboard-only dialog, answers, completion and retry`, { tag: '@a11y' }, async ({ page }) => {
     await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
     await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
     await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
@@ -96,7 +96,7 @@ async function audit(page) {
 }
 
 for (const [lang, text] of Object.entries(languages)) {
-  test(`${lang}: accessibility scans of pages, dialogs and answer feedback`, async ({ page }) => {
+  test(`${lang}: accessibility scans of pages, dialogs and answer feedback`, { tag: '@a11y' }, async ({ page }) => {
     test.setTimeout(90000);
     await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
     for (const path of ['/', '/menu', '/lang', '/quizzes/s/basic/attack/result/-1', '/quizzes/s/speedrun/defend/result/0']) {
@@ -121,7 +121,7 @@ for (const [lang, text] of Object.entries(languages)) {
   });
 }
 
-test('all 18 generated type palettes and wrong answers have at least 4.5:1 text contrast', async ({ page }) => {
+test('all 18 generated type palettes and wrong answers have at least 4.5:1 text contrast', { tag: '@a11y' }, async ({ page }) => {
   const colors = new Set();
   const types = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel',
     'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy'];

@@ -17,8 +17,8 @@ async function updateWorker(page) {
   });
 }
 
-test('legacy and current workers update safely, survive failed installs, and play offline', async ({ page }) => {
-  test.skip(process.env.SMOKE_SERVER === 'dev', 'Worker upgrade requires the production build.');
+test('legacy and current workers update safely, survive failed installs, and play offline', { tag: '@offline' }, async ({ page }) => {
+  test.skip(process.env.E2E_SERVER === 'dev', 'Worker upgrade requires the production build.');
   test.setTimeout(60_000);
   const fixture = await serveOfflineBuilds();
   const origin = new URL(fixture.url).origin;

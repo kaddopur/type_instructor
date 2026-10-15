@@ -34,9 +34,9 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 ## Verification
 
 - Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
-- ESLint, strict TypeScript checks and 12 native game-logic tests.
-- Production smoke suite: 15 tests, including the seven accessibility cases.
-- Acceptance suite: 80 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- ESLint, strict TypeScript checks and 15 Vitest unit tests, including route validation.
+- Production browser smoke subset: seven Chromium tests selected with `@smoke`.
+- Complete E2E suite: 108 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
 - Accessibility scans cover all three languages, home/menu/language/results, every mode's
   intro dialog and playable/answered states. No axe rules are disabled.
 - Computed text/background colors are checked for all 18 target types, rendered options
@@ -51,3 +51,15 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 There is no SSR or server runtime. The Vite base and hash routes are unchanged;
 GitHub Actions continues to build `dist`, test it, and deploy only merged master changes.
 The branch's new UI is not claimed as published until its PR is merged and deployment succeeds.
+
+## Test organization
+
+Unit tests live beside their source (`src/**/*.test.ts`) and run under Vitest's
+Node environment. Playwright collects only `tests/e2e/**/*.spec.js`; browser fixtures
+and server helpers live under that directory. Existing browser tests remain JavaScript.
+
+A single `playwright.config.js` defines all four browser/device projects. The full
+`pnpm test:e2e` run includes all smoke, gameplay, accessibility and offline cases once
+per project. `pnpm test:e2e:smoke` selects seven Chromium cases with `@smoke`;
+`pnpm test:a11y` selects `@a11y` across the matrix. CI runs unit tests followed by one
+complete E2E run, without a separate duplicate smoke run.

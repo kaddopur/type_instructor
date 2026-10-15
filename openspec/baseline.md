@@ -34,10 +34,11 @@
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm test:baseline
+pnpm test:unit
 ```
 
-測試直接載入原始碼，不再需要 Node resolve hook 或暫存安裝的 Lodash。
+現行 unit tests 使用 Vitest，放在 `src` 原始碼旁；Playwright 測試集中於 `tests/e2e`，
+使用 `pnpm test:e2e` 執行。測試直接載入原始碼，不再需要 Node resolve hook 或暫存安裝的 Lodash。
 第 3 步將測試改為直接執行 Zustand store，原有出題、計分、回饋案例保留，
 另驗證作答防護與場次隔離。此指令不會驗證 React 元件或瀏覽器生命週期；
 瀏覽器驗證見第 2、3 步的 verification.md，以下清單保留完整遷移的驗收範圍。

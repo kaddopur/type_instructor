@@ -25,12 +25,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm test
+      - run: pnpm test:unit
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
-      - name: Production build and browser checks
-        run: pnpm test:smoke
-      - name: Complete browser acceptance
-        run: pnpm test:acceptance
+      - name: Production build and complete browser checks
+        run: pnpm test:e2e
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
         with:

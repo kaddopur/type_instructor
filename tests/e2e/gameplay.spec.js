@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { SCORE_TARGET } from '../../src/lib/gameRules.ts';
 
 const languages = {};
 for (const [lang, file, label] of [
@@ -13,7 +14,7 @@ for (const [lang, file, label] of [
 for (const [lang, text] of Object.entries(languages)) {
   for (const mode of ['basic', 'speedrun']) {
     for (const kind of ['attack', 'defend']) {
-      test(`${lang}/${mode}/${kind}: complete, retry, and navigate`, async ({ page }) => {
+      test(`${lang}/${mode}/${kind}: complete, retry, and navigate`, { tag: '@gameplay' }, async ({ page }) => {
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
         await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
@@ -122,3 +123,126 @@ for (const [lang, text] of Object.entries(languages)) {
     }
   }
 }
+
+async function pauseClock(page) {
+  await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
+  await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
+}
+
+test('timer starts once and basic mode reaches its result page', { tag: '@smoke' }, async ({ page }) => {
+  await pauseClock(page);
+  await page.goto('./#/en/quizzes/s/basic/attack');
+  await expect(page.locator('.overlay')).toBeVisible();
+  await page.clock.runFor(2000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 60');
+  await page.getByTestId('start-game').click();
+  await page.clock.runFor(1000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 59');
+  await page.clock.runFor(59000);
+  await expect(page).toHaveURL(/#\/en\/quizzes\/s\/basic\/attack\/result\/0$/);
+  await expect(page.locator('.Result h1')).toContainText('0');
+  await page.getByRole('link', { name: 'Retry', exact: true }).click();
+  await expect(page.locator('.overlay')).toBeVisible();
+  await page.clock.runFor(2000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 60');
+});
+
+test('rapid answers and route changes keep game sessions isolated', { tag: '@smoke' }, async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await pauseClock(page);
+  // Pin the attacking enemy to electric: ground is the unique immune answer.
+  await page.addInitScript(() => { Math.random = () => 12.5 / 18; });
+  await page.goto('./#/en/quizzes/s/basic/defend');
+  await expect(page.locator('.stemContainer')).toHaveClass(/Bgc-electric/);
+  await page.locator('.optionItem.Bgc-ground').dispatchEvent('click');
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+  await page.getByTestId('start-game').click();
+
+  await page.locator('.optionItem:not(.Bgc-ground)').first().evaluate(node => {
+    node.click();
+    node.click();
+  });
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.locator('.optionItem.Bgc-ground').dispatchEvent('click');
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.clock.runFor(499);
+  await expect(page.locator('.stemStatus')).not.toBeEmpty();
+  await page.clock.runFor(1);
+  await expect(page.locator('.stemStatus')).toBeEmpty();
+  await page.locator('.optionItem.Bgc-wrong').dispatchEvent('click');
+  await expect(page.locator('.stemScores')).toHaveText('scores: -1');
+  await page.locator('.optionItem.Bgc-ground').click();
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+
+  // A same-document mode change must replace the store and cancel feedback.
+  await page.evaluate(() => { window.location.hash = '/en/quizzes/s/speedrun/defend'; });
+  await expect(page.locator('.overlay')).toBeVisible();
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await page.clock.runFor(2000);
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await expect(page.locator('.optionDamage')).toHaveCount(0);
+  await page.getByTestId('start-game').click();
+  await page.clock.runFor(1000);
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 1');
+  await page.evaluate(() => { window.location.hash = '/en/menu'; });
+  await expect(page.locator('.Menu')).toBeVisible();
+  await page.clock.runFor(60000);
+  await expect(page).toHaveURL(/#\/en\/menu$/);
+  expect(errors).toEqual([]);
+});
+
+test('speedrun continues at 19, finishes at 20 after feedback, and retries cleanly', { tag: '@smoke' }, async ({ page }) => {
+  await pauseClock(page);
+  await page.addInitScript(() => { Math.random = () => 12.5 / 18; });
+  await page.goto('./#/en/menu');
+  await page.locator('.Menu section').nth(1).getByRole('link', { name: 'Defend', exact: true }).click();
+  await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+  await expect(page.locator('.overlay span')).toHaveText('score 20');
+  await page.getByTestId('start-game').click();
+  for (let score = 1; score <= SCORE_TARGET; score++) {
+    await page.locator('.optionItem.Bgc-ground').click();
+    await expect(page.locator('.stemScores')).toHaveText(`scores: ${score}`);
+    if (score === SCORE_TARGET) {
+      await page.clock.runFor(499);
+      await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+      await page.clock.runFor(1);
+    } else {
+      await page.clock.runFor(500);
+      if (score === 19) await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
+    }
+    if (score < SCORE_TARGET) await expect(page.locator('.optionDamage')).toHaveCount(0);
+  }
+  await expect(page).toHaveURL(new RegExp(`#/en/quizzes/s/speedrun/defend/result/${Math.floor((SCORE_TARGET - 1) / 2)}$`));
+  await page.getByRole('link', { name: 'Retry', exact: true }).click();
+  await expect(page.locator('.overlay')).toBeVisible();
+  await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
+  await expect(page.locator('.stemScores')).toHaveText('scores: 0');
+
+  // Leave a fresh answer pending: its timeout must not affect the menu.
+  await page.getByTestId('start-game').click();
+  await page.locator('.optionItem.Bgc-ground').click();
+  await page.evaluate(() => { window.location.hash = '/en/menu'; });
+  await expect(page.locator('.Menu')).toBeVisible();
+  await page.clock.runFor(2000);
+  await expect(page).toHaveURL(/#\/en\/menu$/);
+});
+
+test('all languages select correct speedrun modes and show the shared 20-point goal', { tag: '@smoke' }, async ({ page }) => {
+  const labels = {
+    en: { attack: 'Attack', defend: 'Defend', goal: 'score 20', attackStem: 'attack enemy', defendStem: 'defend against enemy' },
+    zh: { attack: '攻擊', defend: '防禦', goal: '達到 20 分', attackStem: '攻擊敵人', defendStem: '防禦來自敵人的攻擊' },
+    ja: { attack: '攻撃', defend: '防御', goal: '目指せ 20 点', attackStem: '敵を攻撃する', defendStem: '敵の攻撃を防御する' }
+  };
+  for (const [lang, text] of Object.entries(labels)) {
+    for (const kind of ['attack', 'defend']) {
+      await page.goto(`./#/${lang}/menu`);
+      await page.locator('.Menu section').nth(1).getByRole('link', { name: text[kind], exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#/${lang}/quizzes/s/speedrun/${kind}$`));
+      await expect(page.locator('.stemEnemyText')).toContainText(text[`${kind}Stem`]);
+      await expect(page.locator('.overlay span')).toHaveText(text.goal);
+      await expect(page.locator('.stemTimer')).toContainText('0');
+    }
+  }
+});
