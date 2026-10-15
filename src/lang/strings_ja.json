@@ -49,5 +49,6 @@
     "APP_DESCRIPTION": "タイプ相性を覚えるゲーム",
     "SELECT_CHALLENGE": "チャレンジを選ぶ",
     "BASIC_DESCRIPTION": "60 秒でハイスコアに挑戦",
-    "SPEEDRUN_DESCRIPTION": "20 点に達するまでの速さを競う"
+    "SPEEDRUN_DESCRIPTION": "20 点に達するまでの速さを競う",
+    "PROGRESS": "20 点までの進み具合"
 }

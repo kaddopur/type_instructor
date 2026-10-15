@@ -49,5 +49,6 @@
     "APP_DESCRIPTION": "屬性對戰記憶遊戲",
     "SELECT_CHALLENGE": "選擇挑戰",
     "BASIC_DESCRIPTION": "60 秒內挑戰最高分",
-    "SPEEDRUN_DESCRIPTION": "達到 20 分，挑戰最快紀錄"
+    "SPEEDRUN_DESCRIPTION": "達到 20 分，挑戰最快紀錄",
+    "PROGRESS": "達到 20 分的進度"
 }

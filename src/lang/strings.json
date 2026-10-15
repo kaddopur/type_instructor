@@ -49,5 +49,6 @@
     "APP_DESCRIPTION": "Type matchup memory game",
     "SELECT_CHALLENGE": "Choose a challenge",
     "BASIC_DESCRIPTION": "Score as high as you can in 60 sec",
-    "SPEEDRUN_DESCRIPTION": "Reach 20 points as fast as you can"
+    "SPEEDRUN_DESCRIPTION": "Reach 20 points as fast as you can",
+    "PROGRESS": "Progress toward 20 points"
 }
