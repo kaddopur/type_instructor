@@ -148,3 +148,22 @@ the home title is larger than action text, and HUD/record text uses 14px.
 
 Final locale-layout audit: lint, typecheck, 15 unit tests and all 120 E2E cases
 passed locally. The complete suite includes all four browser/device projects.
+
+## Complete component-style migration
+
+All page and shared-control styles now live in Tailwind utilities, including
+safe-area layout, compact/landscape variants, dialogs, progress-bar browser
+pseudo-elements and the full introduction page. Landing.css has been removed.
+index.css retains framework imports, theme tokens, font faces, document-wide
+base styles and four shared responsive variants. pageStyles.ts shares only the
+repeated navigation-page layout, title and footer classes.
+
+Pixel values remain explicit because the shared root font is 125%. Semantic
+class names remain test hooks without component-selector CSS rules. A temporary
+browser harness compared 264 states against the previous build: three languages,
+four viewports, all routes and Quiz intro/playing/feedback/exit states. Recorded
+geometry, typography, colors, borders and focus styles matched with zero differences.
+
+Final migration checks: lint, typecheck, 27 unit tests and all 212 browser cases
+passed locally across Chromium, Firefox, WebKit and iPhone-size WebKit emulation.
+Physical devices and manual screen readers remain outside this verification.

@@ -115,7 +115,7 @@ pnpm dev
 
 ### 技術與程式結構
 
-React 19、Vite 8、React Router、Zustand、Tailwind CSS 4 與共用 CSS。
+React 19、Vite 8、React Router、Zustand 與 Tailwind CSS 4。元件樣式使用 Tailwind；全域 CSS 僅保留主題、字型、共用斷點與基礎規則。
 核心邏輯、store、hook 和共用 UI 使用 TypeScript；既有頁面包含 JSX。
 Button／Dialog 採用 shadcn/ui 的 Radix 版本原始碼，MIT 授權見 [UI 授權](src/components/ui/LICENSE.md)。
 
