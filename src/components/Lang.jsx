@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 function Lang({ messages: { LANGUAGE, HOME }, lang }) {
   return (
-    <nav className="Lang flex min-h-dvh w-full flex-col items-center" aria-label={LANGUAGE}>
+    <nav className="Lang flex min-h-full w-full flex-col items-center" aria-label={LANGUAGE}>
       <section className="flex grow-[5] flex-col items-center">
         <h1 tabIndex={-1} className="mt-8 mb-4 text-[1.2rem] [text-shadow:0_.18rem_#0003]">{LANGUAGE}</h1>
         {[['en', 'English'], ['ja', '日本語'], ['zh', '中文']].map(([code, label]) => (

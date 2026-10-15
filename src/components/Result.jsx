@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 function Result({ messages: { YOUR_SCORES, YOUR_TIME, RETRY, MENU, HOME }, lang,
   params: { value, category, gameType, quizType } }) {
   return (
-    <nav className="Result flex min-h-dvh w-full flex-col items-center" aria-label={gameType === 'basic' ? YOUR_SCORES : YOUR_TIME}>
+    <nav className="Result flex min-h-full w-full flex-col items-center" aria-label={gameType === 'basic' ? YOUR_SCORES : YOUR_TIME}>
       <section className="flex grow-[10] flex-col items-center">
         <h1 id="result-summary" tabIndex={-1} className="mt-8 mb-4 text-center text-[1.2rem] leading-loose [text-shadow:0_.18rem_#0003]">
           {gameType === 'basic' ? YOUR_SCORES : YOUR_TIME}<br />{gameType === 'basic' ? value : `${value}s`}

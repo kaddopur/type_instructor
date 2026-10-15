@@ -36,7 +36,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
   }
 
   return (
-    <div className="Quiz flex h-dvh w-full flex-col overflow-hidden">
+    <div className="Quiz flex h-full w-full flex-col overflow-hidden">
       <Dialog open={overlay} onOpenChange={open => { if (!open) navigate(`/${lang}/menu`); }}>
         <DialogContent className="overlay" onCloseAutoFocus={event => event.preventDefault()}>
           <DialogTitle>{GOAL}</DialogTitle>

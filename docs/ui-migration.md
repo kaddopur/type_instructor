@@ -36,7 +36,7 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 - Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
 - ESLint, strict TypeScript checks and 15 Vitest unit tests, including route validation.
 - Production browser smoke subset: seven Chromium tests selected with `@smoke`.
-- Complete E2E suite: 108 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- Complete E2E suite: 112 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
 - Accessibility scans cover all three languages, home/menu/language/results, every mode's
   intro dialog and playable/answered states. No axe rules are disabled.
 - Computed text/background colors are checked for all 18 target types, rendered options
@@ -63,3 +63,18 @@ A single `playwright.config.js` defines all four browser/device projects. The fu
 per project. `pnpm test:e2e:smoke` selects seven Chromium cases with `@smoke`;
 `pnpm test:a11y` selects `@a11y` across the matrix. CI runs unit tests followed by one
 complete E2E run, without a separate duplicate smoke run.
+
+## Mobile Safari app shell
+
+The shared AppShell owns the dynamic viewport height and safe-area padding.
+Routes fit inside its content area without document or inner scrolling. Short
+viewports use reduced spacing; landscape menus arrange the two modes side by side.
+The viewport uses
+`viewport-fit=cover`, with all four safe-area insets handled by the shell.
+Quiz keeps its fixed-height layout inside the available shell space.
+
+The @layout browser check covers home, menu, language, results and quiz in all
+three languages, portrait and landscape, with simulated safe-area padding.
+Browser emulation cannot reproduce iOS Safari's Liquid Glass address bar. Verify
+expanded/collapsed bars and home-screen mode on an actual iPhone before claiming
+this specific device issue is resolved.

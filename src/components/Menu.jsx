@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 function Menu({ messages: { BASIC, SPEEDRUN, HOME, ATTACK, DEFEND, MENU }, lang }) {
   return (
-    <nav className="Menu flex min-h-dvh w-full flex-col items-center" aria-label={MENU}>
+    <nav className="Menu flex min-h-full w-full flex-col items-center" aria-label={MENU}>
       <h1 tabIndex={-1} className="sr-only">{MENU}</h1>
       {[['basic', BASIC], ['speedrun', SPEEDRUN]].map(([mode, title]) => (
         <section key={mode} className="flex grow-[5] flex-col items-center">

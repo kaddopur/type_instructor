@@ -45,6 +45,9 @@
 }
 
 @layer base {
+  html, body {
+    overflow: hidden;
+  }
   body {
     font-family: var(--font-pixel);
     background: white;
@@ -59,4 +62,38 @@
     outline-offset: 4px;
     box-shadow: 0 0 0 2px white;
   }
+}
+
+/* Keep every route inside Safari's visible viewport and device safe area. */
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+
+.app-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-height: 700px) {
+  .Home h1 { padding-block: 1rem; }
+  .Home .lang { margin-top: .5rem; }
+  .Home footer, .Menu footer, .Lang footer, .Result footer { padding: 1rem; }
+  .Menu h2, .Lang h1, .Result h1 { margin-block: 1rem .5rem; }
+  .menuItem, .langItem, .resultItem { margin: .25rem; }
+  .resultItem a { width: 14rem; }
+  .Home .start a, .menuItem a, .langItem a, .resultItem a {
+    min-height: 44px;
+    padding-block: .5rem;
+  }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .Home h1 { font-size: 1.25rem; }
+  .Home footer, .Menu footer, .Lang footer, .Result footer { padding: .5rem; }
+  .Menu { display: grid; grid-template-columns: 1fr 1fr; }
+  .Menu footer { grid-column: 1 / -1; text-align: center; }
 }
