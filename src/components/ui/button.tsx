@@ -5,17 +5,18 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex shrink-0 items-center justify-center gap-2 text-center font-pixel leading-relaxed select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-default',
+  'inline-flex shrink-0 items-center justify-center gap-2 text-center font-pixel leading-relaxed select-none cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-default',
   {
     variants: {
       variant: {
-        default: 'rounded-3xl border-4 border-black bg-transparent text-black shadow-[0_3px_#0003] hover:bg-black/10 aria-[current=page]:bg-black aria-[current=page]:text-white',
+        default: 'rounded-[24px] border-[3px] border-ink bg-surface text-ink shadow-[0_3px_#24242433] hover:bg-accent-soft',
+        primary: 'rounded-[24px] border-[3px] border-ink bg-accent text-ink shadow-[0_3px_#24242433] hover:bg-accent-soft',
         ghost: 'rounded-md border-0 bg-transparent text-inherit underline-offset-4 hover:underline',
         answer: 'relative rounded-none border-0 shadow-none'
       },
       size: {
-        default: 'min-h-16 w-35 px-3 py-6 text-base',
-        icon: 'size-12 p-2',
+        default: 'min-h-[64px] w-[175px] px-[12px] py-[12px] text-[20px]',
+        icon: 'size-[48px] p-[8px]',
         answer: 'w-1/2 px-2 py-0'
       }
     },

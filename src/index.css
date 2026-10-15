@@ -5,6 +5,13 @@
 
 
 @theme {
+  --color-canvas: #f7f5ef;
+  --color-surface: #ffffff;
+  --color-ink: #242424;
+  --color-muted: #626262;
+  --color-accent: #ffd447;
+  --color-accent-soft: #fff4c2;
+  --color-mode-blue: #2db6eb;
   --font-pixel: "pkmn_s", "pokemon_gbregular", "Cubic 11", monospace;
   --color-type-normal: #bbbbaa;
   --color-type-fighting: #bb5544;
@@ -66,15 +73,15 @@
   }
   body {
     font-family: var(--font-pixel);
-    background: white;
-    color: black;
+    background: var(--color-canvas);
+    color: var(--color-ink);
   }
   a {
     text-decoration: none;
     user-select: none;
   }
   a:focus-visible {
-    outline: 2px solid black;
+    outline: 2px solid var(--color-ink);
     outline-offset: 4px;
     box-shadow: 0 0 0 2px white;
   }

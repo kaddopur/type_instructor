@@ -6,7 +6,7 @@ import globe from '../images/globe.png';
 function Home({ messages: { START, CHANGE_LANGUAGE }, lang }) {
   return (
     <article className="Home flex min-h-full w-full flex-col items-center bg-[linear-gradient(135deg,#f7ae00_50%,transparent_0),linear-gradient(45deg,#2db6eb_50%,transparent_0)]">
-      <h1 tabIndex={-1} className="grow-[3] px-[32px] py-[64px] text-[clamp(25px,5vw,40px)] leading-[1.4] [text-shadow:0_5px_#0003]">Type Instructor of Pokémon</h1>
+      <h1 tabIndex={-1} className="grow-[3] px-[32px] py-[64px] text-[clamp(25px,5vw,40px)] leading-[1.4]">Type Instructor of Pokémon</h1>
       <section className="start grow">
         <Button asChild className="w-[175px] text-[24px]">
           <I18nLink to="/menu" lang={lang}>{START}</I18nLink>
