@@ -197,10 +197,12 @@ pnpm test:e2e
 `E2E_SERVER=dev pnpm test:e2e:smoke` 使用開發伺服器；開發模式會跳過正式版專用的離線案例。
 已安裝 Google Chrome 時，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用該瀏覽器執行 Chromium project。
 
-### CI 分成兩組平行執行
+### CI 共用檢查與瀏覽器測試平行執行
 
-兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 80 個。
-兩組都通過才允許部署；只有第一組上傳 Pages 產物。本機 `pnpm test:e2e` 仍執行全部案例。
+`checks` 集中執行一次格式檢查、lint、型別檢查與單元測試。
+另外兩組 `build` 工作分別執行 Playwright 分片，目前各 106 個案例。
+三組工作平行開始，全部通過才允許部署；只有第一個瀏覽器分片上傳 Pages 產物。
+本機 `pnpm test:e2e` 仍執行完整 212 個案例。
 
 ```sh
 pnpm test:e2e --shard=1/2
@@ -215,7 +217,7 @@ pnpm test:e2e --shard=2/2
 [Pages workflow](.github/workflows/pages.yml) 使用固定 Node／pnpm 版本與 `--frozen-lockfile` 安裝。
 
 - 對 `main` 的 PR：驗證但不部署。
-- 推送至 `main`，或在 `main` 手動執行 workflow：兩組驗證皆成功後部署 `dist/`。
+- 推送至 `main`，或在 `main` 手動執行 workflow：共用檢查與兩組瀏覽器測試皆成功後部署 `dist/`。
 - 在其他分支手動執行 workflow：驗證但不部署。
 
 新環境或 fork 請先到 GitHub Settings → Pages → Build and deployment，將 Source 設為 **GitHub Actions**。

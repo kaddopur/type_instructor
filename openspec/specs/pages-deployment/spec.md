@@ -35,4 +35,4 @@ OIDC credentials. The workflow SHALL support manual execution and prevent overla
 
 - **WHEN** the two browser validation shards run on main
 - **THEN** only shard 1 uploads the Pages artifact
-- **AND** deployment waits for both shards to succeed
+- **AND** deployment waits for the shared `checks` job and both shards to succeed
