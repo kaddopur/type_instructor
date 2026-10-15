@@ -51,3 +51,13 @@ Pixel typography and radii remain explicit when default theme values differ.
 The same 264-state comparison again reports zero differences. Lint, typecheck,
 all 27 unit tests and seven Chromium smoke tests passed after this cleanup.
 The full four-browser suite was not repeated for this follow-up.
+
+## Complete canonical-class review
+The installed Tailwind 4.3.3 design system was used to scan source class tokens
+with the project theme, custom variants and a 20px root font. Equivalent
+canonical suggestions were applied, including `rotate-2`, `underline-offset-4`,
+`leading-normal`, selected radii and `max-w-md`. Workspace IntelliSense settings
+use the same root font size. The final scanner reports no remaining suggestions.
+The 264-state computed-style comparison reports zero differences. Lint,
+typecheck, all 27 unit tests and seven Chromium smoke tests passed; the complete
+four-browser suite was not repeated. No PR was created.

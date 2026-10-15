@@ -85,7 +85,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
         </div>
       </header>
       <div className="quiz-stem grid min-h-0 grid-rows-[minmax(0,1fr)_64px] gap-3 landscape-short:col-start-1 landscape-short:row-start-2 landscape-short:grid-rows-[minmax(0,1fr)_48px] landscape-short:gap-2">
-        <div id="enemy-condition" className={cn('stemContainer flex min-h-0 items-center justify-center rounded-[20px] border-3 border-ink p-3 text-center landscape-short:p-2', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
+        <div id="enemy-condition" className={cn('stemContainer flex min-h-0 items-center justify-center rounded-2xl border-3 border-ink p-3 text-center landscape-short:p-2', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
           <div className="stemEnemy w-full">
             <div className="stemEnemyText flex flex-col items-center justify-center">
               <span className="question-prompt flex h-10 w-full items-center justify-center text-[16px] leading-6 landscape-short:h-7 landscape-short:text-[14px] landscape-short:leading-5">{messages[enemy.title]}</span>
@@ -96,7 +96,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
         <h1 id="quiz-question" className="quiz-instruction flex h-16 items-center justify-center px-1 text-center text-[16px] leading-6 whitespace-pre-line landscape-short:h-12 landscape-short:leading-5">{messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}</h1>
       </div>
       <div className="stemStatus flex h-14 items-center justify-center gap-2 text-center text-[14px] leading-5 landscape-short:col-start-1 landscape-short:row-start-3 landscape-short:h-12">
-        {status ? <><span className="feedback-symbol text-[24px] [font-family:sans-serif]" aria-hidden="true">{finish ? '✓' : '✕'}</span>
+        {status ? <><span className="feedback-symbol text-[24px] font-[sans-serif]" aria-hidden="true">{finish ? '✓' : '✕'}</span>
           {`${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}`}</> : null}
       </div>
       <div ref={answerGroup} role="group" tabIndex={-1} aria-label={CHOOSE_ANSWER} aria-describedby="enemy-condition quiz-question" className="optionContainer grid min-h-0 grid-cols-2 grid-rows-2 gap-3 landscape-short:col-start-2 landscape-short:row-span-2 landscape-short:row-start-2">
@@ -111,7 +111,7 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
             onClick={() => selectAnswer(index)}>
             <span className="optionText flex flex-col items-center justify-center">
               {messages[type.toUpperCase()]}
-              {clicked ? <><span className="answer-symbol absolute top-1.5 right-2 text-[16px] leading-5 [font-family:sans-serif]" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage text-[14px] leading-5" aria-hidden="true">{damage}</span></> : null}
+              {clicked ? <><span className="answer-symbol absolute top-1.5 right-2 text-[16px] leading-5 font-[sans-serif]" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage text-[14px] leading-5" aria-hidden="true">{damage}</span></> : null}
             </span>
           </Button>
         ))}

@@ -13,7 +13,7 @@ function Lang({ messages: { LANGUAGE, HOME }, lang }) {
           <div key={code} className="langItem">
             <Button asChild className="language-choice grid h-16 w-65 max-w-full grid-cols-[24px_1fr_24px] px-4 py-2 aria-[current=page]:bg-accent-soft short:h-12 short:min-h-12">
               <I18nLink to="/" lang={code} hrefLang={code} aria-current={lang === code ? 'page' : undefined}>
-                <span className="language-check font-bold [font-family:sans-serif]" aria-hidden="true">{lang === code ? '✓' : ''}</span>
+                <span className="language-check font-bold font-[sans-serif]" aria-hidden="true">{lang === code ? '✓' : ''}</span>
                 <span>{label}</span><span aria-hidden="true" />
               </I18nLink>
             </Button>

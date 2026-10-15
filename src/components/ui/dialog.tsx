@@ -13,7 +13,7 @@ const DialogContent = React.forwardRef<
   <DialogPrimitive.Portal>
     <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/80" />
     <DialogPrimitive.Content ref={ref}
-      className={cn('dialog-panel fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh_-_32px)] w-[min(calc(100%_-_32px),420px)] -translate-x-1/2 -translate-y-1/2 justify-items-center gap-4 overflow-y-auto rounded-[24px] border-3 border-ink bg-surface p-6 text-center text-ink outline-none short:gap-2 short:px-5 short:py-3', className)}
+      className={cn('dialog-panel fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-32px)] w-[min(calc(100%-32px),420px)] -translate-x-1/2 -translate-y-1/2 justify-items-center gap-4 overflow-y-auto rounded-[24px] border-3 border-ink bg-surface p-6 text-center text-ink outline-none short:gap-2 short:px-5 short:py-3', className)}
       {...props}>
       {children}
     </DialogPrimitive.Content>

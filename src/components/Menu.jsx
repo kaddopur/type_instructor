@@ -12,7 +12,7 @@ function Menu({ messages, lang }) {
       <h1 tabIndex={-1} className={pageTitle}>{SELECT_CHALLENGE}</h1>
       <div className="mode-grid my-auto grid w-[min(100%,420px)] gap-5 compact:gap-3 min-[800px]:w-[min(100%,900px)] min-[800px]:grid-cols-2 landscape-short:w-[min(100%,900px)] landscape-short:grid-cols-2">
         {[['basic', BASIC, BASIC_DESCRIPTION], ['speedrun', SPEEDRUN, SPEEDRUN_DESCRIPTION]].map(([mode, title, description]) => (
-          <section key={mode} className={cn(`mode-card mode-${mode}`, "relative overflow-hidden rounded-[20px] border-3 border-ink bg-surface px-4 pt-7 pb-5 before:absolute before:inset-x-0 before:top-0 before:h-3 before:bg-accent before:content-[''] compact:px-3 compact:pt-4 compact:pb-2.5 compact:before:h-2", mode === 'speedrun' && 'before:bg-mode-blue')}>
+          <section key={mode} className={cn(`mode-card mode-${mode}`, "relative overflow-hidden rounded-2xl border-3 border-ink bg-surface px-4 pt-7 pb-5 before:absolute before:inset-x-0 before:top-0 before:h-3 before:bg-accent before:content-[''] compact:px-3 compact:pt-4 compact:pb-2.5 compact:before:h-2", mode === 'speedrun' && 'before:bg-mode-blue')}>
             <h2 className="flex h-9 items-center text-[24px] leading-7 compact:h-7 compact:text-[22px]">{title}</h2>
             <p className="flex h-15 items-center text-[14px] leading-5 compact:h-10">{description}</p>
             <div className="mode-actions mt-3 grid grid-cols-2 gap-3 compact:mt-2">

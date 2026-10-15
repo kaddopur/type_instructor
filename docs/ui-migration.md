@@ -169,3 +169,12 @@ geometry, typography, colors, borders and focus styles matched with zero differe
 Final migration checks: lint, typecheck, 27 unit tests and all 212 browser cases
 passed locally across Chromium, Firefox, WebKit and iPhone-size WebKit emulation.
 Physical devices and manual screen readers remain outside this verification.
+
+## Canonical Tailwind class names
+
+The workspace configures `tailwindCSS.rootFontSize` as 20 to match the shared
+125% root size. Canonical class suggestions are checked using the installed
+Tailwind design system, including the project's theme and custom variants.
+Equivalent utilities replace arbitrary values for rotation, underline offsets,
+selected corner radii, normal line height, scrollbar gutters and safe-area padding.
+Arbitrary values remain where the theme has no equivalent.

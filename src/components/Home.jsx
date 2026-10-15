@@ -10,8 +10,8 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME,
       <div className={`${pixels} home-pixels-left left-5`} aria-hidden="true" />
       <div className={`${pixels} home-pixels-right right-5 -scale-x-100`} aria-hidden="true" />
       <header className="home-hero self-end short:self-center">
-        <h1 tabIndex={-1} className="text-[clamp(32px,9vw,48px)] leading-[1.45] [@media(max-height:480px)]:text-[32px]">Type Instructor</h1>
-        <p className="mt-4 flex h-12 items-center justify-center text-[16px] leading-6 [font-family:system-ui,sans-serif] short:mt-1 short:h-8">{APP_DESCRIPTION}</p>
+        <h1 tabIndex={-1} className="text-[clamp(32px,9vw,48px)] leading-[1.45] short:text-[32px]">Type Instructor</h1>
+        <p className="mt-4 flex h-12 items-center justify-center text-[16px] leading-6 font-[system-ui,sans-serif] short:mt-1 short:h-8">{APP_DESCRIPTION}</p>
       </header>
       <div className="home-actions grid justify-items-center gap-5 pt-5 compact:gap-2 compact:pt-0">
         <section className="start">
@@ -27,9 +27,9 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME,
             </I18nLink>
           </Button>
         </section>
-        <I18nLink className="home-about inline-flex min-h-11 w-60 items-center justify-center text-[16px] leading-6 underline underline-offset-[4px]" to="/about" lang={lang}>{ABOUT_GAME}</I18nLink>
+        <I18nLink className="home-about inline-flex min-h-11 w-60 items-center justify-center text-[16px] leading-6 underline underline-offset-4" to="/about" lang={lang}>{ABOUT_GAME}</I18nLink>
       </div>
-      <footer className="home-notice flex h-18 max-w-140 items-end justify-center self-end justify-self-center text-[12px] leading-4.5 text-muted [font-family:system-ui,sans-serif] landscape-short:col-span-full">{FAN_NOTICE}</footer>
+      <footer className="home-notice flex h-18 max-w-md items-end justify-center self-end justify-self-center text-[12px] leading-4.5 text-muted font-[system-ui,sans-serif] landscape-short:col-span-full">{FAN_NOTICE}</footer>
     </article>
   );
 }
