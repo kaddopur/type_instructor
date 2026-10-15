@@ -23,7 +23,13 @@ for (const [lang, text] of Object.entries(languages)) {
     await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
     await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
     const mode = lang === 'en' ? 'speedrun' : 'basic';
-    await page.goto(`./#/${lang}/quizzes/s/${mode}/attack`);
+    await page.goto(`./#/${lang}/`);
+    await expect(page.getByRole('link', { name: text.START, exact: true })).toBeFocused();
+    await page.keyboard.press('Enter');
+    const firstMenuLink = page.locator('.Menu section').first().getByRole('link', { name: text.ATTACK, exact: true });
+    await expect(firstMenuLink).toBeFocused();
+    await tabTo(page, page.locator('.Menu section').nth(mode === 'basic' ? 0 : 1).getByRole('link', { name: text.ATTACK, exact: true }));
+    await page.keyboard.press('Enter');
     const start = page.getByRole('button', { name: text.START, exact: true });
     await expect(start).toBeFocused();
     await page.keyboard.press('Shift+Tab');
@@ -32,14 +38,15 @@ for (const [lang, text] of Object.entries(languages)) {
     await expect(start).toBeFocused();
     await page.keyboard.press('Escape');
     await expect(page).toHaveURL(new RegExp(`#/${lang}/menu$`));
-    await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+    await expect(firstMenuLink).toBeFocused();
     await tabTo(page, page.locator('.Menu section').nth(mode === 'basic' ? 0 : 1)
       .getByRole('link', { name: text.ATTACK, exact: true }));
     await page.keyboard.press('Enter');
     await expect(start).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+    await expect(page.locator('.optionItem').first()).toBeFocused();
+    await expect(page.locator('.optionItem').first()).toHaveAccessibleDescription(new RegExp(text.ENEMY_ATTACK));
 
     const wrong = page.locator('.optionItem:not(.Bgc-fighting)').first();
     await tabTo(page, wrong);
@@ -56,7 +63,7 @@ for (const [lang, text] of Object.entries(languages)) {
     await page.keyboard.press('Space');
     await expect(page.getByRole('status')).toContainText(text.CORRECT);
     await page.clock.runFor(500);
-    await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+    await expect(page.locator('.optionItem').first()).toBeFocused();
 
     if (mode === 'speedrun') {
       for (let score = 1; score <= 20; score++) {
@@ -64,12 +71,14 @@ for (const [lang, text] of Object.entries(languages)) {
         await page.keyboard.press('Enter');
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: ${score}`);
         await page.clock.runFor(500);
+        if (score < 20) await expect(page.locator('.optionItem').first()).toBeFocused();
       }
     } else {
       await page.clock.runFor(59000);
     }
     await expect(page).toHaveURL(new RegExp(`/${mode}/attack/result/\\d+$`));
-    await expect(page.locator('.Result h1')).toBeFocused();
+    await expect(page.getByRole('link', { name: text.RETRY, exact: true })).toBeFocused();
+    await expect(page.getByRole('link', { name: text.RETRY, exact: true })).toHaveAccessibleDescription(new RegExp(mode === 'basic' ? text.YOUR_SCORES : text.YOUR_TIME));
     await tabTo(page, page.getByRole('link', { name: text.RETRY, exact: true }));
     await page.keyboard.press('Enter');
     await expect(start).toBeFocused();

@@ -15,7 +15,11 @@ const I18nPage = (ChildComponent) => {
       document.documentElement.lang = lang;
       const heading = document.querySelector('main h1');
       document.title = `${heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor'} | Pokémon`;
-      if (!document.querySelector('[role="dialog"]')) heading?.focus({ preventScroll: true });
+      if (!document.querySelector('[role="dialog"]')) {
+        document.querySelector('main')?.querySelector(
+          'a[href]:not([tabindex="-1"]), button:not(:disabled):not([aria-disabled="true"]):not([tabindex="-1"])'
+        )?.focus({ preventScroll: true });
+      }
     }, [lang, location.pathname]);
 
     return <ChildComponent {...props} params={params} location={location} navigate={navigate}

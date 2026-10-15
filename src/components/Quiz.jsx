@@ -17,15 +17,15 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
     if (result !== null) navigate(`${pathname}/result/${result}`);
   }, [result, navigate, pathname]);
 
-  const heading = useRef(null);
+  const answerGroup = useRef(null);
   const [announcement, setAnnouncement] = useState('');
   const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN, START, MENU, CHOOSE_ANSWER, DAMAGE_MULTIPLIER } = messages;
 
   useEffect(() => {
-    if (!overlay && !freeze && options.every(option => !option.clicked)) {
-      heading.current?.focus({ preventScroll: true });
+    if (!overlay && !freeze && result === null && options.every(option => !option.clicked)) {
+      answerGroup.current?.querySelector('button:not([aria-disabled="true"])')?.focus({ preventScroll: true });
     }
-  }, [overlay, freeze, options]);
+  }, [overlay, freeze, result, options]);
 
   function selectAnswer(index) {
     const option = options[index];
@@ -53,16 +53,17 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
           <div className="stemScores w-1/2 text-[.8rem] leading-[4]">{SCORES}: {scores}</div>
         </div>
         <div className="stemEnemy min-h-0 w-full flex-1">
-          <h1 ref={heading} tabIndex={-1} className="stemEnemyText flex h-full flex-col items-center justify-center px-4 text-[1.4rem] leading-loose">
+          <h1 id="quiz-question" className="stemEnemyText flex h-full flex-col items-center justify-center px-4 text-[1.4rem] leading-loose">
             {messages[enemy.title]}<br />( {messages[enemy.type.toUpperCase()]} )
           </h1>
         </div>
         <div className="stemStatus flex min-h-[3.2rem] items-center justify-center px-2 text-[.8rem] leading-normal">{status ? `${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}` : ''}</div>
       </div>
-      <div role="group" aria-label={CHOOSE_ANSWER} className="optionContainer grid w-full shrink-0 grid-cols-2">
+      <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} className="optionContainer grid w-full shrink-0 grid-cols-2">
         {options.map(({ type, damage, clicked, correct }, index) => (
           <Button key={type + index} type="button" variant="answer" size="answer"
             aria-label={`${messages[type.toUpperCase()]}${clicked ? `, ${DAMAGE_MULTIPLIER}: ${damage}` : ''}`}
+            aria-describedby={index === 0 ? 'quiz-question' : undefined}
             tabIndex={clicked ? -1 : 0}
             aria-disabled={overlay || freeze || result !== null || clicked || undefined}
             className={cn('optionItem h-[min(37.5vw,25dvh)] min-h-12 w-full flex-col whitespace-normal text-base leading-loose focus-visible:z-10 focus-visible:-outline-offset-4 focus-visible:ring-inset',

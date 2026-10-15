@@ -20,7 +20,9 @@ The final build uses Preflight and removes normalize.css and the legacy page sty
 
 - Keyboard-only start, answer, feedback, next question, result and retry.
 - Dialog has a title/description and contains focus; dismissal returns to the menu.
-- Focus stays usable across questions and moves to the result heading on navigation.
+- Home focuses Start; navigation pages focus their first action; results focus Retry,
+  described by the result summary.
+  Starting/advancing a question focuses the first available answer, described by the question heading.
 - Answer outcome is available as text and a live announcement, independent of color.
 - The timer is not announced every second.
 - Automated accessibility checks and existing desktop/mobile browser coverage.
