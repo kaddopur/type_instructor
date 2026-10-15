@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import I18nPage from './I18nPage.jsx';
 import classnames from 'classnames';
-import useGame from '../hooks/useGame.js';
-import { SCORE_TARGET } from '../lib/gameRules.js';
+import useGame from '../hooks/useGame.ts';
+import { SCORE_TARGET } from '../lib/gameRules.ts';
 import './Quiz.css';
 
 function Quiz({ messages, params: { gameType, quizType }, location: { pathname }, navigate }) {

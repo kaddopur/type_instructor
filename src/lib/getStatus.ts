@@ -1,4 +1,4 @@
-const getStatus = demage => {
+const getStatus = (demage: number) => {
   if (demage === 0) {
     return 'EFFECTIVE_0';
   } else if (demage < 1) {

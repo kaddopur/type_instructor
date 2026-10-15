@@ -24,6 +24,7 @@ jobs:
           cache: true
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Production build and browser checks

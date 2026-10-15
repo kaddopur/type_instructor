@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
-import { createQuizStore } from '../stores/quiz.js';
+import { createQuizStore } from '../stores/quiz.ts';
+import type { GameType, QuizType } from '../lib/types.ts';
 
-export default function useGame(gameType, quizType) {
+export default function useGame(gameType: GameType, quizType: QuizType) {
   const [store] = useState(() => createQuizStore(gameType, quizType));
   const state = useStore(store);
   const { overlay, freeze, result } = state;

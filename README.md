@@ -36,7 +36,9 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 
 ## 測試
 
-`pnpm lint` 檢查 JavaScript／JSX、未使用變數與 React Hooks；CI 使用相同規則。
+`pnpm lint` 檢查 JavaScript／TypeScript、未使用變數與 React Hooks。
+`pnpm typecheck` 使用 strict TypeScript 檢查核心出題、計分、store 與 hook；既有 JS 元件逐步遷移。
+兩者均在 CI 執行。
 
 出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
@@ -72,7 +74,7 @@ SMOKE_SERVER=dev pnpm test:smoke
 正式遊戲：[Type Instructor](https://kaddopur.github.io/type_instructor/)。遷移 PR：[#2](https://github.com/kaddopur/type_instructor/pull/2)。
 
 競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
-目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
+目標值集中於 [gameRules.ts](src/lib/gameRules.ts)，遊戲邏輯與中英日說明共用此設定。
 
 玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
 第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
@@ -82,9 +84,9 @@ SMOKE_SERVER=dev pnpm test:smoke
 
 ## 遊戲狀態
 
-每場遊戲使用獨立的 [Zustand store](src/stores/quiz.js)，直接管理開始、計時、
+每場遊戲使用獨立的 [Zustand store](src/stores/quiz.ts)，直接管理開始、計時、
 作答與回饋後的狀態更新；開始前、回饋期間、已選過的選項和結束後的輸入不計分。
-[useGame](src/hooks/useGame.js) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
+[useGame](src/hooks/useGame.ts) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
 語言與模式沿用 URL，翻譯來自靜態 JSON；目前不持久保存遊戲狀態。
 
 ## 離線與版本更新

@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-const { default: getQuiz } = await import('../src/lib/getQuiz.js');
-const { default: getStatus } = await import('../src/lib/getStatus.js');
-import { createQuizStore } from '../src/stores/quiz.js';
-import { SCORE_TARGET } from '../src/lib/gameRules.js';
+const { default: getQuiz } = await import('../src/lib/getQuiz.ts');
+const { default: getStatus } = await import('../src/lib/getStatus.ts');
+import { createQuizStore } from '../src/stores/quiz.ts';
+import { SCORE_TARGET } from '../src/lib/gameRules.ts';
 
 const types = [
   'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug',
