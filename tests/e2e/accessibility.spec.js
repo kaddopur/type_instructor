@@ -52,6 +52,8 @@ for (const [lang, text] of Object.entries(languages)) {
     await tabTo(page, wrong);
     await page.keyboard.press('Enter');
     await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
+    if (mode === 'speedrun') await expect(page.getByRole('progressbar')).toHaveJSProperty('value', 0);
+    else await expect(page.getByRole('progressbar')).toHaveCount(0);
     await expect(page.getByRole('status')).toContainText(text.INCORRECT);
     await expect(wrong).toBeFocused();
     await page.keyboard.press('Space');
@@ -70,6 +72,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await tabTo(page, correct);
         await page.keyboard.press('Enter');
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: ${score}`);
+        await expect(page.getByRole('progressbar')).toHaveJSProperty('value', score);
         await page.clock.runFor(500);
         if (score < 20) await expect(page.locator('.optionItem').first()).toBeFocused();
       }

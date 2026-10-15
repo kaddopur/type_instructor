@@ -1,0 +1,4 @@
+- [x] 1. Add clear condition and question translations in all three languages.
+- [x] 2. Separate the card and instruction with shared responsive slots and accessible context.
+- [x] 3. Verify both modes, layout, keyboard flows and existing complete acceptance.
+- [x] 4. Record evidence, archive, commit and update PR #6.

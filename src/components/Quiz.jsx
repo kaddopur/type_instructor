@@ -36,42 +36,58 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
   }
 
   return (
-    <div className="Quiz flex h-full w-full flex-col overflow-hidden">
+    <div className="Quiz">
       <Dialog open={overlay} onOpenChange={open => { if (!open) navigate(`/${lang}/menu`); }}>
         <DialogContent className="overlay" onCloseAutoFocus={event => event.preventDefault()}>
+          <p className={`mode-label mode-label-${gameType}`}>{messages[gameType === 'basic' ? 'BASIC' : 'SPEEDRUN']}</p>
           <DialogTitle>{GOAL}</DialogTitle>
-          <DialogDescription asChild className="flex h-[2.8rem] items-center justify-center">
+          <DialogDescription asChild className="dialog-goal">
             <span>{gameType === 'basic' ? GOAL_BASIC : GOAL_SPEEDRUN.replace('{scoreTarget}', SCORE_TARGET)}</span>
           </DialogDescription>
-          <Button type="button" data-testid="start-game" className="mx-auto w-full max-w-[240px] rounded-[24px]" onClick={start}>{START}</Button>
-          <Button asChild variant="ghost" className="mx-auto w-full max-w-[240px] rounded-[24px] px-0 py-2 whitespace-nowrap"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
+          <Button type="button" data-testid="start-game" variant="primary" className="dialog-action dialog-start" onClick={start}>{START}</Button>
+          <Button asChild variant="ghost" className="dialog-action dialog-menu"><I18nLink to="/menu" lang={lang}>{MENU}</I18nLink></Button>
         </DialogContent>
       </Dialog>
-      <div className={cn('stemContainer relative flex min-h-0 flex-1 flex-col items-center text-center text-[1.4rem] leading-[1.6]', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
-        <div className="stemHeader flex w-full">
-          <div className="stemTimer w-1/2 text-[.8rem] leading-[4]">{TIMER}: {timer}</div>
-          <div className="stemScores w-1/2 text-[.8rem] leading-[4]">{SCORES}: {scores}</div>
+      <header className="quiz-hud">
+        <div className="stemHeader">
+          <div className="stemTimer">{TIMER}: {timer}</div>
+          <div className="stemScores">{SCORES}: {scores}</div>
         </div>
-        <div className="stemEnemy min-h-0 w-full flex-1">
-          <h1 id="quiz-question" className="stemEnemyText flex h-full flex-col items-center justify-center px-4 text-[1.4rem] leading-loose">
-            {messages[enemy.title]}<br />( {messages[enemy.type.toUpperCase()]} )
-          </h1>
+        <div className="quiz-progress" aria-hidden={gameType !== 'speedrun' || undefined}>
+          {gameType === 'speedrun' ? <>
+            <progress max={SCORE_TARGET} value={Math.max(0, Math.min(scores, SCORE_TARGET))} aria-label={messages.PROGRESS} />
+            <span>{Math.max(0, scores)} / {SCORE_TARGET}</span>
+          </> : null}
         </div>
-        <div className="stemStatus flex w-full min-h-[3.2rem] items-center justify-center px-2 text-[.8rem] leading-normal">{status ? `${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}` : ''}</div>
+      </header>
+      <div className="quiz-stem">
+        <div id="enemy-condition" className={cn('stemContainer', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
+          <div className="stemEnemy">
+            <div className="stemEnemyText">
+              <span className="question-prompt">{messages[enemy.title]}</span>
+              <strong className="question-type">{messages[enemy.type.toUpperCase()]}</strong>
+            </div>
+          </div>
+        </div>
+        <h1 id="quiz-question" className="quiz-instruction">{messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}</h1>
       </div>
-      <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} className="optionContainer grid w-full shrink-0 grid-cols-2">
+      <div className="stemStatus">
+        {status ? <><span className="feedback-symbol" aria-hidden="true">{finish ? '✓' : '✕'}</span>
+          {`${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}`}</> : null}
+      </div>
+      <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} aria-describedby="enemy-condition quiz-question" className="optionContainer">
         {options.map(({ type, damage, clicked, correct }, index) => (
           <Button key={type + index} type="button" variant="answer" size="answer"
             aria-label={`${messages[type.toUpperCase()]}${clicked ? `, ${DAMAGE_MULTIPLIER}: ${damage}` : ''}`}
-            aria-describedby={index === 0 ? 'quiz-question' : undefined}
+            aria-describedby={index === 0 ? 'enemy-condition quiz-question' : undefined}
             tabIndex={clicked ? -1 : 0}
             aria-disabled={overlay || freeze || result !== null || clicked || undefined}
-            className={cn('optionItem h-[min(37.5vw,25dvh)] min-h-12 w-full flex-col whitespace-normal text-base leading-loose focus-visible:z-10 focus-visible:-outline-offset-4 focus-visible:ring-inset',
+            className={cn('optionItem',
               clicked && !correct ? typeStyles.wrong : typeStyles[type], `Bgc-${clicked && !correct ? 'wrong' : type}`)}
             onClick={() => selectAnswer(index)}>
-            <span className="optionText flex flex-col items-center justify-center">
+            <span className="optionText">
               {messages[type.toUpperCase()]}
-              {clicked ? <span className="optionDamage text-[.8rem]" aria-hidden="true">{damage}</span> : null}
+              {clicked ? <><span className="answer-symbol" aria-hidden="true">{correct ? '✓' : '✕'}</span><span className="optionDamage" aria-hidden="true">{damage}</span></> : null}
             </span>
           </Button>
         ))}

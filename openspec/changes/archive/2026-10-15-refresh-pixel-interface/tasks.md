@@ -1,0 +1,10 @@
+# Eight commits
+
+- [x] 1. Establish shared visual tokens and controls.
+- [x] 2. Refresh Home.
+- [x] 3. Refresh Menu.
+- [x] 4. Refresh language selection.
+- [x] 5. Refresh the start dialog.
+- [x] 6. Refresh Quiz and progress feedback.
+- [x] 7. Refresh results.
+- [x] 8. Verify, document and archive the complete redesign; prepare PR handoff.

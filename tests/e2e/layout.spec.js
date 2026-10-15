@@ -16,8 +16,8 @@ test('app shell keeps routes and quiz controls inside the usable mobile viewport
         if (!route) {
           await expect(page.locator('.Home h1')).toHaveCSS('font-size', titleSize);
           await expect(page.locator('.Home .start a')).toHaveCSS('font-size', '24px');
-          await expect(page.locator('.Home .start a')).toHaveCSS('width', '175px');
-          await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '20px');
+          await expect(page.locator('.Home .start a')).toHaveCSS('width', '240px');
+          await expect(page.locator('.Home footer a')).toHaveCSS('font-size', '14px');
         }
         if (route === 'menu') {
           const geometry = await page.locator('.Menu .menuItem a').evaluateAll(nodes => nodes.map(node => {
@@ -155,7 +155,7 @@ test('all routes preserve layout geometry across languages', { tag: '@layout' },
         compare(intro, expected.intro, `${lang}/${route} intro`);
         if (!route.endsWith('attack') && !route.endsWith('defend')) continue;
         await page.getByTestId('start-game').click();
-        const quizSelector = '.stemContainer, .stemHeader, .stemStatus, .optionItem';
+        const quizSelector = '.stemContainer, .quiz-instruction, .stemHeader, .stemStatus, .optionItem';
         const playing = await geometry(quizSelector);
         expected.playing ??= playing;
         compare(playing, expected.playing, `${lang}/${route} playing`);

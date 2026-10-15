@@ -35,6 +35,9 @@ for (const [lang, text] of Object.entries(languages)) {
         await page.reload(); // Direct hash reload must preserve the selected route.
         await expect(page.locator('html')).toHaveAttribute('lang', lang);
         await expect(page.locator('.stemEnemyText')).toContainText(text[kind === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND']);
+        await expect(page.locator('#quiz-question')).toHaveText(text[kind === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']);
+        await expect(page.locator('.question-type')).toHaveText(text.NORMAL);
+        await expect(page.locator('.optionContainer')).toHaveAccessibleDescription(new RegExp(text[kind === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION'].replace(/\s+/g, ' ')));
         await expect(page.locator('.overlay span')).toHaveText(mode === 'basic' ? text.GOAL_BASIC : text.GOAL_SPEEDRUN.replace('{scoreTarget}', 20));
         await page.clock.runFor(2000);
         await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 60 : 0}`);
@@ -231,9 +234,9 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
 
 test('all languages select correct speedrun modes and show the shared 20-point goal', { tag: '@smoke' }, async ({ page }) => {
   const labels = {
-    en: { attack: 'Attack', defend: 'Defend', goal: 'score 20', attackStem: 'attack enemy', defendStem: 'defend against enemy' },
-    zh: { attack: '攻擊', defend: '防禦', goal: '達到 20 分', attackStem: '攻擊敵人', defendStem: '防禦來自敵人的攻擊' },
-    ja: { attack: '攻撃', defend: '防御', goal: '目指せ 20 点', attackStem: '敵を攻撃する', defendStem: '敵の攻撃を防御する' }
+    en: { attack: 'Attack', defend: 'Defend', goal: 'score 20', attackStem: 'Enemy type', defendStem: 'Enemy attack type' },
+    zh: { attack: '攻擊', defend: '防禦', goal: '達到 20 分', attackStem: '敵方屬性', defendStem: '敵方攻擊屬性' },
+    ja: { attack: '攻撃', defend: '防御', goal: '目指せ 20 点', attackStem: '敵のタイプ', defendStem: '敵の攻撃タイプ' }
   };
   for (const [lang, text] of Object.entries(labels)) {
     for (const kind of ['attack', 'defend']) {

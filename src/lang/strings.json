@@ -39,11 +39,18 @@
     "EFFECTIVE_1_2": "not very effective",
     "EFFECTIVE_1": "effective",
     "EFFECTIVE_2": "super effective",
-    "ENEMY_ATTACK": "attack enemy",
-    "ENEMY_DEFEND": "defend against enemy",
+    "ENEMY_ATTACK": "Enemy type",
+    "ENEMY_DEFEND": "Enemy attack type",
     "CORRECT": "Correct",
     "INCORRECT": "Incorrect",
     "CHOOSE_ANSWER": "Choose an answer",
     "DAMAGE_MULTIPLIER": "Damage multiplier",
-    "CHANGE_LANGUAGE": "Change language"
+    "CHANGE_LANGUAGE": "Change language",
+    "APP_DESCRIPTION": "Type matchup memory game",
+    "SELECT_CHALLENGE": "Choose a challenge",
+    "BASIC_DESCRIPTION": "Score as high as you can in 60 sec",
+    "SPEEDRUN_DESCRIPTION": "Reach 20 points as fast as you can",
+    "PROGRESS": "Progress toward 20 points",
+    "ATTACK_QUESTION": "Which attack type is\nmost effective?",
+    "DEFEND_QUESTION": "Which type takes\nthe least damage?"
 }
