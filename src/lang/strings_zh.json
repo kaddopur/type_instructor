@@ -39,8 +39,8 @@
     "EFFECTIVE_1_2": "效果不理想",
     "EFFECTIVE_1": "效果一般",
     "EFFECTIVE_2": "效果絕佳",
-    "ENEMY_ATTACK": "攻擊敵人",
-    "ENEMY_DEFEND": "防禦來自敵人的攻擊",
+    "ENEMY_ATTACK": "敵方屬性",
+    "ENEMY_DEFEND": "敵方攻擊屬性",
     "CORRECT": "答對了",
     "INCORRECT": "答錯了",
     "CHOOSE_ANSWER": "選擇答案",
@@ -50,5 +50,7 @@
     "SELECT_CHALLENGE": "選擇挑戰",
     "BASIC_DESCRIPTION": "60 秒內挑戰最高分",
     "SPEEDRUN_DESCRIPTION": "達到 20 分，挑戰最快紀錄",
-    "PROGRESS": "達到 20 分的進度"
+    "PROGRESS": "達到 20 分的進度",
+    "ATTACK_QUESTION": "哪種攻擊屬性\n最有效？",
+    "DEFEND_QUESTION": "自己的哪種屬性\n受到的傷害最少？"
 }

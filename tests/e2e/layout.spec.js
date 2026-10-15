@@ -155,7 +155,7 @@ test('all routes preserve layout geometry across languages', { tag: '@layout' },
         compare(intro, expected.intro, `${lang}/${route} intro`);
         if (!route.endsWith('attack') && !route.endsWith('defend')) continue;
         await page.getByTestId('start-game').click();
-        const quizSelector = '.stemContainer, .stemHeader, .stemStatus, .optionItem';
+        const quizSelector = '.stemContainer, .quiz-instruction, .stemHeader, .stemStatus, .optionItem';
         const playing = await geometry(quizSelector);
         expected.playing ??= playing;
         compare(playing, expected.playing, `${lang}/${route} playing`);

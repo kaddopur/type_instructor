@@ -39,8 +39,8 @@
     "EFFECTIVE_1_2": "効果は今一つ",
     "EFFECTIVE_1": "普通",
     "EFFECTIVE_2": "効果は抜群",
-    "ENEMY_ATTACK": "敵を攻撃する",
-    "ENEMY_DEFEND": "敵の攻撃を防御する",
+    "ENEMY_ATTACK": "敵のタイプ",
+    "ENEMY_DEFEND": "敵の攻撃タイプ",
     "CORRECT": "正解",
     "INCORRECT": "不正解",
     "CHOOSE_ANSWER": "答えを選んでください",
@@ -50,5 +50,7 @@
     "SELECT_CHALLENGE": "チャレンジを選ぶ",
     "BASIC_DESCRIPTION": "60 秒でハイスコアに挑戦",
     "SPEEDRUN_DESCRIPTION": "20 点に達するまでの速さを競う",
-    "PROGRESS": "20 点までの進み具合"
+    "PROGRESS": "20 点までの進み具合",
+    "ATTACK_QUESTION": "どの攻撃タイプが\n最も効果的？",
+    "DEFEND_QUESTION": "どのタイプなら受ける\nダメージが最も少ない？"
 }

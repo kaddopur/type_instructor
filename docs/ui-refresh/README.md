@@ -11,6 +11,8 @@ fonts and the existing Pokémon type palette. Actual browser captures are below.
 | Language | [language.png](language.png) |
 | Start dialog | [intro.png](intro.png) |
 | Quiz feedback | [quiz.png](quiz.png) |
+| Japanese attack question | [quiz-attack-ja.png](quiz-attack-ja.png) |
+| Japanese defense question | [quiz-defend-ja.png](quiz-defend-ja.png) |
 | Result | [result.png](result.png) |
 | Landscape Menu | [menu-landscape.png](menu-landscape.png) |
 
@@ -60,3 +62,16 @@ Lint, TypeScript, 15 unit tests and the complete 120-case browser matrix passed
 on the final runtime source, including the new icon resources. OpenSpec strict
 validation and whitespace checks also pass. Progress clamps and current-language
 checks are included in the existing browser cases.
+
+## Follow-up: explicit quiz questions
+
+After approving the attack/defense comparison mockup, the user requested a
+separate copy/layout change. The colored card now labels the enemy type (attack)
+or enemy attack type (defense). A separate question below asks which attack
+maximizes damage or which own type minimizes it. The type name has no parentheses.
+Each translation has a deliberate two-line question in a fixed slot. The first
+answer and answer group describe both the condition and question for keyboard
+and assistive-technology context. Core gameplay and scoring remain unchanged.
+
+This follow-up is a ninth commit, additional to the completed eight-step refresh;
+it is recorded in the separate clarify-quiz-questions OpenSpec archive.

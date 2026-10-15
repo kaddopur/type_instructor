@@ -60,23 +60,26 @@ function Quiz({ messages, lang, params: { gameType, quizType }, location: { path
           </> : null}
         </div>
       </header>
-      <div className={cn('stemContainer', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
-        <div className="stemEnemy">
-          <h1 id="quiz-question" className="stemEnemyText">
-            <span className="question-prompt">{messages[enemy.title]}</span>
-            <strong className="question-type">( {messages[enemy.type.toUpperCase()]} )</strong>
-          </h1>
+      <div className="quiz-stem">
+        <div id="enemy-condition" className={cn('stemContainer', typeStyles[enemy.type], `Bgc-${enemy.type}`)}>
+          <div className="stemEnemy">
+            <div className="stemEnemyText">
+              <span className="question-prompt">{messages[enemy.title]}</span>
+              <strong className="question-type">{messages[enemy.type.toUpperCase()]}</strong>
+            </div>
+          </div>
         </div>
+        <h1 id="quiz-question" className="quiz-instruction">{messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}</h1>
       </div>
       <div className="stemStatus">
         {status ? <><span className="feedback-symbol" aria-hidden="true">{finish ? '✓' : '✕'}</span>
           {`${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}`}</> : null}
       </div>
-      <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} className="optionContainer">
+      <div ref={answerGroup} role="group" aria-label={CHOOSE_ANSWER} aria-describedby="enemy-condition quiz-question" className="optionContainer">
         {options.map(({ type, damage, clicked, correct }, index) => (
           <Button key={type + index} type="button" variant="answer" size="answer"
             aria-label={`${messages[type.toUpperCase()]}${clicked ? `, ${DAMAGE_MULTIPLIER}: ${damage}` : ''}`}
-            aria-describedby={index === 0 ? 'quiz-question' : undefined}
+            aria-describedby={index === 0 ? 'enemy-condition quiz-question' : undefined}
             tabIndex={clicked ? -1 : 0}
             aria-disabled={overlay || freeze || result !== null || clicked || undefined}
             className={cn('optionItem',
