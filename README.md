@@ -88,8 +88,13 @@ pnpm test:e2e
 若已安裝 Google Chrome，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用它執行 Chromium project。
 測試自行啟動與停止伺服器，固定使用 `/type_instructor/` 子路徑。
 
-CI 先執行 lint、typecheck、unit tests，再跑一次完整 E2E 矩陣。
+CI 使用兩組平行 jobs，各自執行 lint、typecheck、unit tests，
+再以 Playwright `--shard=1/2`、`--shard=2/2` 分攤完整 E2E 矩陣（目前各 72 個案例）。
 完整矩陣已包含 smoke 與 a11y，CI 不另外重跑這些子集合。
+兩組都通過後才允許部署；只有第一組上傳 Pages 產物，避免重複上傳。
+本機 `pnpm test:e2e` 維持執行全部 144 個案例。
+分片使用 [Playwright 內建 sharding](https://playwright.dev/docs/test-sharding)，
+可用 `pnpm test:e2e --shard=1/2` 或 `--shard=2/2` 單獨重跑。
 
 ## 遷移進度
 
