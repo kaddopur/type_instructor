@@ -52,5 +52,6 @@
     "SPEEDRUN_DESCRIPTION": "Reach 20 points as fast as you can",
     "PROGRESS": "Progress toward 20 points",
     "ATTACK_QUESTION": "Which attack type is\nmost effective?",
-    "DEFEND_QUESTION": "Which type takes\nthe least damage?"
+    "DEFEND_QUESTION": "Which type takes\nthe least damage?",
+    "ABOUT_GAME": "About the game"
 }

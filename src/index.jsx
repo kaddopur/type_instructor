@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { StrictMode } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router';
 import Home from './components/Home.jsx';
+import Landing from './components/Landing.jsx';
 import AppShell from './components/AppShell.jsx';
 import Menu from './components/Menu.jsx';
 import Lang from './components/Lang.jsx';
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:lang/" element={<Home />} />
+        <Route path="/:lang/about" element={<Landing />} />
         <Route path="/:lang/menu" element={<Menu />} />
         <Route path="/:lang/lang" element={<Lang />} />
         <Route path="/:lang/quizzes/:category/:gameType/:quizType" element={<GameRoute />}>

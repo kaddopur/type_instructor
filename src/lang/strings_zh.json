@@ -52,5 +52,6 @@
     "SPEEDRUN_DESCRIPTION": "達到 20 分，挑戰最快紀錄",
     "PROGRESS": "達到 20 分的進度",
     "ATTACK_QUESTION": "哪種攻擊屬性\n最有效？",
-    "DEFEND_QUESTION": "自己的哪種屬性\n受到的傷害最少？"
+    "DEFEND_QUESTION": "自己的哪種屬性\n受到的傷害最少？",
+    "ABOUT_GAME": "遊戲介紹"
 }

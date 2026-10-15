@@ -1,0 +1,176 @@
+{
+  "en": {
+    "eyebrow": "A small game. A useful memory.",
+    "title": [
+      "Know your types.",
+      "Make the right move."
+    ],
+    "intro": "Practice Pokémon type matchups, one question at a time. Choose an attack that deals the most damage, or a type that takes the least. No account, no setup—just start playing.",
+    "play": "Play the game",
+    "howLink": "How to play",
+    "heroAlt": "Actual English attack quiz: the enemy is Poison, with a separate question asking which attack type is most effective.",
+    "screenshotLabel": "Captured from the actual game",
+    "facts": [
+      "18 types",
+      "2 game modes",
+      "3 languages"
+    ],
+    "howTitle": "Three steps. One better memory.",
+    "steps": [
+      {
+        "title": "Choose your challenge",
+        "body": "Pick Basic or Speedrun, then Attack or Defend. The timer starts only when you confirm Start."
+      },
+      {
+        "title": "Read the enemy condition",
+        "body": "The colored card identifies the enemy's type or attack type. The question below tells you what to choose."
+      },
+      {
+        "title": "Pick a type and learn",
+        "body": "A correct answer earns 1 point. A wrong answer loses 1 point. Read the damage feedback, then try a remaining choice or move to the next question."
+      }
+    ],
+    "modesTitle": "Two ways to challenge yourself",
+    "modesIntro": "Both modes use the same matchups and scoring. Choose a high-score challenge or race against your own time.",
+    "basicTitle": "Basic",
+    "basicRule": "60 seconds",
+    "basicBody": "Answer as many questions as you can before the countdown ends. Your final score can be negative—each mistake is another matchup to learn.",
+    "speedrunTitle": "Speedrun",
+    "speedrunRule": "Reach 20 points",
+    "speedrunBody": "The timer counts up. Reach 20 points as quickly as you can; the result shows your elapsed time in seconds.",
+    "menuAlt": "Actual English game menu with Basic and Speedrun cards, each offering Attack and Defend.",
+    "questionsTitle": "Attack and defense ask different questions",
+    "attackTitle": "Attack: find the strongest move",
+    "attackBody": "You know the enemy's type. Choose the attack type with the highest damage multiplier. Against a Poison-type enemy, Ground is one effective example.",
+    "defendTitle": "Defend: take the least damage",
+    "defendBody": "You know the enemy's attack type. Choose your own type with the lowest damage multiplier. Steel, for example, takes no damage from a Poison-type attack.",
+    "defendAlt": "Actual English defense quiz: the enemy attack is Poison, asking which own type takes the least damage.",
+    "controlsTitle": "Mouse, touch or keyboard",
+    "controlsBody": "Tap or click an answer. With a keyboard, use Tab and Shift+Tab to move, Enter to follow a link, and Enter or Space to answer. Escape closes the start dialog and returns to the menu.",
+    "feedbackTitle": "Feedback you can read",
+    "feedbackBody": "Correctness, damage multipliers and symbols accompany the type colors. The next available answer receives focus, so you can keep playing with the keyboard.",
+    "offlineTitle": "A quick round, even offline",
+    "offlineBody": "After the app finishes its first online load, its pages, fonts and screenshots are cached for offline use. You can also add it to your home screen.",
+    "finalTitle": "Ready for the next matchup?",
+    "finalBody": "Start with a 60-second round, or see how fast you can reach 20 points.",
+    "source": "Source on GitHub",
+    "languageLabel": "Page language",
+    "footer": "An unofficial fan project. Pokémon belongs to its respective owners."
+  },
+  "zh": {
+    "eyebrow": "一個小遊戲，練習記住屬性相剋。",
+    "title": [
+      "記住屬性相剋，",
+      "下一題就選對。"
+    ],
+    "intro": "用一題一題的小挑戰，練習 Pokémon 的屬性相剋。選出最有效的攻擊屬性，或受到傷害最少的自身屬性。不用註冊，直接開始。",
+    "play": "開始遊戲",
+    "howLink": "查看玩法",
+    "heroAlt": "實際中文攻擊題畫面：敵方屬性是毒，下方獨立詢問哪種攻擊屬性最有效。",
+    "screenshotLabel": "實際遊戲畫面",
+    "facts": [
+      "18 種屬性",
+      "2 種模式",
+      "3 種語言"
+    ],
+    "howTitle": "三個步驟，慢慢記熟。",
+    "steps": [
+      {
+        "title": "選擇挑戰方式",
+        "body": "先選一般遊玩或時間競速，再選攻擊或防禦。確認按下「開始」後，才會啟動計時。"
+      },
+      {
+        "title": "看清楚敵方條件",
+        "body": "色卡會標示敵方屬性或敵方攻擊屬性。下方的問題會明確告訴你，這一題要選什麼。"
+      },
+      {
+        "title": "選答案，讀回饋",
+        "body": "答對加 1 分，答錯扣 1 分。看過傷害倍率與提示後，可以嘗試尚未選過的答案；答對就進入下一題。"
+      }
+    ],
+    "modesTitle": "兩種模式，兩種挑戰。",
+    "modesIntro": "兩種模式共用屬性相剋與計分規則。你可以挑戰高分，也可以挑戰自己的最快紀錄。",
+    "basicTitle": "一般遊玩",
+    "basicRule": "60 秒挑戰",
+    "basicBody": "倒數結束前，盡可能答對更多題。最後分數可能是負分；每次答錯，都是再記住一個相剋關係的機會。",
+    "speedrunTitle": "時間競速",
+    "speedrunRule": "達到 20 分",
+    "speedrunBody": "時間從零開始累計，越快達到 20 分越好。結果以秒數呈現，方便挑戰自己的紀錄。",
+    "menuAlt": "實際中文遊戲選單：一般遊玩與時間競速兩張卡片，各有攻擊和防禦入口。",
+    "questionsTitle": "攻擊與防禦，問的是不同的事。",
+    "attackTitle": "攻擊題：選最有效的攻擊",
+    "attackBody": "已知敵方屬性，選擇傷害倍率最高的攻擊屬性。例如面對毒屬性的敵人，地面屬性就是有效的攻擊之一。",
+    "defendTitle": "防禦題：讓自己受到最少傷害",
+    "defendBody": "已知敵方攻擊屬性，選擇受到傷害倍率最低的自身屬性。例如鋼屬性不會受到毒屬性攻擊的傷害。",
+    "defendAlt": "實際中文防禦題畫面：敵方攻擊屬性是毒，下方詢問自己的哪種屬性受到傷害最少。",
+    "controlsTitle": "滑鼠、觸控、鍵盤都能玩。",
+    "controlsBody": "點擊或輕觸答案即可作答。使用鍵盤時，按 Tab 或 Shift+Tab 移動焦點，按 Enter 開啟連結，按 Enter 或空白鍵作答。開始對話框內按 Escape，可返回選單。",
+    "feedbackTitle": "除了顏色，也有明確提示。",
+    "feedbackBody": "答對或答錯會顯示文字、符號與傷害倍率。下一個可操作的答案會自動取得焦點，方便繼續用鍵盤作答。",
+    "offlineTitle": "離線時，也能練習一回。",
+    "offlineBody": "第一次連網載入完成後，頁面、字型與截圖會快取到裝置，之後可以離線使用。也可以把遊戲加入主畫面。",
+    "finalTitle": "準備好迎接下一題了嗎？",
+    "finalBody": "先玩一回 60 秒挑戰，或看看自己多久能達到 20 分。",
+    "source": "在 GitHub 查看原始碼",
+    "languageLabel": "介紹頁語言",
+    "footer": "非官方粉絲作品。Pokémon 的相關權利屬於各權利人。"
+  },
+  "ja": {
+    "eyebrow": "短いゲームで、タイプ相性を覚えよう。",
+    "title": [
+      "タイプ相性を覚えて、",
+      "次の一手を選ぼう。"
+    ],
+    "intro": "Pokémon のタイプ相性を、一問ずつ練習するゲームです。最も効果的な攻撃タイプや、受けるダメージが最も少ない自分のタイプを選びます。登録せずにすぐ遊べます。",
+    "play": "ゲームを始める",
+    "howLink": "遊び方を見る",
+    "heroAlt": "実際の日本語の攻撃問題。敵はどくタイプで、最も効果的な攻撃タイプをカードの下で尋ねています。",
+    "screenshotLabel": "実際のゲーム画面",
+    "facts": [
+      "18 タイプ",
+      "2 モード",
+      "3 言語"
+    ],
+    "howTitle": "3 ステップで、少しずつ覚える。",
+    "steps": [
+      {
+        "title": "チャレンジを選ぶ",
+        "body": "基本かタイムアタックを選び、攻撃か防御を選びます。開始ボタンを押すまで、タイマーは動きません。"
+      },
+      {
+        "title": "敵の条件を確認する",
+        "body": "色付きのカードに、敵のタイプか敵の攻撃タイプが表示されます。下の質問で、何を選ぶ問題なのかを確認しましょう。"
+      },
+      {
+        "title": "答えを選び、結果を見る",
+        "body": "正解で 1 点、不正解で 1 点減ります。ダメージ倍率と説明を確認し、まだ選んでいない答えを試せます。正解すると次の問題に進みます。"
+      }
+    ],
+    "modesTitle": "2 つのモードで挑戦。",
+    "modesIntro": "どちらも同じタイプ相性と採点ルールです。ハイスコアを目指すか、自分の最速タイムに挑むかを選べます。",
+    "basicTitle": "基本",
+    "basicRule": "60 秒チャレンジ",
+    "basicBody": "残り時間がなくなるまで、できるだけ多く正解しましょう。最終スコアがマイナスになることもあります。間違いも、相性を覚えるきっかけになります。",
+    "speedrunTitle": "タイムアタック",
+    "speedrunRule": "20 点を目指す",
+    "speedrunBody": "タイマーは 0 から増えます。できるだけ早く 20 点に達しましょう。結果は経過秒数で表示されます。",
+    "menuAlt": "実際の日本語メニュー。基本とタイムアタックのカードに、攻撃と防御の入口があります。",
+    "questionsTitle": "攻撃と防御では、選ぶものが違う。",
+    "attackTitle": "攻撃：最も効果的なタイプを選ぶ",
+    "attackBody": "敵のタイプを見て、ダメージ倍率が最も高い攻撃タイプを選びます。例えば、どくタイプの敵には、じめんタイプが効果的です。",
+    "defendTitle": "防御：受けるダメージを減らす",
+    "defendBody": "敵の攻撃タイプを見て、受けるダメージ倍率が最も低い自分のタイプを選びます。例えば、はがねタイプはどくタイプの攻撃を受けてもダメージがありません。",
+    "defendAlt": "実際の日本語の防御問題。敵の攻撃はどくタイプで、受けるダメージが最も少ない自分のタイプを尋ねています。",
+    "controlsTitle": "マウス、タッチ、キーボードに対応。",
+    "controlsBody": "答えをクリック、またはタップして選びます。キーボードでは Tab と Shift+Tab で移動し、Enter でリンクを開き、Enter またはスペースで答えます。開始ダイアログで Escape を押すとメニューに戻ります。",
+    "feedbackTitle": "色だけに頼らない説明。",
+    "feedbackBody": "正解・不正解は文字、記号、ダメージ倍率でも表示されます。次に操作できる答えへフォーカスが移るので、キーボードでも続けて遊べます。",
+    "offlineTitle": "オフラインでも、ひと勝負。",
+    "offlineBody": "最初のオンライン読み込みが完了すると、ページ、フォント、スクリーンショットが端末に保存され、オフラインでも使えます。ホーム画面に追加することもできます。",
+    "finalTitle": "次の相性問題に挑戦しよう。",
+    "finalBody": "まずは 60 秒のチャレンジから。慣れたら、20 点までの速さを競いましょう。",
+    "source": "GitHub でソースを見る",
+    "languageLabel": "紹介ページの言語",
+    "footer": "非公式のファン作品です。Pokémon に関する権利は各権利者に帰属します。"
+  }
+}
