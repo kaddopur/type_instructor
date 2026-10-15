@@ -93,3 +93,12 @@ browser checks (navigation/resources, layout, keyboard and axe) passed across al
 four projects. Chinese font loading and fetching the font after an offline reload
 are checked in the Pages resource test. Chromium's rendered-font inspection
 confirmed Cubic 11 draws the Chinese menu heading; a 390×600 screenshot was inspected.
+
+Japanese kanji also use Cubic 11 through the shared fallback stack; PKMN remains
+first for kana and digits. Its CSS kana range includes U+30FC (ー), which was
+previously excluded. The resource check visits both Chinese and Japanese menus.
+
+Japanese fallback verification: lint/typecheck and 16 layout/navigation/resource
+checks passed across the four browser projects. Rendered-font inspection in
+Chromium confirmed Cubic 11 for 基本 and PKMN Strict for ホーム, including ー;
+the 390×600 Japanese menu screenshot was inspected.

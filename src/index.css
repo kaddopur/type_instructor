@@ -5,7 +5,7 @@
 
 
 @theme {
-  --font-pixel: "pkmn_s", "pokemon_gbregular", monospace;
+  --font-pixel: "pkmn_s", "pokemon_gbregular", "Cubic 11", monospace;
   --color-type-normal: #bbbbaa;
   --color-type-fighting: #bb5544;
   --color-type-flying: #6699ff;
@@ -40,7 +40,7 @@
   font-family: "pkmn_s";
   src: url("./fonts/pkmn_s.woff") format("woff");
 
-  unicode-range: U+0030-0039, U+3040-309F, U+30A1-30F3;
+  unicode-range: U+0030-0039, U+3040-309F, U+30A0-30FF;
 }
 
 @font-face {

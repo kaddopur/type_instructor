@@ -123,9 +123,11 @@ test('static resources resolve under the configured Pages base', { tag: '@smoke'
   for (const href of await page.locator('link[rel="apple-touch-icon"]').evaluateAll(nodes => nodes.map(node => node.href))) {
     expect((await request.get(href)).headers()['content-type']).toContain('image/png');
   }
-  await page.goto('./#/zh/menu');
-  await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('.Menu')).toHaveCSS('font-family', /"Cubic 11"/);
+  for (const lang of ['zh', 'ja']) {
+    await page.goto(`./#/${lang}/menu`);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator('.Menu')).toHaveCSS('font-family', /"Cubic 11"/);
+  }
   const loadedFonts = await page.evaluate(async () =>
     (await document.fonts.load('20px "Cubic 11"', '開始攻擊防禦')).map(font => font.status));
   expect(loadedFonts).toEqual(['loaded']);
