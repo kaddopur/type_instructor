@@ -1,4 +1,4 @@
-const measurementId = 'G-8QLYXMMJSV';
+const measurementId = 'G-6H3DMT5TLL';
 let previousLocation;
 
 export function trackPageView() {

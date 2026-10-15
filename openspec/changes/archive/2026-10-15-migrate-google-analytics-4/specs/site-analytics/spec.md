@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Production GA4 page views
-The system SHALL use G-8QLYXMMJSV on production builds served at
+The system SHALL use G-6H3DMT5TLL on production builds served at
 kaddopur.github.io and SHALL remove the retired UA tracking snippet.
 
 #### Scenario: Initial page and route changes

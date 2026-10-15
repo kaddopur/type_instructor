@@ -2,7 +2,7 @@
 
 ## Why
 The site still loads analytics.js for UA-6593436-4. The user supplied the GA4
-measurement ID G-8QLYXMMJSV to restore collection.
+measurement ID G-6H3DMT5TLL to restore collection.
 
 ## What Changes
 - Replace UA with the Google tag, initialized once on the production Pages host.

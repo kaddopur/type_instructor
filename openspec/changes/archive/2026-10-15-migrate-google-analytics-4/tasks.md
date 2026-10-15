@@ -1,3 +1,4 @@
 - [x] 1. Record GA4 requirements, design and validation scenarios.
 - [x] 2. Replace UA, integrate hash-route page views and add regression tests.
 - [x] 3. Document GA4 setup, verify, sync specs and archive.
+- [x] 4. Use the newly created Type Instructor stream G-6H3DMT5TLL; update code, tests and specs, and rerun analytics checks.

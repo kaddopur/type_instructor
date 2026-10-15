@@ -25,3 +25,17 @@ The code uses Google's documented manual-page-view API. The site owner must
 still disable history-based page views in the GA4 data stream, deploy the change,
 and verify events arrive in Realtime/DebugView. These account/deployment checks
 are pending; local tests prove integration behavior, not GA server receipt.
+
+## Follow-up: dedicated Type Instructor stream
+
+The user created a dedicated stream and supplied G-6H3DMT5TLL. Code, tests,
+README and specs now use this ID. The user also showed the history-based
+page-view checkbox unchecked in GA4. After the ID update:
+
+- `pnpm test:unit`: 23 passed.
+- `pnpm typecheck` and `pnpm lint`: passed.
+- `pnpm exec playwright test tests/e2e/analytics.spec.js --workers=4`: 8 passed
+  across all four projects, including a fresh production build.
+
+The earlier 160-case full-suite run preceded this ID-only update. Deployment
+and confirmation of server receipt remain pending.

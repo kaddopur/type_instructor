@@ -49,8 +49,8 @@ test('GA4 queues hash-route views once with updated titles even when Google is b
     await expect.poll(async () => (await views(page)).length).toBe(4);
     expect((await views(page))[3]).toMatchObject({ page_location: menu, page_referrer: gameView.page_location });
     const commands = await page.evaluate(() => window.dataLayer.map(command => Array.from(command)));
-    expect(commands.filter(command => command[0] === 'config')).toEqual([['config', 'G-8QLYXMMJSV', { send_page_view: false }]]);
-    expect(googleRequests).toEqual(['https://www.googletagmanager.com/gtag/js?id=G-8QLYXMMJSV']);
+    expect(commands.filter(command => command[0] === 'config')).toEqual([['config', 'G-6H3DMT5TLL', { send_page_view: false }]]);
+    expect(googleRequests).toEqual(['https://www.googletagmanager.com/gtag/js?id=G-6H3DMT5TLL']);
     expect(errors).toEqual([]);
   } finally {
     await context.close();

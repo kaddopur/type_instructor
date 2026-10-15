@@ -26,11 +26,11 @@ test('queues GA4 page views with titles, full hash URLs and referrers without wa
   trackPageView();
   trackPageView(); // StrictMode repeat.
   expect(page.script.async).toBe(true);
-  expect(page.script.src).toBe('https://www.googletagmanager.com/gtag/js?id=G-8QLYXMMJSV');
+  expect(page.script.src).toBe('https://www.googletagmanager.com/gtag/js?id=G-6H3DMT5TLL');
   expect(page.commands()[0][0]).toBe('js');
-  expect(page.commands()[1]).toEqual(['config', 'G-8QLYXMMJSV', { send_page_view: false }]);
+  expect(page.commands()[1]).toEqual(['config', 'G-6H3DMT5TLL', { send_page_view: false }]);
   expect(page.commands()[2]).toEqual(['event', 'page_view', {
-    send_to: 'G-8QLYXMMJSV', page_location: page.location.href,
+    send_to: 'G-6H3DMT5TLL', page_location: page.location.href,
     page_title: document.title, page_referrer: document.referrer
   }]);
   expect(page.dataLayer).toHaveLength(3);
@@ -39,7 +39,7 @@ test('queues GA4 page views with titles, full hash URLs and referrers without wa
   document.title = '選單 | Type Instructor';
   trackPageView();
   expect(page.commands()[3]).toEqual(['event', 'page_view', {
-    send_to: 'G-8QLYXMMJSV', page_location: page.location.href,
+    send_to: 'G-6H3DMT5TLL', page_location: page.location.href,
     page_title: document.title, page_referrer: home
   }]);
   const menu = page.location.href;
