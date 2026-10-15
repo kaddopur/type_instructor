@@ -3,12 +3,16 @@ import { test, expect } from '@playwright/test';
 test('app shell keeps routes and quiz controls inside the usable mobile viewport', { tag: '@layout' }, async ({ page }) => {
   for (const viewport of [{ width: 390, height: 600 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(viewport);
+    await page.goto('./#/en/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    const titleSize = await page.locator('.Home h1').evaluate(node => getComputedStyle(node).fontSize);
     for (const lang of ['en', 'zh', 'ja']) {
       for (const route of ['', 'menu', 'lang', 'quizzes/s/basic/attack/result/7']) {
         await page.goto(`./#/${lang}/${route}`);
         // Emulate nonzero safe-area space; desktop WebKit does not show Safari chrome.
         await page.addStyleTag({ content: '.app-shell { padding: 24px 20px 34px; }' });
         await page.evaluate(() => document.fonts.ready);
+        if (!route) await expect(page.locator('.Home h1')).toHaveCSS('font-size', titleSize);
         const footer = page.locator('footer a');
         for (const action of await page.locator('.app-content a').all()) {
           const bounds = await action.boundingBox();

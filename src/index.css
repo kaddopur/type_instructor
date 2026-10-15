@@ -95,7 +95,7 @@
   .Lang footer { padding: 1em; }
   .Lang .langItem { margin: .25em; }
   .Lang .langItem a { min-height: 44px; padding-block: .5em; }
-  .Home h1 { padding-block: 1rem; }
+  .Home h1 { padding-block: 16px; }
   .Home .lang { margin-top: .5rem; }
   .Home footer, .Menu footer, .Result footer { padding: 1rem; }
   .Menu h2, .Result h1 { margin-block: 1rem .5rem; }
@@ -109,7 +109,7 @@
 
 @media (max-height: 480px) and (orientation: landscape) {
   .Lang footer { padding: .5em; }
-  .Home h1 { font-size: 1.25rem; }
+  .Home h1 { font-size: 20px; }
   .Home footer, .Menu footer, .Result footer { padding: .5rem; }
   .Menu { display: grid; grid-template-columns: 1fr 1fr; }
   .Menu footer { grid-column: 1 / -1; text-align: center; }
