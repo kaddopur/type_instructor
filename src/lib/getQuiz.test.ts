@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import getQuiz from './getQuiz.ts';
+import getQuiz, { createQuizGenerator } from './getQuiz.ts';
 import type { QuizType } from './types.ts';
 
 const types = [
@@ -51,5 +51,17 @@ test('representative matchups preserve attack/defense matrix orientation', () =>
   expect(defenseElectric.answer).toBe('ground');
   const defenseDragon = question('defend', types.indexOf('dragon'));
   expect(defenseDragon.answer).toBe('fairy');
+});
+
+
+test('shuffled bags cover all targets once per round without consecutive repeats', () => {
+  for (const mode of ['attack', 'defend'] as const) {
+    const next = createQuizGenerator(mode);
+    const targets = Array.from({ length: 180 }, () => next().enemy.type);
+    for (let start = 0; start < targets.length; start += 18) {
+      expect(new Set(targets.slice(start, start + 18))).toEqual(new Set(types));
+    }
+    expect(targets.every((target, index) => index === 0 || target !== targets[index - 1])).toBe(true);
+  }
 });
 

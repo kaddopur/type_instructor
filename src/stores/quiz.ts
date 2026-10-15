@@ -1,5 +1,5 @@
 import { createStore } from 'zustand/vanilla';
-import getQuiz from '../lib/getQuiz.ts';
+import { createQuizGenerator } from '../lib/getQuiz.ts';
 import getStatus from '../lib/getStatus.ts';
 import { SCORE_TARGET } from '../lib/gameRules.ts';
 import type { GameType, QuizType, Quiz } from '../lib/types.ts';
@@ -21,6 +21,7 @@ export interface QuizState {
 }
 
 export function createQuizStore(gameType: GameType, quizType: QuizType) {
+  const nextQuiz = createQuizGenerator(quizType);
   return createStore<QuizState>(set => ({
     timer: gameType === 'basic' ? 60 : 0,
     scores: 0,
@@ -29,7 +30,7 @@ export function createQuizStore(gameType: GameType, quizType: QuizType) {
     finish: false,
     finishTime: null,
     result: null,
-    quiz: getQuiz(quizType),
+    quiz: nextQuiz(),
     overlay: true,
 
     start: () => set(state => state.overlay ? { overlay: false } : state),
@@ -68,7 +69,7 @@ export function createQuizStore(gameType: GameType, quizType: QuizType) {
         finishTime: null,
         status: '',
         result: completed ? state.finishTime : null,
-        quiz: state.finish && !completed ? getQuiz(quizType) : state.quiz
+        quiz: state.finish && !completed ? nextQuiz() : state.quiz
       };
     })
   }));

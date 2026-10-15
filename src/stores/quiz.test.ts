@@ -196,3 +196,30 @@ test('sessions do not share state or pending actions', () => {
   expect(fresh.quiz.options.every(option => !option.clicked)).toBeTruthy();
 });
 
+
+test('wrong retries and another session do not consume the current target bag', () => {
+  for (const kind of ['attack', 'defend'] as const) {
+    const store = createQuizStore('basic', kind);
+    const other = createQuizStore('basic', kind);
+    store.getState().start();
+    other.getState().start();
+    const targets: string[] = [];
+    for (let i = 0; i < 36; i++) {
+      const before = store.getState();
+      targets.push(before.quiz.enemy.type);
+      before.answer(before.quiz.options.findIndex(option => option.type !== before.quiz.answer));
+      store.getState().advance();
+      expect(store.getState().quiz.enemy).toBe(before.quiz.enemy);
+      const otherState = other.getState();
+      otherState.answer(otherState.quiz.options.findIndex(option => option.type === otherState.quiz.answer));
+      other.getState().advance();
+      store.getState().tick();
+      const current = store.getState();
+      current.answer(current.quiz.options.findIndex(option => option.type === current.quiz.answer));
+      store.getState().advance();
+    }
+    expect(new Set(targets.slice(0, 18)).size).toBe(18);
+    expect(new Set(targets.slice(18)).size).toBe(18);
+    expect(targets.every((target, index) => index === 0 || target !== targets[index - 1])).toBe(true);
+  }
+});

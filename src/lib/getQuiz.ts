@@ -75,11 +75,11 @@ const quizFactory = (
   }
 }
 
-const getQuiz = (quizType: QuizType, lastEnemy?: PokemonType): Quiz => {
-  let enemyIndex = Math.floor(Math.random() * types.length);
-  while(types[enemyIndex] === lastEnemy) {
-    enemyIndex = Math.floor(Math.random() * types.length);
-  }
+const getQuiz = (
+  quizType: QuizType,
+  enemy: PokemonType = types[Math.floor(Math.random() * types.length)]
+): Quiz => {
+  const enemyIndex = types.indexOf(enemy);
 
   if (quizType === 'attack') {
     const enemyDefendList = damageMatrix.map(damage => damage[enemyIndex]);
@@ -95,5 +95,20 @@ const getQuiz = (quizType: QuizType, lastEnemy?: PokemonType): Quiz => {
     type: types[enemyIndex]
   });
 };
+
+export function createQuizGenerator(quizType: QuizType): () => Quiz {
+  let bag: PokemonType[] = [];
+  let previous: PokemonType | undefined;
+
+  return () => {
+    if (bag.length === 0) {
+      bag = shuffle(types);
+      if (bag[0] === previous) [bag[0], bag[1]] = [bag[1], bag[0]];
+    }
+    const enemy = bag.shift()!;
+    previous = enemy;
+    return getQuiz(quizType, enemy);
+  };
+}
 
 export default getQuiz;
