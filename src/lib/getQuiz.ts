@@ -47,6 +47,7 @@ const damageMatrix = [
 ];
 
 const quizFactory = (
+  quizType: QuizType,
   damageList: number[],
   answerDamage: number,
   enemy: Quiz['enemy']
@@ -57,7 +58,7 @@ const quizFactory = (
   damageList.forEach((damage, index) => {
     if (damage === answerDamage) {
       answers.push(index);
-    } else {
+    } else if (quizType === 'attack' ? damage < answerDamage : damage > answerDamage) {
       others.push(index);
     }
   });
@@ -75,25 +76,49 @@ const quizFactory = (
   }
 }
 
-const getQuiz = (quizType: QuizType, lastEnemy?: PokemonType): Quiz => {
-  let enemyIndex = Math.floor(Math.random() * types.length);
-  while(types[enemyIndex] === lastEnemy) {
-    enemyIndex = Math.floor(Math.random() * types.length);
-  }
+const getQuiz = (
+  quizType: QuizType,
+  enemy: PokemonType = types[Math.floor(Math.random() * types.length)],
+  defensePreference: 'immunity' | 'resistance' = 'immunity'
+): Quiz => {
+  const enemyIndex = types.indexOf(enemy);
 
   if (quizType === 'attack') {
     const enemyDefendList = damageMatrix.map(damage => damage[enemyIndex]);
-    return quizFactory(enemyDefendList, Math.max(...enemyDefendList), {
+    return quizFactory(quizType, enemyDefendList, Math.max(...enemyDefendList), {
       title: 'ENEMY_ATTACK',
       type: types[enemyIndex]
     });
   }
 
   const enemyAttackList = damageMatrix[enemyIndex];
-  return quizFactory(enemyAttackList, Math.min(...enemyAttackList), {
+  const answerDamage = defensePreference === 'resistance' && enemyAttackList.includes(0.5)
+    ? 0.5 : Math.min(...enemyAttackList);
+  return quizFactory(quizType, enemyAttackList, answerDamage, {
     title: 'ENEMY_DEFEND',
     type: types[enemyIndex]
   });
 };
+
+export function createQuizGenerator(quizType: QuizType): () => Quiz {
+  let bag: PokemonType[] = [];
+  let previous: PokemonType | undefined;
+  const resistanceTargets = new Set<PokemonType>();
+
+  return () => {
+    if (bag.length === 0) {
+      bag = shuffle(types);
+      if (bag[0] === previous) [bag[0], bag[1]] = [bag[1], bag[0]];
+    }
+    const enemy = bag.shift()!;
+    previous = enemy;
+    const preference = resistanceTargets.has(enemy) ? 'resistance' : 'immunity';
+    if (quizType === 'defend') {
+      if (resistanceTargets.has(enemy)) resistanceTargets.delete(enemy);
+      else resistanceTargets.add(enemy);
+    }
+    return getQuiz(quizType, enemy, preference);
+  };
+}
 
 export default getQuiz;

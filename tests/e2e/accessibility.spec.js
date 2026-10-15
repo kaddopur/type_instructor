@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { correctSelector } from './support/matchups.js';
 import AxeBuilder from '@axe-core/playwright';
 
 const languages = {};
@@ -69,7 +70,7 @@ for (const [lang, text] of Object.entries(languages)) {
 
     if (mode === 'speedrun') {
       for (let score = 1; score <= 20; score++) {
-        await tabTo(page, correct);
+        await tabTo(page, page.locator(await correctSelector(page, 'attack')));
         await page.keyboard.press('Enter');
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: ${score}`);
         await expect(page.getByRole('progressbar')).toHaveJSProperty('value', score);
@@ -135,14 +136,14 @@ test('all 18 generated type palettes and wrong answers have at least 4.5:1 text 
     const values = [luminance(color), luminance(backgroundColor)].sort((a, b) => b - a);
     expect((values[0] + .05) / (values[1] + .05), `${color} on ${backgroundColor}`).toBeGreaterThanOrEqual(4.5);
   };
-  for (const [index, type] of types.entries()) {
-    await page.goto(`./#/en/quizzes/s/basic/attack`);
-    // Start a fresh same-document session with a known target, without adding init scripts cumulatively.
-    await page.evaluate(index => { Math.random = () => (index + .5) / 18; location.hash = '/en/menu'; }, index);
-    await expect(page.locator('.Menu')).toBeVisible();
-    await page.evaluate(() => { location.hash = '/en/quizzes/s/basic/attack'; });
-    await expect(page.locator('.stemContainer')).toHaveClass(new RegExp(`Bgc-${type}`));
-    await page.getByTestId('start-game').click();
+  await page.clock.install();
+  await page.clock.pauseAt(new Date());
+  await page.goto('./#/en/quizzes/s/basic/attack');
+  await page.getByTestId('start-game').click();
+  const seenTypes = new Set();
+  for (let index = 0; index < types.length; index++) {
+    seenTypes.add(await page.locator('.stemContainer').evaluate(node =>
+      [...node.classList].find(name => name.startsWith('Bgc-')).slice(4)));
     const palette = await page.locator('.stemContainer').evaluate(node => {
       const { color, backgroundColor } = getComputedStyle(node);
       return { color, backgroundColor };
@@ -153,7 +154,10 @@ test('all 18 generated type palettes and wrong answers have at least 4.5:1 text 
       const { color, backgroundColor } = getComputedStyle(node);
       return { color, backgroundColor };
     }))) checkContrast(palette);
+    await page.locator(await correctSelector(page, 'attack')).click();
+    await page.clock.runFor(500);
   }
+  expect(seenTypes).toEqual(new Set(types));
   expect(colors.size).toBe(18);
   await page.addInitScript(() => { Math.random = () => .5 / 18; });
   await page.reload();

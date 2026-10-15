@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { correctSelector } from './support/matchups.js';
 import { SCORE_TARGET } from '../../src/lib/gameRules.ts';
 
 const languages = {};
@@ -59,7 +60,7 @@ for (const [lang, text] of Object.entries(languages)) {
         await page.clock.runFor(1000);
         await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: ${mode === 'basic' ? 59 : 1}`);
 
-        const correct = `.optionItem.Bgc-${kind === 'attack' ? 'fighting' : 'ghost'}`;
+        const correct = await correctSelector(page, kind);
         await page.locator(`.optionItem:not(${correct})`).first().evaluate(node => { node.click(); node.click(); });
         await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: -1`);
         const damage = Number(await page.locator('.optionDamage').textContent());
@@ -79,11 +80,11 @@ for (const [lang, text] of Object.entries(languages)) {
 
         let result;
         if (mode === 'basic') {
-          await page.locator(correct).click();
+          await page.locator(await correctSelector(page, kind)).click();
           await page.clock.runFor(500);
           await page.clock.runFor(57000); // Timer is now 1; feedback ends exactly at expiry.
           await expect(page.locator('.stemTimer')).toHaveText(`${text.TIMER}: 1`);
-          await page.locator(correct).click();
+          await page.locator(await correctSelector(page, kind)).click();
           await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: 2`);
           await page.clock.runFor(499);
           await expect(page).toHaveURL(new RegExp(`#${path}$`));
@@ -92,7 +93,7 @@ for (const [lang, text] of Object.entries(languages)) {
         } else {
           for (let score = 1; score <= 20; score++) {
             if (score === 20) result = (await page.locator('.stemTimer').textContent()).split(': ').at(-1);
-            await page.locator(correct).click();
+            await page.locator(await correctSelector(page, kind)).click();
             await expect(page.locator('.stemScores')).toHaveText(`${text.SCORES}: ${score}`);
             await page.clock.runFor(score === 20 ? 499 : 500);
             await expect(page).toHaveURL(new RegExp(`#${path}$`));
@@ -205,7 +206,7 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
   await expect(page.locator('.overlay span')).toHaveText('score 20');
   await page.getByTestId('start-game').click();
   for (let score = 1; score <= SCORE_TARGET; score++) {
-    await page.locator('.optionItem.Bgc-ground').click();
+    await page.locator(await correctSelector(page, 'defend')).click();
     await expect(page.locator('.stemScores')).toHaveText(`scores: ${score}`);
     if (score === SCORE_TARGET) {
       await page.clock.runFor(499);
@@ -249,3 +250,29 @@ test('all languages select correct speedrun modes and show the shared 20-point g
     }
   }
 });
+
+for (const kind of ['attack', 'defend']) {
+  test(`${kind}: two bags cover all types and defense practices resistance in round two`, { tag: '@gameplay' }, async ({ page }) => {
+    await pauseClock(page);
+    await page.goto(`./#/en/quizzes/s/basic/${kind}`);
+    await page.getByTestId('start-game').click();
+    const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
+    let previous;
+    for (let round = 0; round < 2; round++) {
+      const seen = new Set();
+      for (let index = 0; index < 18; index++) {
+        const enemy = await page.locator('.stemContainer').evaluate(node =>
+          [...node.classList].find(name => name.startsWith('Bgc-')).slice(4));
+        expect(enemy).not.toBe(previous);
+        seen.add(enemy);
+        previous = enemy;
+        await page.locator(await correctSelector(page, kind)).click();
+        const expected = kind === 'attack' ? 2 : round === 0 && immuneAttacks.has(enemy) ? 0 : 0.5;
+        await expect(page.locator('.optionDamage')).toHaveText(String(expected));
+        await expect(page.locator('.stemScores')).toHaveText(`scores: ${round * 18 + index + 1}`);
+        await page.clock.runFor(500);
+      }
+      expect(seen.size).toBe(18);
+    }
+  });
+}
