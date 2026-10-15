@@ -136,8 +136,8 @@ test('all 18 generated type palettes and wrong answers have at least 4.5:1 text 
     const values = [luminance(color), luminance(backgroundColor)].sort((a, b) => b - a);
     expect((values[0] + .05) / (values[1] + .05), `${color} on ${backgroundColor}`).toBeGreaterThanOrEqual(4.5);
   };
-  await page.clock.install();
-  await page.clock.pauseAt(new Date());
+  await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
+  await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
   await page.goto('./#/en/quizzes/s/basic/attack');
   await page.getByTestId('start-game').click();
   const seenTypes = new Set();
