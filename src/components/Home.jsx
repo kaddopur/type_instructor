@@ -20,7 +20,7 @@ function Home({ messages: { START, CHANGE_LANGUAGE }, lang }) {
         </Button>
       </section>
       <footer className="p-16 text-center">
-        <a href="https://twitter.com/kaddopur" target="_blank" rel="noreferrer">@kaddopur</a>
+        <a tabIndex={0} href="https://twitter.com/kaddopur" target="_blank" rel="noreferrer">@kaddopur</a>
       </footer>
     </article>
   );

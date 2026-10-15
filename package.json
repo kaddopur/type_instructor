@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
@@ -41,7 +42,8 @@
     "test": "node --test tests/baseline.test.mjs",
     "test:baseline": "node --test tests/baseline.test.mjs",
     "test:smoke": "playwright test",
-    "test:acceptance": "playwright test --config playwright.acceptance.config.js"
+    "test:acceptance": "playwright test --config playwright.acceptance.config.js",
+    "test:a11y": "playwright test accessibility.spec.js"
   },
   "type": "module",
   "engines": {

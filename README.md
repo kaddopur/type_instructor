@@ -62,7 +62,7 @@ pnpm test:smoke
 SMOKE_SERVER=dev pnpm test:smoke
 ```
 
-正式 build／preview 有 8 個瀏覽器測試（包含無效路由與語系回復）；開發模式執行 7 個並跳過需要正式 worker 的更新測試。
+正式 build／preview 有 15 個瀏覽器測試（包含無效路由、鍵盤流程、axe 掃描與屬性色對比）；開發模式執行 14 個並跳過需要正式 worker 的更新測試。
 若本機已安裝 Google Chrome，可在測試指令前加 `PLAYWRIGHT_CHANNEL=chrome`，
 使用該瀏覽器而不另行下載 Chromium。測試會自行啟動與停止伺服器。
 
@@ -125,10 +125,38 @@ pnpm exec playwright install chromium firefox webkit
 pnpm test:acceptance
 ```
 
-共 52 個驗收案例：三種語言 × 四種玩法 × 四種瀏覽器／視窗設定（48 個完整遊戲流程），
-以及四種設定各一個舊／新 worker 更新與離線案例。設定包含桌面 Chromium、Firefox、WebKit，
+共 80 個驗收案例：三種語言 × 四種玩法 × 四種瀏覽器／視窗設定（48 個完整遊戲流程），
+加上四個 worker 更新與離線案例，以及 28 個鍵盤流程、axe 掃描與屬性色對比案例。設定包含桌面 Chromium、Firefox、WebKit，
 以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
 CI 會在原有 smoke tests 後執行此矩陣，全部通過才會部署。
 
 驗收也涵蓋四個答案的可見範圍，並修正舊版在寬螢幕裁掉第二排答案的問題。
 詳見 [第 6 步驗證與發布紀錄](openspec/changes/archive/2026-10-15-complete-migration-acceptance/verification.md)。
+
+## UI 與無障礙操作
+
+全站使用 Tailwind CSS 4 與共用像素風格；字型宣告保留在 `src/index.css`。
+18 種屬性色集中於 Tailwind theme，`src/lib/typeStyles.ts` 使用完整 class 對照，
+確保正式建置能產生隨機出題需要的每種顏色。文字依背景選黑／白，維持至少 4.5:1 的對比。
+已移除各頁的舊 CSS、normalize.css 與 classnames。
+
+Button／Dialog 改寫自 shadcn/ui new-york 的 Radix 版本，採本機原始碼，
+保留其 MIT 授權於 `src/components/ui/LICENSE.md`。`components.json` 與 `@/` alias 供後續維護。
+本次沒有加入 UI 不使用的圖示或動畫套件。
+
+- 使用 Tab／Shift+Tab 移動，Enter／Space 開始或作答。
+- 開始 Dialog 會聚焦開始按鈕並限制焦點範圍；Escape 或目錄連結返回目錄，不啟動計時。
+- 開始、換題與結算會移動到對應標題，之後可繼續 Tab 操作。
+- 答對／答錯有三語文字與持續的 live status；計時器不會每秒觸發播報。
+- 回饋中與已選過的答案會標示不可作答，store 仍阻擋重複輸入。
+
+```sh
+pnpm test:a11y
+```
+
+此指令執行 Chromium 的七個無障礙案例；完整驗收會在四種設定都執行。
+axe 掃描 WCAG 2 A／AA 與 2.1 AA 規則，涵蓋三語頁面、開始 Dialog 與作答後狀態。
+自動測試不等同完整 WCAG 合規稽核，也不代表已完成人工螢幕閱讀器或手機實機驗證。
+玩法仍有既定時間限制，若要提供不限時練習需另行設計。
+
+步驟與驗收紀錄見 [UI migration](docs/ui-migration.md)。

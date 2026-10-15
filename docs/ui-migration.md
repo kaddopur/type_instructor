@@ -13,8 +13,8 @@ static and work under the GitHub Pages `/type_instructor/` base, including offli
 5. Add keyboard/focus flows, translated announcements and contrast improvements.
 6. Add accessibility checks, update browser tests and verify production/offline builds.
 
-Tailwind Preflight is deferred until the page styles are migrated, so intermediate
-commits retain the legacy reset. New controls use explicit styles throughout.
+Tailwind Preflight was deferred until step 4, when all page styles had been migrated.
+The final build uses Preflight and removes normalize.css and the legacy page styles.
 
 ## Acceptance
 
@@ -28,3 +28,24 @@ commits retain the legacy reset. New controls use explicit styles throughout.
 
 Automated checks and browser accessibility-tree checks do not replace human
 screen-reader testing or establish full WCAG conformance. Timed game rules remain unchanged.
+
+## Verification
+
+- Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
+- ESLint, strict TypeScript checks and 12 native game-logic tests.
+- Production smoke suite: 15 tests, including the seven accessibility cases.
+- Acceptance suite: 80 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- Accessibility scans cover all three languages, home/menu/language/results, every mode's
+  intro dialog and playable/answered states. No axe rules are disabled.
+- Computed text/background colors are checked for all 18 target types, rendered options
+  and the wrong-answer color, with a 4.5:1 minimum contrast ratio.
+- Navigation links explicitly use tabindex=0 for WebKit keyboard navigation; keyboard tests
+  use forward/backward traversal instead of assuming browser-chrome focus wraps.
+- Automated keyboard flows exercise Tab/Shift+Tab, Escape, Enter and Space, focus containment,
+  answer locks, both completion modes, route focus and retry.
+- Existing Pages-base asset checks and real old/new worker update/offline tests remain in use.
+- Phone-size screenshots of the home screen, start dialog and quiz were visually inspected.
+
+There is no SSR or server runtime. The Vite base and hash routes are unchanged;
+GitHub Actions continues to build `dist`, test it, and deploy only merged master changes.
+The branch's new UI is not claimed as published until its PR is merged and deployment succeeds.
