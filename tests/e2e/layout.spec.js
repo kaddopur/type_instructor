@@ -61,6 +61,11 @@ test('language buttons keep their size and position when the language changes', 
           expect(Math.abs(bounds[key] - original[index][key]), `${lang} button ${index}: ${key}`).toBeLessThanOrEqual(1);
         }
       }
+      for (const button of await buttons.all()) {
+        for (const corner of ['top-left', 'top-right', 'bottom-left', 'bottom-right']) {
+          await expect(button).toHaveCSS(`border-${corner}-radius`, '24px');
+        }
+      }
       await expect(page.getByRole('link', { name: label, exact: true })).toHaveAttribute('aria-current', 'page');
     }
   }
