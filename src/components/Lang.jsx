@@ -7,7 +7,7 @@ function Lang({ messages: { LANGUAGE, HOME }, lang }) {
     <nav className="Lang page-layout" aria-label={LANGUAGE}>
       <section className="language-panel">
         <h1 tabIndex={-1} className="page-title">{LANGUAGE}</h1>
-        {[['en', 'English'], ['ja', '日本語'], ['zh', '中文']].map(([code, label]) => (
+        {[['en', 'English'], ['zh', '中文'], ['ja', '日本語']].map(([code, label]) => (
           <div key={code} className="langItem">
             <Button asChild className="language-choice">
               <I18nLink to="/lang" lang={code} hrefLang={code} aria-current={lang === code ? 'page' : undefined}>
