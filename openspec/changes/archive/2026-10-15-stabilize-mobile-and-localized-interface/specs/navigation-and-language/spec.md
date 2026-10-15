@@ -1,0 +1,9 @@
+## MODIFIED Requirements
+
+### Requirement: Localized navigation
+系統 SHALL 支援 `en`、`zh`、`ja`，在切頁、遊戲、結果與重玩時保留 URL 中的語言。語系文字取自現有 JSON；保留像素字體風格；切換語言 SHALL NOT 改變全站根字級、控制元件尺寸、圓角或布局位置。翻譯文字可有不同字寬，容器應預留足夠空間。
+
+#### Scenario: Change language
+- **WHEN** 玩家從語言頁選擇中文或日文
+- **THEN** URL 更新為對應語言，後續頁面顯示該語言
+- **AND** 在相同可視尺寸下，控制元件維持相同尺寸、位置與圓角

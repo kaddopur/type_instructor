@@ -36,7 +36,7 @@ screen-reader testing or establish full WCAG conformance. Timed game rules remai
 - Node 24.19.0 / pnpm 11.22.0, frozen-lockfile installation.
 - ESLint, strict TypeScript checks and 15 Vitest unit tests, including route validation.
 - Production browser smoke subset: seven Chromium tests selected with `@smoke`.
-- Complete E2E suite: 116 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
+- Complete E2E suite: 120 tests over Chromium, Firefox, desktop WebKit and mobile WebKit emulation.
 - Accessibility scans cover all three languages, home/menu/language/results, every mode's
   intro dialog and playable/answered states. No axe rules are disabled.
 - Computed text/background colors are checked for all 18 target types, rendered options
@@ -124,3 +124,22 @@ Menu typography and spacing now use fixed local dimensions across languages:
 The existing layout check compares all four menu actions' positions and sizes
 across en/zh/ja; lint, typecheck and 20 layout/navigation checks passed.
 The updated English menu screenshot at 390×844 was inspected.
+
+## Layout does not depend on the selected language
+
+The root font size is now a single CSS value (125%, normally 20px) for every
+language. Language navigation changes translations, glyph families, document
+language and title, but no longer resizes rem-based layout dimensions.
+The quiz intro description reserves two lines; feedback occupies the full stem
+width. Result actions share a 240px width so Japanese labels stay on one line.
+This replaces the earlier baseline rule that enlarged only Chinese and Japanese.
+
+A dedicated geometry regression check covers home, menu, language, both result
+modes, and all four quiz modes in intro/playing/answered states. It compares
+control/container positions, sizes, radii and font sizes across en/zh/ja at
+390×600, 844×390 and 1280×900 in all four browser projects. Natural footer text
+width may differ; its center, vertical position and line height must remain stable.
+Real iOS Safari browser chrome and physical devices are still not emulated.
+
+Final locale-layout audit: lint, typecheck, 15 unit tests and all 120 E2E cases
+passed locally. The complete suite includes all four browser/device projects.

@@ -11,7 +11,6 @@ const I18nPage = (ChildComponent) => {
     const lang = normalizeLanguage(params.lang);
 
     useEffect(() => {
-      document.documentElement.style.fontSize = lang === 'en' ? '100%' : '125%';
       document.documentElement.lang = lang;
       const heading = document.querySelector('main h1');
       document.title = `${heading?.innerText.replace(/\s+/g, ' ').trim() || 'Type Instructor'} | Pokémon`;

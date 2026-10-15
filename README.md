@@ -45,7 +45,7 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 |---|---|
 | `pnpm test`／`pnpm test:unit` | Vitest 單次執行，Node 環境，15 個案例 |
 | `pnpm test:unit:watch` | Vitest watch，開發時持續執行 |
-| `pnpm test:e2e` | Playwright 完整矩陣，116 個案例 |
+| `pnpm test:e2e` | Playwright 完整矩陣，120 個案例 |
 | `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
 | `pnpm test:a11y` | 四種設定的 28 個無障礙案例，篩選 `@a11y` |
 
@@ -149,8 +149,8 @@ pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
 
-共 116 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
-28 個鍵盤流程／axe／屬性色對比案例，四個 worker 更新與離線案例，以及八個安全區域與語言切換布局案例。設定包含桌面 Chromium、Firefox、WebKit，
+共 120 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
+28 個鍵盤流程／axe／屬性色對比案例，四個 worker 更新與離線案例，以及十二個安全區域與跨語言布局案例。設定包含桌面 Chromium、Firefox、WebKit，
 以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
 CI 執行此矩陣，全部通過才會部署。
 

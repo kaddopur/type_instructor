@@ -111,3 +111,59 @@ test('language buttons keep their size and position when the language changes', 
     }
   }
 });
+
+test('all routes preserve layout geometry across languages', { tag: '@layout' }, async ({ page }) => {
+  await page.clock.install();
+  await page.addInitScript(() => { Math.random = () => 0.5 / 18; });
+  async function geometry(selector) {
+    return page.locator(selector).evaluateAll(nodes => nodes.map(node => {
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      return { center: rect.x + rect.width / 2, top: rect.y, height: rect.height,
+        width: node.matches('footer a') ? 0 : rect.width,
+        radius: style.borderTopLeftRadius, fontSize: style.fontSize };
+    }));
+  }
+  function compare(actual, expected, label) {
+    expect(actual.length, label).toBe(expected.length);
+    actual.forEach((box, index) => {
+      for (const key of ['center', 'top', 'width', 'height']) {
+        expect(Math.abs(box[key] - expected[index][key]), `${label} ${index} ${key}`).toBeLessThanOrEqual(1);
+      }
+      expect(box.radius, label).toBe(expected[index].radius);
+      expect(box.fontSize, label).toBe(expected[index].fontSize);
+    });
+  }
+  for (const viewport of [{ width: 390, height: 600 }, { width: 844, height: 390 }, { width: 1280, height: 900 }]) {
+    await page.setViewportSize(viewport);
+    for (const [route, selector] of [
+      ['', '.Home h1, .Home .start a, .Home .lang a, footer a'],
+      ['menu', '.menuItem a, footer a'],
+      ['lang', '.langItem a, footer a'],
+      ['quizzes/s/basic/attack/result/7', '.resultItem a, footer a'],
+      ['quizzes/s/speedrun/defend/result/7', '.resultItem a, footer a'],
+      ...['basic', 'speedrun'].flatMap(mode => ['attack', 'defend'].map(kind =>
+        [`quizzes/s/${mode}/${kind}`, '[role="dialog"], [role="dialog"] button, [role="dialog"] a']))
+    ]) {
+      const expected = {};
+      for (const lang of ['en', 'zh', 'ja']) {
+        await page.goto(`./#/${lang}/${route}`);
+        await expect(page.locator('html')).toHaveAttribute('lang', lang);
+        await page.evaluate(() => document.fonts.ready);
+        const intro = await geometry(selector);
+        expected.intro ??= intro;
+        compare(intro, expected.intro, `${lang}/${route} intro`);
+        if (!route.endsWith('attack') && !route.endsWith('defend')) continue;
+        await page.getByTestId('start-game').click();
+        const quizSelector = '.stemContainer, .stemHeader, .stemStatus, .optionItem';
+        const playing = await geometry(quizSelector);
+        expected.playing ??= playing;
+        compare(playing, expected.playing, `${lang}/${route} playing`);
+        await page.locator('.optionItem').first().click();
+        const answered = await geometry(quizSelector);
+        expected.answered ??= answered;
+        compare(answered, expected.answered, `${lang}/${route} feedback`);
+      }
+    }
+  }
+});

@@ -54,6 +54,7 @@
 }
 
 @layer base {
+  html { font-size: 125%; }
   :lang(zh) {
     --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "PingFang TC", "Microsoft JhengHei", sans-serif;
   }
@@ -107,7 +108,6 @@
   .Home footer, .Result footer { padding: 1rem; }
   .Result h1 { margin-block: 1rem .5rem; }
   .resultItem { margin: .25rem; }
-  .resultItem a { width: 14rem; }
   .Home .start a, .resultItem a {
     min-height: 44px;
     padding-block: .5rem;

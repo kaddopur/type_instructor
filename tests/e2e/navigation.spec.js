@@ -56,9 +56,9 @@ test('three languages navigate, render games, show feedback, and retry', { tag: 
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const labels = {
-    en: { start: 'Start', language: 'English', attack: 'Attack', defend: 'Defend', retry: 'Retry', menu: 'Menu', score: 'scores', font: '100%' },
-    zh: { start: '開始', language: '中文', attack: '攻擊', defend: '防禦', retry: '重玩', menu: '目錄', score: '分數', font: '125%' },
-    ja: { start: 'スタート', language: '日本語', attack: '攻撃', defend: '防御', retry: 'やり直し', menu: 'メニューに戻る', score: 'スゴア', font: '125%' }
+    en: { start: 'Start', language: 'English', attack: 'Attack', defend: 'Defend', retry: 'Retry', menu: 'Menu', score: 'scores' },
+    zh: { start: '開始', language: '中文', attack: '攻擊', defend: '防禦', retry: '重玩', menu: '目錄', score: '分數' },
+    ja: { start: 'スタート', language: '日本語', attack: '攻撃', defend: '防御', retry: 'やり直し', menu: 'メニューに戻る', score: 'スゴア' }
   };
 
   for (const [lang, text] of Object.entries(labels)) {
@@ -69,7 +69,7 @@ test('three languages navigate, render games, show feedback, and retry', { tag: 
     await page.getByRole('link', { name: text.language, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`#/${lang}/lang$`));
     await expect(page.locator('html')).toHaveAttribute('lang', lang);
-    await expect.poll(() => page.locator('html').evaluate(node => node.style.fontSize)).toBe(text.font);
+    await expect(page.locator('html')).toHaveCSS('font-size', '20px');
     // Return through the language page's home link.
     await page.locator('footer a').click();
     await page.getByRole('link', { name: text.start, exact: true }).click();
