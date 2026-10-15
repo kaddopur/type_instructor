@@ -1,3 +1,3 @@
 - [x] 1. Record GA4 requirements, design and validation scenarios.
 - [x] 2. Replace UA, integrate hash-route page views and add regression tests.
-- [ ] 3. Document GA4 setup, verify, sync specs and archive.
+- [x] 3. Document GA4 setup, verify, sync specs and archive.

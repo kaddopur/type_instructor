@@ -36,6 +36,30 @@ Pokémon 的相關權利屬於各權利人。
 按下開始對話框的「開始」後才會計時。鍵盤可用 Tab／Shift+Tab 移動焦點，
 Enter 開啟連結，Enter／空白鍵開始或作答。開始對話框內按 Escape 可返回選單。
 
+## 網站瀏覽統計
+
+正式網站使用 Google Analytics 4（GA4），評估 ID 為 `G-8QLYXMMJSV`。
+只在正式建置、且主機名稱為 `kaddopur.github.io` 時啟用；本機開發與預覽不會送出資料。
+
+網站會在首次顯示頁面、切換頁面與返回上一頁時送出 `page_view`。
+紀錄包含完整網址（含 `#/…` 路由）、頁面標題與來源頁面；同一網址連續觸發不會重複紀錄。
+目前沒有另外傳送答題或遊戲事件。Google 腳本被阻擋或離線時，遊戲仍可操作。
+
+### GA4 後台設定與確認
+
+本專案手動傳送頁面瀏覽紀錄，並設定 `send_page_view: false`。
+為避免與 GA4 的自動追蹤重複，請完成以下設定：
+
+1. 開啟 GA4「管理」→「資料串流」，選擇評估 ID 為 `G-8QLYXMMJSV` 的網站串流。
+2. 開啟「加強型評估」設定，在「網頁瀏覽」展開進階設定。
+3. 關閉「根據瀏覽器記錄事件變更頁面」選項並儲存。其他評估選項可維持原設定。
+4. 部署新版後，開啟正式網站並切換幾個頁面，在 GA4「即時」報表確認收到事件。
+   需要核對參數時，使用 Tag Assistant 開啟偵錯，再到 DebugView 查看 `page_view`。
+
+只有本機修改或測試通過，還不能證明 GA4 已收到正式網站的資料；必須部署後在報表確認。
+自動測試會攔截 Google 請求，不會混入正式統計。
+設定依據見 [Google 官方頁面瀏覽追蹤說明](https://developers.google.com/analytics/devguides/collection/ga4/views)。
+
 ## 安裝到手機或電腦
 
 Type Instructor 是可安裝的網頁 App（PWA），可以從主畫面或電腦上的圖示開啟。
@@ -95,6 +119,7 @@ React 19、Vite 8、React Router、Zustand、Tailwind CSS 4 與共用 CSS。
 核心邏輯、store、hook 和共用 UI 使用 TypeScript；既有頁面包含 JSX。
 Button／Dialog 採用 shadcn/ui 的 Radix 版本原始碼，MIT 授權見 [UI 授權](src/components/ui/LICENSE.md)。
 
+- [analytics.js](src/lib/analytics.js)：正式站 GA4 初始化、完整路由的頁面瀏覽紀錄與連續重複過濾。
 - [gameRules.ts](src/lib/gameRules.ts)：集中定義競速目標 20 分，供遊戲邏輯與三語目標說明共用。
 - [getQuiz.ts](src/lib/getQuiz.ts)：傷害矩陣、唯一最佳答案、每場獨立的 18 屬性題袋及防禦免疫／抗性輪替。
 - [quiz.ts](src/stores/quiz.ts)：每場遊戲建立獨立狀態，管理開始、作答、計分、回饋與結束。
@@ -127,9 +152,9 @@ Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離�
 |---|---|
 | `pnpm lint` | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
 | `pnpm typecheck` | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移 |
-| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，21 個案例 |
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，23 個案例 |
 | `pnpm test:unit:watch` | 開發時持續執行單元測試 |
-| `pnpm test:e2e` | Playwright 完整矩陣，152 個案例 |
+| `pnpm test:e2e` | Playwright 完整矩陣，160 個案例 |
 | `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
 | `pnpm test:a11y` | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y` |
 
@@ -151,7 +176,7 @@ pnpm test:e2e
 
 ### CI 分成兩組平行執行
 
-兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 76 個。
+兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 80 個。
 兩組都通過才允許部署；只有第一組上傳 Pages 產物。本機 `pnpm test:e2e` 仍執行全部案例。
 
 ```sh
