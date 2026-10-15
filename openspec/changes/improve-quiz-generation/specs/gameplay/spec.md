@@ -31,6 +31,6 @@ exactly one best answer among the displayed options.
 - **WHEN** the target has resistance but no immunity
 - **THEN** its answer has multiplier 0.5 in either preference
 
-#### Scenario: No resistance
-- **WHEN** the target is a normal attack, with immunity but no resistance
-- **THEN** its answer has multiplier 0 in either preference
+#### Scenario: Normal attack resistance
+- **WHEN** a normal attack target appears with resistance preference
+- **THEN** its answer is rock or steel with multiplier 0.5 and ghost is excluded from the options

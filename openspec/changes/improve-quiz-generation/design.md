@@ -11,8 +11,8 @@ getQuiz accepts an explicit target (or picks one for standalone callers) and a
 defense preference. Each target starts with an immunity preference, then toggles
 to resistance on its next appearance. Preference state is per target, so shuffled
 round order cannot starve either category. If immunity is absent, use resistance;
-if resistance is absent (normal), use immunity. A resistance question samples its
-answer from 0.5 matchups and distractors only from 1 or 2 matchups. Immunity
+if resistance is absent, use the existing minimum. All current targets have
+resistance. A resistance question samples its answer from 0.5 matchups and distractors only from 1 or 2 matchups. Immunity
 questions keep 0 as the answer and sample any strictly worse multiplier. Attacks
 continue to choose 2 and exclude all other equally effective answers.
 

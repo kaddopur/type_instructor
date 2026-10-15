@@ -250,3 +250,29 @@ test('all languages select correct speedrun modes and show the shared 20-point g
     }
   }
 });
+
+for (const kind of ['attack', 'defend']) {
+  test(`${kind}: two bags cover all types and defense practices resistance in round two`, { tag: '@gameplay' }, async ({ page }) => {
+    await pauseClock(page);
+    await page.goto(`./#/en/quizzes/s/basic/${kind}`);
+    await page.getByTestId('start-game').click();
+    const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
+    let previous;
+    for (let round = 0; round < 2; round++) {
+      const seen = new Set();
+      for (let index = 0; index < 18; index++) {
+        const enemy = await page.locator('.stemContainer').evaluate(node =>
+          [...node.classList].find(name => name.startsWith('Bgc-')).slice(4));
+        expect(enemy).not.toBe(previous);
+        seen.add(enemy);
+        previous = enemy;
+        await page.locator(await correctSelector(page, kind)).click();
+        const expected = kind === 'attack' ? 2 : round === 0 && immuneAttacks.has(enemy) ? 0 : 0.5;
+        await expect(page.locator('.optionDamage')).toHaveText(String(expected));
+        await expect(page.locator('.stemScores')).toHaveText(`scores: ${round * 18 + index + 1}`);
+        await page.clock.runFor(500);
+      }
+      expect(seen.size).toBe(18);
+    }
+  });
+}

@@ -6,17 +6,10 @@ const types = [
   'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug',
   'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic',
   'ice', 'dragon', 'dark', 'fairy'
-];
+] as const;
 
 function question(mode: QuizType, enemyIndex: number) {
-  const original = Math.random;
-  // Only pin enemy selection. Lodash still samples and shuffles real options.
-  Math.random = () => (enemyIndex + 0.5) / types.length;
-  try {
-    return getQuiz(mode);
-  } finally {
-    Math.random = original;
-  }
+  return getQuiz(mode, types[enemyIndex]);
 }
 
 test('all 18 attack and defense targets have four unique options and one best answer', () => {
@@ -53,7 +46,6 @@ test('representative matchups preserve attack/defense matrix orientation', () =>
   expect(defenseDragon.answer).toBe('fairy');
 });
 
-
 test('shuffled bags cover all targets once per round without consecutive repeats', () => {
   for (const mode of ['attack', 'defend'] as const) {
     const next = createQuizGenerator(mode);
@@ -65,3 +57,49 @@ test('shuffled bags cover all targets once per round without consecutive repeats
   }
 });
 
+test('every defense target has four unique options and one best answer in both preferences', () => {
+  const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
+  for (const enemy of types) {
+    for (const preference of ['immunity', 'resistance'] as const) {
+      const quiz = getQuiz('defend', enemy, preference);
+      const expected = preference === 'immunity' && immuneAttacks.has(enemy) ? 0 : 0.5;
+      expect(quiz.options).toHaveLength(4);
+      expect(new Set(quiz.options.map(option => option.type)).size).toBe(4);
+      expect(quiz.options.find(option => option.type === quiz.answer)?.damage).toBe(expected);
+      expect(quiz.options.filter(option => option.damage === expected)).toHaveLength(1);
+      expect(quiz.options.every(option => option.damage >= expected)).toBe(true);
+    }
+  }
+});
+
+test('defense preferences alternate per target across shuffled rounds and reset in new sessions', () => {
+  const immuneAttacks = new Set(['normal', 'fighting', 'poison', 'ground', 'ghost', 'electric', 'psychic', 'dragon']);
+  const next = createQuizGenerator('defend');
+  for (let round = 0; round < 3; round++) {
+    const seen = new Set();
+    for (let index = 0; index < 18; index++) {
+      const quiz = next();
+      seen.add(quiz.enemy.type);
+      const expected = round !== 1 && immuneAttacks.has(quiz.enemy.type) ? 0 : 0.5;
+      expect(quiz.options.find(option => option.type === quiz.answer)?.damage).toBe(expected);
+      expect(quiz.options.every(option => option.damage >= expected)).toBe(true);
+    }
+    expect(seen.size).toBe(18);
+    // A separate generator must always start with the immunity preference.
+    const fresh = createQuizGenerator('defend');
+    for (let index = 0; index < 18; index++) {
+      const quiz = fresh();
+      const expected = immuneAttacks.has(quiz.enemy.type) ? 0 : 0.5;
+      expect(quiz.options.find(option => option.type === quiz.answer)?.damage).toBe(expected);
+    }
+  }
+});
+
+test('electric and dragon resistance questions exclude immunity and teach actual resistance', () => {
+  const electric = getQuiz('defend', 'electric', 'resistance');
+  expect(['grass', 'electric', 'dragon']).toContain(electric.answer);
+  expect(electric.options.some(option => option.type === 'ground')).toBe(false);
+  const dragon = getQuiz('defend', 'dragon', 'resistance');
+  expect(dragon.answer).toBe('steel');
+  expect(dragon.options.some(option => option.type === 'fairy')).toBe(false);
+});
