@@ -10,15 +10,26 @@ async function checkImages(page, lang) {
     await expect(image).toHaveJSProperty('naturalWidth', 390);
     await expect(image).toHaveJSProperty('naturalHeight', 844);
     const assetPath = process.env.E2E_SERVER === 'dev' ? 'src/images/landing' : 'assets';
-    await expect(image).toHaveAttribute('src', new RegExp(`/type_instructor/${assetPath}/${lang}-`));
+    await expect(image).toHaveAttribute(
+      'src',
+      new RegExp(`/type_instructor/${assetPath}/${lang}-`),
+    );
   }
 }
 
 for (const lang of ['en', 'zh', 'ja']) {
-  test(`${lang}: landing fits mobile and desktop, explains play and returns to the game`, async ({ page, browserName, isMobile }) => {
+  test(`${lang}: landing fits mobile and desktop, explains play and returns to the game`, async ({
+    page,
+    browserName,
+    isMobile,
+  }) => {
     test.setTimeout(60000);
-    for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 },
-      { width: 844, height: 390 }, { width: 1280, height: 900 }]) {
+    for (const viewport of [
+      { width: 320, height: 568 },
+      { width: 390, height: 844 },
+      { width: 844, height: 390 },
+      { width: 1280, height: 900 },
+    ]) {
       await page.setViewportSize(viewport);
       await page.goto(`./#/${lang}/about/`);
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
@@ -33,14 +44,20 @@ for (const lang of ['en', 'zh', 'ja']) {
         await page.mouse.move(viewport.width / 2, viewport.height / 2);
         await page.mouse.wheel(0, 500);
       }
-      await expect.poll(() => page.locator('.app-content').evaluate(node => node.scrollTop)).toBeGreaterThan(0);
-      const size = await page.locator('.app-content').evaluate(node => ({
-        width: node.clientWidth, scrollWidth: node.scrollWidth,
-        height: node.clientHeight, scrollHeight: node.scrollHeight
+      await expect
+        .poll(() => page.locator('.app-content').evaluate((node) => node.scrollTop))
+        .toBeGreaterThan(0);
+      const size = await page.locator('.app-content').evaluate((node) => ({
+        width: node.clientWidth,
+        scrollWidth: node.scrollWidth,
+        height: node.clientHeight,
+        scrollHeight: node.scrollHeight,
       }));
       expect(size.scrollWidth).toBeLessThanOrEqual(size.width);
       expect(size.scrollHeight).toBeGreaterThan(size.height);
-      expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(viewport.height);
+      expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(
+        viewport.height,
+      );
       await page.getByRole('button', { name: copy[lang].howLink, exact: true }).click();
       await expect(page.locator('#how-title')).toBeInViewport();
       await expect(page).toHaveURL(new RegExp(`#/${lang}/about/$`));
@@ -59,7 +76,11 @@ for (const lang of ['en', 'zh', 'ja']) {
 
 test('landing language navigation preserves the introduction route', async ({ page }) => {
   await page.goto('./#/en/about');
-  for (const [lang, label] of [['ja', '日本語'], ['zh', '中文'], ['en', 'English']]) {
+  for (const [lang, label] of [
+    ['ja', '日本語'],
+    ['zh', '中文'],
+    ['en', 'English'],
+  ]) {
     const link = page.getByRole('link', { name: label, exact: true });
     await link.click();
     await expect(link).toHaveAttribute('aria-current', 'page');
@@ -75,24 +96,33 @@ test('three-language landing accessibility scans', { tag: '@a11y' }, async ({ pa
   for (const lang of ['en', 'zh', 'ja']) {
     await page.goto(`./#/${lang}/about`);
     await page.evaluate(() => document.fonts.ready);
-    const { violations } = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+    const { violations } = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+      .analyze();
     expect(violations).toEqual([]);
   }
 });
 
-test('landing and all localized screenshots work offline after caching', { tag: '@offline' }, async ({ page, context }) => {
-  test.skip(process.env.E2E_SERVER === 'dev', 'Service worker requires the production build');
-  test.setTimeout(60000);
-  await page.goto('./#/en/about');
-  await page.evaluate(async () => {
-    await navigator.serviceWorker.ready;
-    if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
-  });
-  await context.setOffline(true);
-  for (const lang of ['en', 'zh', 'ja']) {
-    await page.goto(`./#/${lang}/about`);
-    await page.reload();
-    await expect(page.locator('h1')).toHaveText('Type Instructor');
-    await checkImages(page, lang);
-  }
-});
+test(
+  'landing and all localized screenshots work offline after caching',
+  { tag: '@offline' },
+  async ({ page, context }) => {
+    test.skip(process.env.E2E_SERVER === 'dev', 'Service worker requires the production build');
+    test.setTimeout(60000);
+    await page.goto('./#/en/about');
+    await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
+      if (!navigator.serviceWorker.controller)
+        await new Promise((resolve) =>
+          navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }),
+        );
+    });
+    await context.setOffline(true);
+    for (const lang of ['en', 'zh', 'ja']) {
+      await page.goto(`./#/${lang}/about`);
+      await page.reload();
+      await expect(page.locator('h1')).toHaveText('Type Instructor');
+      await checkImages(page, lang);
+    }
+  },
+);

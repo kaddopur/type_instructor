@@ -20,37 +20,37 @@ const types = [
   'ice',
   'dragon',
   'dark',
-  'fairy'
+  'fairy',
 ] as const;
 
 export type PokemonType = (typeof types)[number];
 
 const damageMatrix = [
-  [1,   1,   1,   1,   1, 1/2,   1,   0, 1/2,   1,   1,   1,   1,   1,   1,   1,   1,   1],
-  [2,   1, 1/2, 1/2,   1,   2, 1/2,   0,   2,   1,   1,   1,   1, 1/2,   2,   1,   2, 1/2],
-  [1,   2,   1,   1,   1, 1/2,   2,   1, 1/2,   1,   1,   2, 1/2,   1,   1,   1,   1,   1],
-  [1,   1,   1, 1/2, 1/2, 1/2,   1, 1/2,   0,   1,   1,   2,   1,   1,   1,   1,   1,   2],
-  [1,   1,   0,   2,   1,   2, 1/2,   1,   2,   2,   1, 1/2,   2,   1,   1,   1,   1,   1],
-  [1, 1/2,   2,   1, 1/2,   1,   2,   1, 1/2,   2,   1,   1,   1,   1,   2,   1,   1,   1],
-  [1, 1/2, 1/2, 1/2,   1,   1,   1, 1/2, 1/2, 1/2,   1,   2,   1,   2,   1,   1,   2, 1/2],
-  [0,   1,   1,   1,   1,   1,   1,   2,   1,   1,   1,   1,   1,   2,   1,   1, 1/2,   1],
-  [1,   1,   1,   1,   1,   2,   1,   1, 1/2, 1/2, 1/2,   1, 1/2,   1,   2,   1,   1,   2],
-  [1,   1,   1,   1,   1, 1/2,   2,   1,   2, 1/2, 1/2,   2,   1,   1,   2, 1/2,   1,   1],
-  [1,   1,   1,   1,   2,   2,   1,   1,   1,   2, 1/2, 1/2,   1,   1,   1, 1/2,   1,   1],
-  [1,   1, 1/2, 1/2,   2,   2, 1/2,   1, 1/2, 1/2,   2, 1/2,   1,   1,   1, 1/2,   1,   1],
-  [1,   1,   2,   1,   0,   1,   1,   1,   1,   1,   2, 1/2, 1/2,   1,   1, 1/2,   1,   1],
-  [1,   2,   1,   2,   1,   1,   1,   1, 1/2,   1,   1,   1,   1, 1/2,   1,   1,   0,   1],
-  [1,   1,   2,   1,   2,   1,   1,   1, 1/2, 1/2, 1/2,   2,   1,   1, 1/2,   2,   1,   1],
-  [1,   1,   1,   1,   1,   1,   1,   1, 1/2,   1,   1,   1,   1,   1,   1,   2,   1,   0],
-  [1, 1/2,   1,   1,   1,   1,   1,   2,   1,   1,   1,   1,   1,   2,   1,   1, 1/2, 1/2],
-  [1,   2,   1, 1/2,   1,   1,   1,   1, 1/2, 1/2,   1,   1,   1,   1,   1,   2,   2,   1]
+  [1, 1, 1, 1, 1, 1 / 2, 1, 0, 1 / 2, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [2, 1, 1 / 2, 1 / 2, 1, 2, 1 / 2, 0, 2, 1, 1, 1, 1, 1 / 2, 2, 1, 2, 1 / 2],
+  [1, 2, 1, 1, 1, 1 / 2, 2, 1, 1 / 2, 1, 1, 2, 1 / 2, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1 / 2, 1 / 2, 1 / 2, 1, 1 / 2, 0, 1, 1, 2, 1, 1, 1, 1, 1, 2],
+  [1, 1, 0, 2, 1, 2, 1 / 2, 1, 2, 2, 1, 1 / 2, 2, 1, 1, 1, 1, 1],
+  [1, 1 / 2, 2, 1, 1 / 2, 1, 2, 1, 1 / 2, 2, 1, 1, 1, 1, 2, 1, 1, 1],
+  [1, 1 / 2, 1 / 2, 1 / 2, 1, 1, 1, 1 / 2, 1 / 2, 1 / 2, 1, 2, 1, 2, 1, 1, 2, 1 / 2],
+  [0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1 / 2, 1],
+  [1, 1, 1, 1, 1, 2, 1, 1, 1 / 2, 1 / 2, 1 / 2, 1, 1 / 2, 1, 2, 1, 1, 2],
+  [1, 1, 1, 1, 1, 1 / 2, 2, 1, 2, 1 / 2, 1 / 2, 2, 1, 1, 2, 1 / 2, 1, 1],
+  [1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1 / 2, 1 / 2, 1, 1, 1, 1 / 2, 1, 1],
+  [1, 1, 1 / 2, 1 / 2, 2, 2, 1 / 2, 1, 1 / 2, 1 / 2, 2, 1 / 2, 1, 1, 1, 1 / 2, 1, 1],
+  [1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 2, 1 / 2, 1 / 2, 1, 1, 1 / 2, 1, 1],
+  [1, 2, 1, 2, 1, 1, 1, 1, 1 / 2, 1, 1, 1, 1, 1 / 2, 1, 1, 0, 1],
+  [1, 1, 2, 1, 2, 1, 1, 1, 1 / 2, 1 / 2, 1 / 2, 2, 1, 1, 1 / 2, 2, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1 / 2, 1, 1, 1, 1, 1, 1, 2, 1, 0],
+  [1, 1 / 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1 / 2, 1 / 2],
+  [1, 2, 1, 1 / 2, 1, 1, 1, 1, 1 / 2, 1 / 2, 1, 1, 1, 1, 1, 2, 2, 1],
 ];
 
 const quizFactory = (
   quizType: QuizType,
   damageList: number[],
   answerDamage: number,
-  enemy: Quiz['enemy']
+  enemy: Quiz['enemy'],
 ): Quiz => {
   const answers: number[] = [];
   const others: number[] = [];
@@ -68,35 +68,37 @@ const quizFactory = (
 
   return {
     enemy,
-    options: shuffle([answerIndex, ...otherIndices]).map(typeIndex => ({
+    options: shuffle([answerIndex, ...otherIndices]).map((typeIndex) => ({
       type: types[typeIndex],
-      damage: damageList[typeIndex]
+      damage: damageList[typeIndex],
     })),
-    answer: types[answerIndex]
-  }
-}
+    answer: types[answerIndex],
+  };
+};
 
 const getQuiz = (
   quizType: QuizType,
   enemy: PokemonType = types[Math.floor(Math.random() * types.length)],
-  defensePreference: 'immunity' | 'resistance' = 'immunity'
+  defensePreference: 'immunity' | 'resistance' = 'immunity',
 ): Quiz => {
   const enemyIndex = types.indexOf(enemy);
 
   if (quizType === 'attack') {
-    const enemyDefendList = damageMatrix.map(damage => damage[enemyIndex]);
+    const enemyDefendList = damageMatrix.map((damage) => damage[enemyIndex]);
     return quizFactory(quizType, enemyDefendList, Math.max(...enemyDefendList), {
       title: 'ENEMY_ATTACK',
-      type: types[enemyIndex]
+      type: types[enemyIndex],
     });
   }
 
   const enemyAttackList = damageMatrix[enemyIndex];
-  const answerDamage = defensePreference === 'resistance' && enemyAttackList.includes(0.5)
-    ? 0.5 : Math.min(...enemyAttackList);
+  const answerDamage =
+    defensePreference === 'resistance' && enemyAttackList.includes(0.5)
+      ? 0.5
+      : Math.min(...enemyAttackList);
   return quizFactory(quizType, enemyAttackList, answerDamage, {
     title: 'ENEMY_DEFEND',
-    type: types[enemyIndex]
+    type: types[enemyIndex],
   });
 };
 

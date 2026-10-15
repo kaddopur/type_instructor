@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { correctSelector } from './support/matchups.js';
 
-test('completed scores persist across reloads and languages; unfinished games and result URLs do not count', async ({ page }) => {
+test('completed scores persist across reloads and languages; unfinished games and result URLs do not count', async ({
+  page,
+}) => {
   await page.clock.install({ time: new Date('2026-10-15T00:00:00Z') });
   await page.clock.pauseAt(new Date('2026-10-15T00:00:10Z'));
   await page.goto('./#/zh/menu');

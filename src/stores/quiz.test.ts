@@ -42,7 +42,7 @@ test('wrong answer deducts a point, allows negatives, and retains the question a
   const store = createQuizStore('basic', 'defend');
   store.getState().start();
   const initial = store.getState();
-  const index = initial.quiz.options.findIndex(option => option.type !== initial.quiz.answer);
+  const index = initial.quiz.options.findIndex((option) => option.type !== initial.quiz.answer);
   initial.answer(index);
   const wrong = store.getState();
   expect(wrong.scores).toBe(-1);
@@ -64,11 +64,15 @@ test('correct answer after a mistake adds one point and advances after feedback'
   const store = createQuizStore('basic', 'attack');
   store.getState().start();
   const initial = store.getState();
-  const wrongIndex = initial.quiz.options.findIndex(option => option.type !== initial.quiz.answer);
+  const wrongIndex = initial.quiz.options.findIndex(
+    (option) => option.type !== initial.quiz.answer,
+  );
   initial.answer(wrongIndex);
   store.getState().advance();
   const resumed = store.getState();
-  const rightIndex = resumed.quiz.options.findIndex(option => option.type === resumed.quiz.answer);
+  const rightIndex = resumed.quiz.options.findIndex(
+    (option) => option.type === resumed.quiz.answer,
+  );
   resumed.answer(rightIndex);
   const right = store.getState();
   expect(right.scores).toBe(0);
@@ -83,7 +87,7 @@ test('correct answer after a mistake adds one point and advances after feedback'
   expect(next.status).toBe('');
   expect(next.scores).toBe(0);
   expect(next.quiz).not.toBe(right.quiz);
-  expect(next.quiz.options.every(option => !option.clicked)).toBeTruthy();
+  expect(next.quiz.options.every((option) => !option.clicked)).toBeTruthy();
 });
 
 test('answer guards reject pre-start, invalid, frozen and previously selected inputs', () => {
@@ -99,7 +103,9 @@ test('answer guards reject pre-start, invalid, frozen and previously selected in
     started.answer(index);
   }
   expect(store.getState()).toBe(started);
-  const wrongIndex = started.quiz.options.findIndex(option => option.type !== started.quiz.answer);
+  const wrongIndex = started.quiz.options.findIndex(
+    (option) => option.type !== started.quiz.answer,
+  );
   started.answer(wrongIndex);
   const wrong = store.getState();
   wrong.answer(wrongIndex);
@@ -131,7 +137,7 @@ test('speedrun completion uses the configured goal and preserves answer-time sec
   store.getState().start();
   store.setState({ scores: SCORE_TARGET - 1, timer: 7 });
   const before = store.getState();
-  const rightIndex = before.quiz.options.findIndex(option => option.type === before.quiz.answer);
+  const rightIndex = before.quiz.options.findIndex((option) => option.type === before.quiz.answer);
   before.answer(rightIndex);
   expect(store.getState().result).toBe(null);
   store.getState().tick();
@@ -153,7 +159,7 @@ test('speedrun continues at 19 and after deductions, finishing only at 20 in bot
     store.setState({ scores: 18, timer: 5 });
     const answerCorrectly = () => {
       const state = store.getState();
-      state.answer(state.quiz.options.findIndex(option => option.type === state.quiz.answer));
+      state.answer(state.quiz.options.findIndex((option) => option.type === state.quiz.answer));
     };
     answerCorrectly();
     store.getState().advance();
@@ -163,7 +169,7 @@ test('speedrun continues at 19 and after deductions, finishing only at 20 in bot
     expect(store.getState().timer).toBe(6);
 
     const state = store.getState();
-    state.answer(state.quiz.options.findIndex(option => option.type !== state.quiz.answer));
+    state.answer(state.quiz.options.findIndex((option) => option.type !== state.quiz.answer));
     store.getState().advance();
     expect(store.getState().scores).toBe(18);
     expect(store.getState().result).toBe(null);
@@ -193,9 +199,8 @@ test('sessions do not share state or pending actions', () => {
   expect(fresh.timer).toBe(0);
   expect(fresh.overlay).toBe(true);
   expect(fresh.freeze).toBe(false);
-  expect(fresh.quiz.options.every(option => !option.clicked)).toBeTruthy();
+  expect(fresh.quiz.options.every((option) => !option.clicked)).toBeTruthy();
 });
-
 
 test('wrong retries and another session do not consume the current target bag', () => {
   for (const kind of ['attack', 'defend'] as const) {
@@ -207,19 +212,25 @@ test('wrong retries and another session do not consume the current target bag', 
     for (let i = 0; i < 36; i++) {
       const before = store.getState();
       targets.push(before.quiz.enemy.type);
-      before.answer(before.quiz.options.findIndex(option => option.type !== before.quiz.answer));
+      before.answer(before.quiz.options.findIndex((option) => option.type !== before.quiz.answer));
       store.getState().advance();
       expect(store.getState().quiz.enemy).toBe(before.quiz.enemy);
       const otherState = other.getState();
-      otherState.answer(otherState.quiz.options.findIndex(option => option.type === otherState.quiz.answer));
+      otherState.answer(
+        otherState.quiz.options.findIndex((option) => option.type === otherState.quiz.answer),
+      );
       other.getState().advance();
       store.getState().tick();
       const current = store.getState();
-      current.answer(current.quiz.options.findIndex(option => option.type === current.quiz.answer));
+      current.answer(
+        current.quiz.options.findIndex((option) => option.type === current.quiz.answer),
+      );
       store.getState().advance();
     }
     expect(new Set(targets.slice(0, 18)).size).toBe(18);
     expect(new Set(targets.slice(18)).size).toBe(18);
-    expect(targets.every((target, index) => index === 0 || target !== targets[index - 1])).toBe(true);
+    expect(targets.every((target, index) => index === 0 || target !== targets[index - 1])).toBe(
+      true,
+    );
   }
 });

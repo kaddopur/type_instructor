@@ -20,5 +20,5 @@ export const typeStyles = {
   dragon: 'bg-type-dragon text-black',
   dark: 'bg-type-dark text-white',
   fairy: 'bg-type-fairy text-black',
-  wrong: 'bg-type-wrong text-white'
+  wrong: 'bg-type-wrong text-white',
 } satisfies Record<PokemonType | 'wrong', string>;

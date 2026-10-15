@@ -1,8 +1,7 @@
 @layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities);
-
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
 @theme {
   /* Keep the four-pixel spacing scale independent of the 125% root font. */
@@ -14,7 +13,7 @@
   --color-accent: #ffd447;
   --color-accent-soft: #fff4c2;
   --color-mode-blue: #2db6eb;
-  --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", monospace;
+  --font-pixel: 'Cubic 11', 'pkmn_s', 'pokemon_gbregular', monospace;
   --color-type-normal: #bbbbaa;
   --color-type-fighting: #bb5544;
   --color-type-flying: #6699ff;
@@ -39,25 +38,25 @@
 @font-face {
   font-weight: normal;
   font-style: normal;
-  font-family: "pokemon_gbregular";
-  src: url("./fonts/pokemon_gb-webfont.woff2") format("woff2");
+  font-family: 'pokemon_gbregular';
+  src: url('./fonts/pokemon_gb-webfont.woff2') format('woff2');
 }
 
 @font-face {
   font-weight: normal;
   font-style: normal;
-  font-family: "pkmn_s";
-  src: url("./fonts/pkmn_s.woff") format("woff");
+  font-family: 'pkmn_s';
+  src: url('./fonts/pkmn_s.woff') format('woff');
 
   unicode-range: U+0030-0039, U+3040-309F, U+30A0-30FF;
 }
 
 @font-face {
-  font-family: "Cubic 11";
+  font-family: 'Cubic 11';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./fonts/Cubic_11.woff2") format("woff2");
+  src: url('./fonts/Cubic_11.woff2') format('woff2');
 }
 
 @layer base {
@@ -65,12 +64,15 @@
     font-size: 125%;
   }
   :lang(zh) {
-    --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --font-pixel:
+      'Cubic 11', 'pkmn_s', 'pokemon_gbregular', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   }
   :lang(ja) {
-    --font-pixel: "Cubic 11", "pkmn_s", "pokemon_gbregular", "Hiragino Kaku Gothic ProN", sans-serif;
+    --font-pixel:
+      'Cubic 11', 'pkmn_s', 'pokemon_gbregular', 'Hiragino Kaku Gothic ProN', sans-serif;
   }
-  html, body {
+  html,
+  body {
     overflow: hidden;
   }
   body {
@@ -91,14 +93,22 @@
 
 /* Preserve the approved viewport breakpoints across component utilities. */
 @custom-variant compact {
-  @media (max-height: 700px) { @slot; }
+  @media (max-height: 700px) {
+    @slot;
+  }
 }
 @custom-variant short {
-  @media (max-height: 480px) { @slot; }
+  @media (max-height: 480px) {
+    @slot;
+  }
 }
 @custom-variant landscape-short {
-  @media (max-height: 480px) and (orientation: landscape) { @slot; }
+  @media (max-height: 480px) and (orientation: landscape) {
+    @slot;
+  }
 }
 @custom-variant landing-mobile {
-  @media (max-width: 760px) { @slot; }
+  @media (max-width: 760px) {
+    @slot;
+  }
 }

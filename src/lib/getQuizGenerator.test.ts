@@ -3,11 +3,13 @@ import { createQuizGenerator } from './getQuiz.ts';
 
 vi.mock('lodash/shuffle.js', () => {
   let bags = 0;
-  return { default: <T>(items: readonly T[]) => {
-    const result = [...items];
-    // Force the next bag's first target to equal the previous bag's last.
-    return items.length === 18 && ++bags % 2 === 0 ? result.reverse() : result;
-  } };
+  return {
+    default: <T>(items: readonly T[]) => {
+      const result = [...items];
+      // Force the next bag's first target to equal the previous bag's last.
+      return items.length === 18 && ++bags % 2 === 0 ? result.reverse() : result;
+    },
+  };
 });
 
 test('forced boundary collisions terminate, preserve coverage and keep generators independent', () => {

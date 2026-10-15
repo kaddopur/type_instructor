@@ -7,10 +7,18 @@ function browser(hostname = 'kaddopur.github.io') {
   const script = { async: false, src: '' };
   vi.stubGlobal('window', { location, dataLayer });
   vi.stubGlobal('document', {
-    title: '首頁 | Type Instructor', referrer: 'https://example.com/',
-    createElement: vi.fn(() => script), head: { append }
+    title: '首頁 | Type Instructor',
+    referrer: 'https://example.com/',
+    createElement: vi.fn(() => script),
+    head: { append },
   });
-  return { location, dataLayer, append, script, commands: () => dataLayer.map(command => Array.from(command)) };
+  return {
+    location,
+    dataLayer,
+    append,
+    script,
+    commands: () => dataLayer.map((command) => Array.from(command)),
+  };
 }
 
 afterEach(() => {
@@ -29,19 +37,31 @@ test('queues GA4 page views with titles, full hash URLs and referrers without wa
   expect(page.script.src).toBe('https://www.googletagmanager.com/gtag/js?id=G-6H3DMT5TLL');
   expect(page.commands()[0][0]).toBe('js');
   expect(page.commands()[1]).toEqual(['config', 'G-6H3DMT5TLL', { send_page_view: false }]);
-  expect(page.commands()[2]).toEqual(['event', 'page_view', {
-    send_to: 'G-6H3DMT5TLL', page_location: page.location.href,
-    page_title: document.title, page_referrer: document.referrer
-  }]);
+  expect(page.commands()[2]).toEqual([
+    'event',
+    'page_view',
+    {
+      send_to: 'G-6H3DMT5TLL',
+      page_location: page.location.href,
+      page_title: document.title,
+      page_referrer: document.referrer,
+    },
+  ]);
   expect(page.dataLayer).toHaveLength(3);
   const home = page.location.href;
   page.location.href = home.replace('/zh/', '/zh/menu');
   document.title = '選單 | Type Instructor';
   trackPageView();
-  expect(page.commands()[3]).toEqual(['event', 'page_view', {
-    send_to: 'G-6H3DMT5TLL', page_location: page.location.href,
-    page_title: document.title, page_referrer: home
-  }]);
+  expect(page.commands()[3]).toEqual([
+    'event',
+    'page_view',
+    {
+      send_to: 'G-6H3DMT5TLL',
+      page_location: page.location.href,
+      page_title: document.title,
+      page_referrer: home,
+    },
+  ]);
   const menu = page.location.href;
   page.location.href = home;
   trackPageView();
@@ -50,7 +70,11 @@ test('queues GA4 page views with titles, full hash URLs and referrers without wa
 });
 
 test('development and local production previews do not initialize tracking', async () => {
-  for (const [production, host] of [[false, 'kaddopur.github.io'], [true, 'localhost'], [true, '127.0.0.1']] as const) {
+  for (const [production, host] of [
+    [false, 'kaddopur.github.io'],
+    [true, 'localhost'],
+    [true, '127.0.0.1'],
+  ] as const) {
     vi.resetModules();
     vi.stubEnv('PROD', production);
     const page = browser(host);

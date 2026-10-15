@@ -1,3 +1,6 @@
+allowBuilds:
+  # The project prepare script installs hooks; the dependency postinstall is redundant.
+  simple-git-hooks: false
 minimumReleaseAgeExclude:
   - '@playwright/test@1.64.1'
   - playwright-core@1.64.1

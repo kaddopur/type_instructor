@@ -4,17 +4,17 @@ This implementation follows the first approved four-screen preview: warm canvas,
 white panels, dark outlines, yellow primary actions, blue mode accents, pixel
 fonts and the existing Pokémon type palette. Actual browser captures are below.
 
-| Screen | Screenshot |
-| --- | --- |
-| Home | [home.png](home.png) |
-| Menu | [menu.png](menu.png) |
-| Language | [language.png](language.png) |
-| Start dialog | [intro.png](intro.png) |
-| Quiz feedback | [quiz.png](quiz.png) |
-| Japanese attack question | [quiz-attack-ja.png](quiz-attack-ja.png) |
+| Screen                    | Screenshot                               |
+| ------------------------- | ---------------------------------------- |
+| Home                      | [home.png](home.png)                     |
+| Menu                      | [menu.png](menu.png)                     |
+| Language                  | [language.png](language.png)             |
+| Start dialog              | [intro.png](intro.png)                   |
+| Quiz feedback             | [quiz.png](quiz.png)                     |
+| Japanese attack question  | [quiz-attack-ja.png](quiz-attack-ja.png) |
 | Japanese defense question | [quiz-defend-ja.png](quiz-defend-ja.png) |
-| Result | [result.png](result.png) |
-| Landscape Menu | [menu-landscape.png](menu-landscape.png) |
+| Result                    | [result.png](result.png)                 |
+| Landscape Menu            | [menu-landscape.png](menu-landscape.png) |
 
 The captures use Chromium at 390×844 and 844×390. They show the implemented
 interface, including its initial keyboard focus ring, rather than generated art.
