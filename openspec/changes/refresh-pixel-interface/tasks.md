@@ -3,7 +3,7 @@
 - [x] 1. Establish shared visual tokens and controls.
 - [x] 2. Refresh Home.
 - [x] 3. Refresh Menu.
-- [ ] 4. Refresh language selection.
+- [x] 4. Refresh language selection.
 - [ ] 5. Refresh the start dialog.
 - [ ] 6. Refresh Quiz and progress feedback.
 - [ ] 7. Refresh results.
