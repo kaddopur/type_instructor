@@ -14,7 +14,7 @@ function Result(props) {
     lang,
     params: {
       value,
-      catetory,
+      category,
       gameType,
       quizType
     }
@@ -33,7 +33,7 @@ function Result(props) {
       <section>
         {titleDiv}
         <div className="resultItem">
-          <I18nLink to={`/quizzes/${catetory}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink>
+          <I18nLink to={`/quizzes/${category}/${gameType}/${quizType}`} lang={lang}>{RETRY}</I18nLink>
         </div>
         <div className="resultItem">
           <I18nLink to="/menu" lang={lang}>{MENU}</I18nLink>

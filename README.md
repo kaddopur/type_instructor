@@ -18,6 +18,8 @@ pnpm dev
 
 開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動 Vite。
 使用 hash URL，例如 `#/zh/menu`，以相容 GitHub Pages 的靜態託管。
+未知語系使用英文，遊戲路由只接受單屬性（s）、basic／speedrun 與 attack／defend。
+錯誤遊戲參數會回到目錄；結果需為安全整數，競速秒數不可為負；未匹配路徑回英文首頁。
 
 ## 建置與預覽
 
@@ -58,7 +60,7 @@ pnpm test:smoke
 SMOKE_SERVER=dev pnpm test:smoke
 ```
 
-正式 build／preview 有 7 個瀏覽器測試；開發模式執行 6 個並跳過需要正式 worker 的更新測試。
+正式 build／preview 有 8 個瀏覽器測試（包含無效路由與語系回復）；開發模式執行 7 個並跳過需要正式 worker 的更新測試。
 若本機已安裝 Google Chrome，可在測試指令前加 `PLAYWRIGHT_CHANNEL=chrome`，
 使用該瀏覽器而不另行下載 Chromium。測試會自行啟動與停止伺服器。
 

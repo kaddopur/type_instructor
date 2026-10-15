@@ -5,8 +5,8 @@ export type QuizType = 'attack' | 'defend';
 export type Language = 'en' | 'zh' | 'ja';
 
 export interface GameRouteParams {
-  lang: Language;
-  catetory: 's';
+  lang?: string;
+  category: 's';
   gameType: GameType;
   quizType: QuizType;
   value?: string;

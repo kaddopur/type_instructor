@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import messages from '../lib/messages.js';
+import { normalizeLanguage } from '../lib/routes.ts';
 
 const I18nPage = (ChildComponent) => {
   function LocalizedPage(props) {
     const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
-    const { lang = 'en' } = params;
+    const lang = normalizeLanguage(params.lang);
 
     useEffect(() => {
       document.documentElement.style.fontSize = lang === 'en' ? '100%' : '125%';
