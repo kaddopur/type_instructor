@@ -110,3 +110,11 @@ switching the global language font size does not move or resize its controls.
 Compact viewport spacing uses the same local units. A regression check compares
 all three buttons before/after English, Japanese and Chinese selection at three
 viewport sizes across all four browser projects.
+
+Japanese typography now prioritizes Cubic 11 for kana, kanji and punctuation,
+including mixed labels such as やり直し and メニューに戻る. Latin and digits stay
+on PKMN/GB. This supersedes the earlier choice to retain PKMN for Japanese kana,
+so Japanese labels no longer mix the two fonts' glyph metrics.
+Rendered-font inspection confirms both result actions (やり直し and メニューに戻る)
+use only Cubic 11. The updated result screenshot was inspected; lint and all 20
+layout/navigation/resource checks passed across four browser projects.
