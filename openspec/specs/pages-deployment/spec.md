@@ -22,3 +22,7 @@ OIDC credentials. The workflow SHALL support manual execution and prevent overla
 #### Scenario: Manual branch validation
 - **WHEN** the workflow is run manually on another branch
 - **THEN** it validates that branch without publishing it
+#### Scenario: Sharded validation gate
+- **WHEN** the two browser validation shards run on master
+- **THEN** only shard 1 uploads the Pages artifact
+- **AND** deployment waits for both shards to succeed

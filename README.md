@@ -45,9 +45,9 @@ Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用
 |---|---|
 | `pnpm test`／`pnpm test:unit` | Vitest 單次執行，Node 環境，15 個案例 |
 | `pnpm test:unit:watch` | Vitest watch，開發時持續執行 |
-| `pnpm test:e2e` | Playwright 完整矩陣，120 個案例 |
+| `pnpm test:e2e` | Playwright 完整矩陣，144 個案例 |
 | `pnpm test:e2e:smoke` | Chromium 的 7 個關鍵流程，篩選 `@smoke` |
-| `pnpm test:a11y` | 四種設定的 28 個無障礙案例，篩選 `@a11y` |
+| `pnpm test:a11y` | 四種設定的 32 個無障礙案例，篩選 `@a11y` |
 
 ```text
 src/
@@ -63,6 +63,7 @@ tests/
     gameplay.spec.js
     accessibility.spec.js
     offline.spec.js
+    landing.spec.js
     fixtures/legacy-service-worker.js
     support/offline-server.js
 vitest.config.js
@@ -87,8 +88,13 @@ pnpm test:e2e
 若已安裝 Google Chrome，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用它執行 Chromium project。
 測試自行啟動與停止伺服器，固定使用 `/type_instructor/` 子路徑。
 
-CI 先執行 lint、typecheck、unit tests，再跑一次完整 E2E 矩陣。
+CI 使用兩組平行 jobs，各自執行 lint、typecheck、unit tests，
+再以 Playwright `--shard=1/2`、`--shard=2/2` 分攤完整 E2E 矩陣（目前各 72 個案例）。
 完整矩陣已包含 smoke 與 a11y，CI 不另外重跑這些子集合。
+兩組都通過後才允許部署；只有第一組上傳 Pages 產物，避免重複上傳。
+本機 `pnpm test:e2e` 維持執行全部 144 個案例。
+分片使用 [Playwright 內建 sharding](https://playwright.dev/docs/test-sharding)，
+可用 `pnpm test:e2e --shard=1/2` 或 `--shard=2/2` 單獨重跑。
 
 ## 遷移進度
 
@@ -149,8 +155,8 @@ pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
 
-共 120 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
-28 個鍵盤流程／axe／屬性色對比案例，四個 worker 更新與離線案例，以及十二個安全區域與跨語言布局案例。設定包含桌面 Chromium、Firefox、WebKit，
+共 144 個驗收案例：48 個完整遊戲流程、28 個導頁／邊界／資源案例、
+28 個鍵盤流程／axe／屬性色對比案例，四個 worker 更新與離線案例，以及十二個安全區域與跨語言布局案例、24 個介紹頁案例。設定包含桌面 Chromium、Firefox、WebKit，
 以及 iPhone 13 尺寸的 WebKit 模擬；手機模擬不代表實機 iOS 或 Android 驗證。
 CI 執行此矩陣，全部通過才會部署。
 
@@ -178,7 +184,7 @@ Button／Dialog 改寫自 shadcn/ui new-york 的 Radix 版本，採本機原始�
 pnpm test:a11y
 ```
 
-此指令在四種設定執行共 28 個無障礙案例；加上 `--project=chromium-desktop` 可只執行 Chromium 的七個案例。
+此指令在四種設定執行共 32 個無障礙案例；加上 `--project=chromium-desktop` 可只執行 Chromium 的八個案例。
 axe 掃描 WCAG 2 A／AA 與 2.1 AA 規則，涵蓋三語頁面、開始 Dialog 與作答後狀態。
 自動測試不等同完整 WCAG 合規稽核，也不代表已完成人工螢幕閱讀器或手機實機驗證。
 玩法仍有既定時間限制，若要提供不限時練習需另行設計。
@@ -193,3 +199,9 @@ Safari 安全區域及三語一致的布局。競速進度條以 20 分為目標
 Favicon、Safari 主畫面與 PWA 圖示共用黃藍像素 T。
 
 實際瀏覽器截圖、八步驟紀錄與驗證限制見 [UI refresh](docs/ui-refresh/README.md)。
+
+## 三語遊戲介紹頁
+
+Home 的「遊戲介紹」可開啟 `#/zh/about`，也支援 `#/en/about` 與 `#/ja/about`。
+介紹頁提供玩法、模式、操作說明與實際遊戲截圖，支援手機及桌面。
+預覽、截圖更新方式與驗證範圍見 [介紹頁紀錄](docs/landing-page/README.md)。

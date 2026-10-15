@@ -45,7 +45,8 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:e2e:smoke": "playwright test --project=chromium-desktop --grep @smoke"
+    "test:e2e:smoke": "playwright test --project=chromium-desktop --grep @smoke",
+    "screenshots:landing": "pnpm build && node scripts/capture-landing-screenshots.mjs"
   },
   "type": "module",
   "engines": {

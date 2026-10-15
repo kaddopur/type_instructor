@@ -3,7 +3,7 @@ import I18nPage from './I18nPage.jsx';
 import { Button } from '@/components/ui/button';
 import globe from '../images/globe.png';
 
-function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION }, lang }) {
+function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION, ABOUT_GAME }, lang }) {
   return (
     <article className="Home">
       <div className="home-pixels home-pixels-left" aria-hidden="true" />
@@ -26,8 +26,8 @@ function Home({ messages: { START, CHANGE_LANGUAGE, APP_DESCRIPTION }, lang }) {
             </I18nLink>
           </Button>
         </section>
+        <I18nLink className="home-about" to="/about" lang={lang}>{ABOUT_GAME}</I18nLink>
       </div>
-      <footer><a tabIndex={0} href="https://twitter.com/kaddopur" target="_blank" rel="noreferrer">@kaddopur</a></footer>
     </article>
   );
 }
