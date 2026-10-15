@@ -4,7 +4,7 @@ const development = process.env.SMOKE_SERVER === 'dev';
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: 'smoke.spec.js',
+  testMatch: ['smoke.spec.js', 'offline.spec.js'],
   workers: 1,
   use: {
     baseURL: 'http://127.0.0.1:4173/type_instructor/',
@@ -13,8 +13,8 @@ export default defineConfig({
   },
   webServer: {
     command: development
-      ? 'npm run dev -- --host 127.0.0.1 --port 4173 --strictPort'
-      : 'npm run build && npm run preview -- --host 127.0.0.1 --port 4173 --strictPort',
+      ? 'pnpm dev --host 127.0.0.1 --port 4173 --strictPort'
+      : 'pnpm build && pnpm preview --host 127.0.0.1 --port 4173 --strictPort',
     url: 'http://127.0.0.1:4173/type_instructor/',
     reuseExistingServer: false
   }

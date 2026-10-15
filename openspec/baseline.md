@@ -30,11 +30,11 @@
 
 ## 自動化測試
 
-第 2 步已將專案改為 ES modules 並加入 lockfile；現行指令（Node.js 版本見 `.nvmrc`）：
+第 2 步已改為 ES modules；第 5 步沿用 pnpm 設定並固定版本，現行指令（Node.js 版本見 `.nvmrc`）：
 
 ```sh
-npm ci
-npm run test:baseline
+pnpm install --frozen-lockfile
+pnpm test:baseline
 ```
 
 測試直接載入原始碼，不再需要 Node resolve hook 或暫存安裝的 Lodash。
@@ -49,6 +49,14 @@ npm run test:baseline
 - 每場遊戲使用獨立的 store，路徑改變與重玩皆建立新場次。
 - 當時 BUG-02 的目標常數位於 store；第 4 步已移至共用的 `src/lib/gameRules.js` 並與三語說明統一。
 - 驗證結果見 `changes/archive/2026-10-15-replace-redux-with-zustand/verification.md`。
+
+### 第 5 步實作狀態
+
+- 改用 Workbox 產生 `service-worker.js`，移除 sw-precache、polyfill 與 override。
+- 舊快取僅在新 worker 啟用後按確切 scope 清理；更新不會自動重載正在玩的頁面。
+- 測試涵蓋舊 worker 接替、Workbox 版本更新、失敗安裝與離線遊玩。
+- 已加入使用 pnpm frozen lockfile 的 Pages workflow；repo 線上仍以 gh-pages 分支為來源，尚未切換或部署。
+- 驗證與發布前置條件見 `changes/archive/2026-10-15-modernize-offline-deployment/verification.md`。
 
 ### 第 1 步執行結果（歷史紀錄）
 

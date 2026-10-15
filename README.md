@@ -6,53 +6,55 @@
 ## 開發
 
 使用 Node.js 22.23.2（見 `.nvmrc`）；Router 要求至少 22.22，專案限定 Node 22。
-專案的 `.npmrc` 使用公開 npm registry。
+套件管理使用 pnpm 11.22.0（見 packageManager）；`.npmrc` 使用公開 npm registry。
+沿用 pnpm-workspace.yaml 的套件發佈時間例外設定，僅保留 pnpm-lock.yaml 作為依賴鎖定檔。
 
 ```sh
 nvm use
-npm ci
-npm run dev
+corepack enable
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-開啟 http://localhost:5173/type_instructor/ 。`npm start` 也會啟動 Vite。
+開啟 http://localhost:5173/type_instructor/ 。`pnpm start` 也會啟動 Vite。
 使用 hash URL，例如 `#/zh/menu`，以相容 GitHub Pages 的靜態託管。
 
 ## 建置與預覽
 
 ```sh
-npm run build
-npm run preview
+pnpm build
+pnpm preview
 ```
 
 正式輸出位於 `dist/`，預覽位址為 http://localhost:4173/type_instructor/ 。
 Vite 的 base 設為 `/type_instructor/`，字型、圖示與 manifest 均使用此路徑。
-目前仍沿用 sw-precache 產生離線 service worker，僅在正式建置註冊；
-完整的離線工具替換、舊快取更新與 GitHub Actions 部署留待第 5 步。
+正式建置會使用 Workbox 產生 service-worker.js 並預先快取本機資源；開發模式不註冊 worker。
+已移除 sw-precache、舊快取 polyfill 與相關 dependency override。
 
 舊的 `npm run deploy` 指令已移除；它會改寫 Git 歷史，且依賴舊的 `build/` 輸出。
-目前尚未提供新的自動部署指令。
+改由下方 GitHub Actions workflow 部署 dist，不需另外推送產物分支。
 
 ## 測試
 
 出題、計分、效果提示、作答防護、19／20 分邊界、結算與場次隔離的 12 個邏輯測試：
 
 ```sh
-npm test
+pnpm test
 ```
 
-`npm run test:baseline` 執行相同測試。測試直接使用專案相依套件與原始碼。
+`pnpm test:baseline` 執行相同測試。測試直接使用專案相依套件與原始碼。
 
 瀏覽器 smoke tests 涵蓋三語導頁、一般模式攻防、作答回饋、結果重玩、
 倒數結束、競速結算、快速重複點擊、回饋中切換模式、桌面／手機視窗、
-Pages 子路徑資源、service worker 註冊與首次離線重新整理：
+Pages 子路徑資源、離線遊玩、舊 worker 接替、安裝失敗回復，以及版本更新時不中斷遊戲：
 
 ```sh
-npx playwright install chromium
-npm run test:smoke
-SMOKE_SERVER=dev npm run test:smoke
+pnpm exec playwright install chromium
+pnpm test:smoke
+SMOKE_SERVER=dev pnpm test:smoke
 ```
 
-第一個指令組測試正式 build／preview；第二個測試開發伺服器。
+正式 build／preview 有 7 個瀏覽器測試；開發模式執行 6 個並跳過需要正式 worker 的更新測試。
 若本機已安裝 Google Chrome，可在測試指令前加 `PLAYWRIGHT_CHANNEL=chrome`，
 使用該瀏覽器而不另行下載 Chromium。測試會自行啟動與停止伺服器。
 
@@ -62,18 +64,17 @@ SMOKE_SERVER=dev npm run test:smoke
 - 第 2 步：Vite、React 19 與必要的相容性更新已完成並歸檔。
 - 第 3 步：已移除 Redux，改用 Zustand 與遊戲 hook，已完成並歸檔。
 - 第 4 步：已修正競速防禦入口，並將競速目標與三語說明統一為 20 分，已完成並歸檔。
-- 第 5 步：更新離線工具與 Pages 部署。
+- 第 5 步：Workbox 離線更新與 Pages workflow 已完成並歸檔；尚未發布至線上。
 - 第 6 步：完整驗收。
 
 競速防禦入口會進入防禦題，競速達到 20 分後結束；19 分或因答錯扣分時會繼續。
 目標值集中於 [gameRules.js](src/lib/gameRules.js)，遊戲邏輯與中英日說明共用此設定。
-舊離線工具的一個間接依賴使用相容的 trim-newlines 3.x override 修補，
-之後替換 sw-precache 時一併移除。
 
 玩法、已知問題與完整驗收清單見 [OpenSpec baseline](openspec/baseline.md)。
 第 2 步紀錄見 [Vite／React migration](openspec/changes/archive/2026-10-15-migrate-vite-react/)。
 第 3 步變更與驗證紀錄見 [Zustand migration](openspec/changes/archive/2026-10-15-replace-redux-with-zustand/)。
 第 4 步變更與驗證紀錄見 [Speedrun fixes](openspec/changes/archive/2026-10-15-fix-speedrun-rules/)。
+第 5 步變更與驗證紀錄見 [Offline and deployment](openspec/changes/archive/2026-10-15-modernize-offline-deployment/)。
 
 ## 遊戲狀態
 
@@ -81,3 +82,28 @@ SMOKE_SERVER=dev npm run test:smoke
 作答與回饋後的狀態更新；開始前、回饋期間、已選過的選項和結束後的輸入不計分。
 [useGame](src/hooks/useGame.js) 管理計時器並在離開時清理；重玩或變更遊戲路徑會建立新場次。
 語言與模式沿用 URL，翻譯來自靜態 JSON；目前不持久保存遊戲狀態。
+
+## 離線與版本更新
+
+首次連線開啟正式版、完成快取後，重新整理與遊戲操作皆可離線使用。
+worker 保留原本的網址與 scope；新版本安裝成功後會接手，但不強制重新整理正在玩的頁面。
+玩家下次重新載入時才使用新版，並開始新的遊戲場次。
+
+啟用新版 worker 時，只刪除同 scope 的舊 sw-precache 快取；其他網站快取不受影響。
+若新版缺少必要資源而安裝失敗，舊 worker 與舊快取仍可離線使用。
+目前的 Workbox 快取由 Workbox 清理過期內容，無需玩家手動清除瀏覽器資料。
+
+## GitHub Pages 部署
+
+[Pages workflow](.github/workflows/pages.yml) 使用 `.nvmrc`、固定 pnpm 版本與 frozen lockfile。
+對 master 的 PR 會執行邏輯測試、正式建置與瀏覽器測試；通過後才能部署 dist 產物。
+push 到 master 或在 master 手動執行 workflow 會部署到 github-pages environment。
+其他分支的手動執行僅驗證，不部署；同時間只允許一個部署執行。
+
+發布前，在 GitHub Settings → Pages → Build and deployment 將 Source 設為 **GitHub Actions**。
+2026-10-15 唯讀檢查顯示此 repo 目前仍以 gh-pages 分支為來源；這次沒有修改線上設定。
+先將這次變更 review／合併至 master，再切換來源並於 Actions 手動執行
+「Validate and deploy Pages」。之後 master 的 push 會自動部署。
+部署後於 Actions 的 github-pages environment 查看正式網址與結果。
+
+本次只完成本機驗證與 workflow，沒有 push、觸發遠端部署或變更 GitHub Pages 設定。

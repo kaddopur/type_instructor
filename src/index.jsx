@@ -26,6 +26,6 @@ createRoot(document.getElementById('root')).render(
 );
 
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}service-worker.js`)
+  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}service-worker.js`, { updateViaCache: 'none' })
     .catch(error => console.warn('Service worker registration failed:', error));
 }

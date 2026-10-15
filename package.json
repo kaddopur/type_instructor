@@ -5,8 +5,8 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.2",
     "vite": "^8.3.4",
-    "sw-precache": "^4.0.0",
-    "@playwright/test": "^1.64.1"
+    "@playwright/test": "^1.64.1",
+    "workbox-build": "^7.4.1"
   },
   "dependencies": {
     "classnames": "^2.5.1",
@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "vite build && sw-precache --navigate-fallback='index.html' --root='dist/' --static-file-globs='dist/**/!(*map*)'",
+    "build": "vite build && node scripts/build-sw.js",
     "preview": "vite preview",
     "test": "node --test tests/baseline.test.mjs",
     "test:baseline": "node --test tests/baseline.test.mjs",
@@ -30,11 +30,5 @@
   "engines": {
     "node": ">=22.22.0 <23"
   },
-  "overrides": {
-    "sw-precache": {
-      "meow": {
-        "trim-newlines": "^3.0.1"
-      }
-    }
-  }
+  "packageManager": "pnpm@11.22.0"
 }
