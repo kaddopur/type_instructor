@@ -5,7 +5,7 @@
 記錄遷移時應保留的頁面流程、既有網址與語系行為。依據 commit `4f1e318` 的原始碼整理；已知錯誤連結見 `openspec/baseline.md`。
 ## Requirements
 ### Requirement: Hash routes
-系統 SHALL 使用 hash 路由提供首頁、選單、語言選擇、遊戲與結果頁。遊戲路徑為 `/:lang/quizzes/:catetory/:gameType/:quizType`，結果路徑附加 `/result/:value`；保留既有網址相容性及 `s` 單屬性分類值。
+系統 SHALL 使用 hash 路由提供首頁、選單、語言選擇、遊戲與結果頁。遊戲路徑為 `/:lang/quizzes/:category/:gameType/:quizType`，結果路徑附加 `/result/:value`；保留既有網址相容性及 `s` 單屬性分類值。
 
 #### Scenario: Root entry
 - **WHEN** 玩家開啟沒有語言前綴的根路徑

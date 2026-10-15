@@ -1,0 +1,14 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["gbregular", "kaddopur", "matchups", "pkmn", "speedrun"],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "pnpm-lock.yaml",
+    "test-results",
+    "playwright-report",
+    "tests/fixtures",
+    "openspec/changes/archive"
+  ]
+}

@@ -29,19 +29,19 @@ test('all 18 attack and defense targets have four unique options and one best an
     for (const [enemyIndex, enemy] of types.entries()) {
       const quiz = question(mode, enemyIndex);
       const label = `${mode}/${enemy}`;
-      assert.equal(quiz.emeny.type, enemy, label);
-      assert.equal(quiz.emeny.title, mode === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
+      assert.equal(quiz.enemy.type, enemy, label);
+      assert.equal(quiz.enemy.title, mode === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
       assert.equal(quiz.options.length, 4, label);
       assert.equal(new Set(quiz.options.map(option => option.type)).size, 4, label);
       assert.ok(quiz.options.every(option => types.includes(option.type)), label);
       const answer = quiz.options.find(option => option.type === quiz.answer);
       assert.ok(answer, label);
       const expected = mode === 'attack' ? 2 : (immuneAttacks.has(enemy) ? 0 : 0.5);
-      assert.equal(answer.demage, expected, label);
+      assert.equal(answer.damage, expected, label);
       for (const option of quiz.options) {
-        assert.ok([0, 0.5, 1, 2].includes(option.demage), label);
+        assert.ok([0, 0.5, 1, 2].includes(option.damage), label);
         if (option !== answer) {
-          assert.ok(mode === 'attack' ? option.demage < answer.demage : option.demage > answer.demage, label);
+          assert.ok(mode === 'attack' ? option.damage < answer.damage : option.damage > answer.damage, label);
         }
       }
     }
@@ -69,7 +69,7 @@ test('new sessions start fresh in both modes and both question types', () => {
       assert.equal(state.finish, false);
       assert.equal(state.result, null);
       assert.equal(state.overlay, true);
-      assert.equal(state.quiz.emeny.title, kind === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
+      assert.equal(state.quiz.enemy.title, kind === 'attack' ? 'ENEMY_ATTACK' : 'ENEMY_DEFEND');
     }
   }
 });
@@ -102,7 +102,7 @@ test('wrong answer deducts a point, allows negatives, and retains the question a
   assert.equal(wrong.scores, -1);
   assert.equal(wrong.freeze, true);
   assert.equal(wrong.finish, false);
-  assert.equal(wrong.status, getStatus(initial.quiz.options[index].demage));
+  assert.equal(wrong.status, getStatus(initial.quiz.options[index].damage));
   assert.equal(wrong.quiz.options[index].clicked, true);
   assert.equal(wrong.quiz.options[index].correct, false);
   assert.equal(initial.quiz.options[index].clicked, undefined);

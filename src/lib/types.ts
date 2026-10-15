@@ -13,7 +13,7 @@ export interface GameRouteParams {
 }
 
 export interface Quiz {
-  emeny: { title: 'ENEMY_ATTACK' | 'ENEMY_DEFEND'; type: PokemonType };
-  options: { type: PokemonType; demage: number; clicked?: boolean; correct?: boolean }[];
+  enemy: { title: 'ENEMY_ATTACK' | 'ENEMY_DEFEND'; type: PokemonType };
+  options: { type: PokemonType; damage: number; clicked?: boolean; correct?: boolean }[];
   answer: PokemonType;
 }

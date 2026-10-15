@@ -47,7 +47,7 @@ export function createQuizStore(gameType: GameType, quizType: QuizType) {
       const correct = option.type === state.quiz.answer;
       return {
         scores: state.scores + (correct ? 1 : -1),
-        status: getStatus(option.demage),
+        status: getStatus(option.damage),
         freeze: true,
         finish: correct,
         finishTime: correct ? state.timer : null,

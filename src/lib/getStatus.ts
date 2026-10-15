@@ -1,11 +1,11 @@
-const getStatus = (demage: number) => {
-  if (demage === 0) {
+const getStatus = (damage: number) => {
+  if (damage === 0) {
     return 'EFFECTIVE_0';
-  } else if (demage < 1) {
+  } else if (damage < 1) {
     return 'EFFECTIVE_1_2';
-  } else if (demage === 1) {
+  } else if (damage === 1) {
     return 'EFFECTIVE_1';
-  } else if (demage > 1) {
+  } else if (damage > 1) {
     return 'EFFECTIVE_2';
   }
 }

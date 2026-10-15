@@ -84,7 +84,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
       await page.locator('.overlay').click();
       await expect(page.locator('.overlay')).toHaveCount(0);
       await page.locator('.optionItem').first().click();
-      await expect(page.locator('.optionDemage')).toHaveCount(1);
+      await expect(page.locator('.optionDamage')).toHaveCount(1);
       await expect(page.locator('.stemStatus')).not.toBeEmpty();
       await expect(page.locator('.stemScores')).toHaveText(new RegExp(`${text.score}: -?1$`));
 
@@ -94,7 +94,7 @@ test('three languages navigate, render games, show feedback, and retry', async (
       await page.getByRole('link', { name: text.retry, exact: true }).click();
       await expect(page.locator('.overlay')).toBeVisible();
       await expect(page.locator('.stemScores')).toHaveText(`${text.score}: 0`);
-      await expect(page.locator('.optionDemage')).toHaveCount(0);
+      await expect(page.locator('.optionDamage')).toHaveCount(0);
       await page.goto(`./#/${lang}/quizzes/s/basic/${kind}/result/7`);
       await page.getByRole('link', { name: text.menu, exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`#/${lang}/menu$`));
@@ -156,7 +156,7 @@ test('rapid answers and route changes keep game sessions isolated', async ({ pag
   await page.clock.runFor(2000);
   await expect(page.locator('.stemScores')).toHaveText('scores: 0');
   await expect(page.locator('.stemTimer')).toHaveText('timer: 0');
-  await expect(page.locator('.optionDemage')).toHaveCount(0);
+  await expect(page.locator('.optionDamage')).toHaveCount(0);
   await page.locator('.overlay').click();
   await page.clock.runFor(1000);
   await expect(page.locator('.stemTimer')).toHaveText('timer: 1');
@@ -186,7 +186,7 @@ test('speedrun continues at 19, finishes at 20 after feedback, and retries clean
       await page.clock.runFor(500);
       if (score === 19) await expect(page).toHaveURL(/#\/en\/quizzes\/s\/speedrun\/defend$/);
     }
-    if (score < SCORE_TARGET) await expect(page.locator('.optionDemage')).toHaveCount(0);
+    if (score < SCORE_TARGET) await expect(page.locator('.optionDamage')).toHaveCount(0);
   }
   await expect(page).toHaveURL(new RegExp(`#/en/quizzes/s/speedrun/defend/result/${Math.floor((SCORE_TARGET - 1) / 2)}$`));
   await page.getByRole('link', { name: 'Retry', exact: true }).click();

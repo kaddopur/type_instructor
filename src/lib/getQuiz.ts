@@ -25,7 +25,7 @@ const types = [
 
 export type PokemonType = (typeof types)[number];
 
-const demageMatrix = [
+const damageMatrix = [
   [1,   1,   1,   1,   1, 1/2,   1,   0, 1/2,   1,   1,   1,   1,   1,   1,   1,   1,   1],
   [2,   1, 1/2, 1/2,   1,   2, 1/2,   0,   2,   1,   1,   1,   1, 1/2,   2,   1,   2, 1/2],
   [1,   2,   1,   1,   1, 1/2,   2,   1, 1/2,   1,   1,   2, 1/2,   1,   1,   1,   1,   1],
@@ -47,15 +47,15 @@ const demageMatrix = [
 ];
 
 const quizFactory = (
-  demageList: number[],
-  answerDemage: number,
-  emeny: Quiz['emeny']
+  damageList: number[],
+  answerDamage: number,
+  enemy: Quiz['enemy']
 ): Quiz => {
   const answers: number[] = [];
   const others: number[] = [];
 
-  demageList.forEach((demage, index) => {
-    if (demage === answerDemage) {
+  damageList.forEach((damage, index) => {
+    if (damage === answerDamage) {
       answers.push(index);
     } else {
       others.push(index);
@@ -63,36 +63,36 @@ const quizFactory = (
   });
 
   const [answerIndex] = sampleSize(answers, 1);
-  const otherIndice = sampleSize(others, 3);
+  const otherIndices = sampleSize(others, 3);
 
   return {
-    emeny,
-    options: shuffle([answerIndex, ...otherIndice]).map(typeIndex => ({
+    enemy,
+    options: shuffle([answerIndex, ...otherIndices]).map(typeIndex => ({
       type: types[typeIndex],
-      demage: demageList[typeIndex]
+      damage: damageList[typeIndex]
     })),
     answer: types[answerIndex]
   }
 }
 
-const getQuiz = (quizType: QuizType, lastEmeny?: PokemonType): Quiz => {
-  let emenyIndex = Math.floor(Math.random() * types.length);
-  while(types[emenyIndex] === lastEmeny) {
-    emenyIndex = Math.floor(Math.random() * types.length);
+const getQuiz = (quizType: QuizType, lastEnemy?: PokemonType): Quiz => {
+  let enemyIndex = Math.floor(Math.random() * types.length);
+  while(types[enemyIndex] === lastEnemy) {
+    enemyIndex = Math.floor(Math.random() * types.length);
   }
 
   if (quizType === 'attack') {
-    const enemyDefendList = demageMatrix.map(demage => demage[emenyIndex]);
+    const enemyDefendList = damageMatrix.map(damage => damage[enemyIndex]);
     return quizFactory(enemyDefendList, Math.max(...enemyDefendList), {
       title: 'ENEMY_ATTACK',
-      type: types[emenyIndex]
+      type: types[enemyIndex]
     });
   }
 
-  const emenyAttackList = demageMatrix[emenyIndex];
-  return quizFactory(emenyAttackList, Math.min(...emenyAttackList), {
+  const enemyAttackList = damageMatrix[enemyIndex];
+  return quizFactory(enemyAttackList, Math.min(...enemyAttackList), {
     title: 'ENEMY_DEFEND',
-    type: types[emenyIndex]
+    type: types[enemyIndex]
   });
 };
 
