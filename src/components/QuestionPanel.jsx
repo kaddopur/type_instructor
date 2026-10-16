@@ -119,7 +119,7 @@ export default function QuestionPanel({
         ))}
       </div>
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-        {status ? announcement : ''}
+        {options.some((option) => option.clicked) ? announcement : ''}
       </div>
     </>
   );
