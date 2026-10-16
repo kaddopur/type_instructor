@@ -175,15 +175,20 @@ Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離�
 | `pnpm format:check`           | 檢查程式碼、設定與文件格式                           |
 | `pnpm lint`                   | 檢查 JavaScript／TypeScript 與 React Hooks，禁止警告 |
 | `pnpm typecheck`              | 執行 strict TypeScript 檢查；既有 JS 頁面逐步遷移    |
-| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，23 個案例                           |
+| `pnpm test`／`pnpm test:unit` | Vitest 單次執行，27 個案例                           |
 | `pnpm test:unit:watch`        | 開發時持續執行單元測試                               |
-| `pnpm test:e2e`               | Playwright 完整矩陣，160 個案例                      |
+| `pnpm test:e2e`               | 四種瀏覽器設定的 64 個玩家流程案例                   |
 | `pnpm test:e2e:smoke`         | Chromium 的 7 個關鍵流程，篩選 `@smoke`              |
-| `pnpm test:a11y`              | 四種瀏覽器設定的 32 個無障礙案例，篩選 `@a11y`       |
+| `pnpm test:a11y`              | 四種瀏覽器設定的 12 個鍵盤／焦點案例，篩選 `@a11y`   |
 
 單元測試放在原始碼旁（`src/**/*.test.ts`），使用 Node 環境，涵蓋題袋覆蓋與跨輪防重複、
 防禦輪替、傷害倍率、計分、19／20 分邊界、場次隔離及路由驗證。Playwright 僅收集 `tests/e2e/**/*.spec.js`，涵蓋完整頁面、
-遊戲流程、三語布局、鍵盤操作、axe 掃描、介紹頁、Pages 子路徑資源及離線版本更新。
+開始與作答、完成與重玩、離開確認、三語切換、最高紀錄、鍵盤／觸控焦點、介紹頁進入遊戲及離線版本更新。
+
+E2E 以玩家流程為範圍：繁中跑一般／競速與攻擊／防禦的完整流程，英文與日文保留開始、作答與離開的短流程。
+不再執行逐像素布局、字型度量、完整 axe 掃描、GA4 接線或題袋全量排列等 E2E；
+題袋、傷害、計分與路由規則仍由既有單元測試驗證。這會減少外觀與跨語系無障礙掃描的自動保障，
+不代表這些介面要求已取消，也不代表已通過完整無障礙稽核。
 
 ```sh
 pnpm exec playwright install chromium firefox webkit
@@ -197,10 +202,12 @@ pnpm test:e2e
 `E2E_SERVER=dev pnpm test:e2e:smoke` 使用開發伺服器；開發模式會跳過正式版專用的離線案例。
 已安裝 Google Chrome 時，可加 `PLAYWRIGHT_CHANNEL=chrome` 使用該瀏覽器執行 Chromium project。
 
-### CI 分成兩組平行執行
+### CI 共用檢查與瀏覽器測試平行執行
 
-兩組工作各自執行 lint、型別檢查與單元測試，再用 Playwright 分攤全部瀏覽器案例，目前各 80 個。
-兩組都通過才允許部署；只有第一組上傳 Pages 產物。本機 `pnpm test:e2e` 仍執行全部案例。
+`checks` 集中執行一次格式檢查、lint、型別檢查與單元測試。
+另外兩組 `build` 工作分別執行 Playwright 分片，目前各 32 個案例。
+三組工作平行開始，全部通過才允許部署；只有第一個瀏覽器分片上傳 Pages 產物。
+本機 `pnpm test:e2e` 仍執行完整 64 個案例。
 
 ```sh
 pnpm test:e2e --shard=1/2
@@ -215,7 +222,7 @@ pnpm test:e2e --shard=2/2
 [Pages workflow](.github/workflows/pages.yml) 使用固定 Node／pnpm 版本與 `--frozen-lockfile` 安裝。
 
 - 對 `main` 的 PR：驗證但不部署。
-- 推送至 `main`，或在 `main` 手動執行 workflow：兩組驗證皆成功後部署 `dist/`。
+- 推送至 `main`，或在 `main` 手動執行 workflow：共用檢查與兩組瀏覽器測試皆成功後部署 `dist/`。
 - 在其他分支手動執行 workflow：驗證但不部署。
 
 新環境或 fork 請先到 GitHub Settings → Pages → Build and deployment，將 Source 設為 **GitHub Actions**。

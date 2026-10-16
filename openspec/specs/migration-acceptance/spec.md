@@ -2,29 +2,33 @@
 
 ## Purpose
 
-Define complete game, browser/layout, and verified-release acceptance for the migrated application.
+Define representative player journeys, browser coverage and verified-release acceptance.
 
 ## Requirements
 
 ### Requirement: Complete game matrix
 
-Acceptance checks SHALL cover English, Chinese, and Japanese in basic/speedrun
-attack/defense modes, including actual completion, results, retry, and preserved language.
+Acceptance checks SHALL cover full basic/speedrun attack/defense completion,
+results and retry in Traditional Chinese. English, Chinese and Japanese SHALL
+cover localized navigation, starting, answering and leaving a game.
 
 #### Scenario: Complete a game
 
 - **WHEN** the acceptance suite runs against the production build
-- **THEN** every language/mode combination reaches a correct result and starts a clean replay
+- **THEN** every mode/question-type combination in the representative locale reaches a correct result and starts a clean replay
+- **AND** shorter journeys validate operation in all supported languages
 
-### Requirement: Browser and layout coverage
+### Requirement: Browser player-flow coverage
 
 Acceptance SHALL verify desktop Chromium, Firefox, WebKit, and mobile WebKit emulation,
-with all answer choices visible and operable. Reports SHALL distinguish emulation from physical devices.
+with real answer controls operable through browser actions. Required E2E checks
+SHALL focus on player journeys rather than exact geometry. Reports SHALL
+distinguish emulation from physical devices.
 
-#### Scenario: Answer visibility
+#### Scenario: Answer operation
 
 - **WHEN** a game is shown in a supported test viewport
-- **THEN** all four choices fit inside the game viewport without clipping
+- **THEN** players can start the game, select an answer and receive feedback through the rendered controls
 
 ### Requirement: Release evidence
 

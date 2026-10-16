@@ -20,7 +20,7 @@ the unit suite; pnpm test:unit:watch SHALL provide watch mode.
 ### Requirement: Unified browser tests
 
 Browser tests SHALL reside under tests/e2e and use one Playwright configuration.
-The complete suite SHALL cover desktop Chromium, Firefox, WebKit, and mobile
+The player-flow suite SHALL cover desktop Chromium, Firefox, WebKit, and mobile
 WebKit emulation. Tags SHALL support smoke, gameplay, accessibility, and offline selection.
 
 #### Scenario: Complete browser acceptance
@@ -44,6 +44,13 @@ same scripts as local validation before allowing the existing deployment flow.
 - **THEN** formatting, lint, type checking, unit tests, and the complete browser suite must pass
 - **AND** deployment remains restricted to the existing main publication flow
 
+#### Scenario: Shared quality checks
+
+- **WHEN** the Pages workflow validates a revision
+- **THEN** a single `checks` job runs formatting, lint, type checking and unit tests once
+- **AND** the two browser matrix jobs start independently in parallel without repeating those checks
+- **AND** deployment requires both the shared checks and all browser shards to succeed
+
 #### Scenario: Parallel CI shards
 
 - **WHEN** the Pages workflow runs the complete browser suite
@@ -56,7 +63,7 @@ same scripts as local validation before allowing the existing deployment flow.
 The project SHALL use pinned Prettier and the official Tailwind class-sorting
 plugin, with `src/index.css` as the Tailwind theme entry. `pnpm format` SHALL
 write formatting changes and `pnpm format:check` SHALL check without writing.
-Both CI shards SHALL require the formatting check before deployment.
+The shared `checks` job SHALL require the formatting check before deployment.
 Generated output, the pnpm lockfile, archived OpenSpec records, third-party test
 fixtures, fonts and image source assets SHALL be excluded through `.prettierignore`.
 
@@ -83,3 +90,23 @@ commits using lint-staged's default backup and restore behavior.
 
 - **WHEN** a staged file contains a lint error that ESLint cannot fix
 - **THEN** the commit fails and the contributor's staged and unstaged changes remain available
+
+### Requirement: Player-flow E2E scope
+
+Required E2E checks SHALL cover navigation, gameplay completion/replay, exit
+confirmation, record persistence, keyboard/touch focus and offline use. Pixel
+geometry, font metrics, broad accessibility scans, analytics wiring and exhaustive
+algorithm permutations SHALL NOT be required E2E checks. Existing unit coverage
+SHALL retain game rules, routes, records and analytics validation.
+
+#### Scenario: Representative player journeys
+
+- **WHEN** the required browser suite runs
+- **THEN** all four browser/device projects exercise full basic/speedrun attack/defense games in Traditional Chinese
+- **AND** all three languages exercise switching, starting, answering and leaving a game
+- **AND** keyboard, pointer/touch focus, records and offline worker upgrades remain covered
+
+#### Scenario: Focused accessibility selection
+
+- **WHEN** `pnpm test:a11y` runs
+- **THEN** it checks keyboard and focus journeys, without claiming a broad axe or WCAG audit

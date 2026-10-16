@@ -178,3 +178,18 @@ Tailwind design system, including the project's theme and custom variants.
 Equivalent utilities replace arbitrary values for rotation, underline offsets,
 selected corner radii, normal line height, scrollbar gutters and safe-area padding.
 Arbitrary values remain where the theme has no equivalent.
+
+## Player-flow E2E scope
+
+The required browser suite now focuses on real player journeys. It runs 64 cases
+across the same four browser/device projects, with full basic/speedrun and
+attack/defense completion in Traditional Chinese and shorter localized flows in
+English and Japanese. Keyboard/touch focus, exit confirmation, persisted records,
+introduction navigation and offline worker upgrades remain covered.
+
+Exact layout/font metrics, broad axe scans, analytics integration and exhaustive
+bag generation are no longer required E2E checks. Existing unit tests retain the
+algorithm, timer/store, route and analytics checks. Historical verification above
+describes the earlier scope; it does not claim that the current suite still
+performs those removed audits. Visual and broad accessibility regressions have
+less automated coverage; product requirements remain unchanged.

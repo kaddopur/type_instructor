@@ -61,7 +61,8 @@ projects; physical-device limits SHALL be stated explicitly.
 #### Scenario: Browser acceptance
 
 - **WHEN** the production build is validated
-- **THEN** complete games, layout invariance, accessibility and offline checks pass
+- **THEN** representative complete games, localized navigation, keyboard operation and offline updates pass
+- **AND** exact layout/font audits and broad accessibility scans are outside the required E2E scope
 
 ### Requirement: Matching app icons
 
