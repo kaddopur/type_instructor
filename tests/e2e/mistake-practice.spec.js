@@ -45,7 +45,7 @@ async function miss(page) {
 
 for (const lang of ['en', 'zh', 'ja']) {
   test(
-    `${lang}: exact mistakes rotate, clear, reopen and remain untimed`,
+    `${lang}: stay until correct, repeat missed questions and finish cleanly`,
     { tag: '@a11y' },
     async ({ page }, testInfo) => {
       const text = texts[lang];
@@ -104,6 +104,20 @@ for (const lang of ['en', 'zh', 'ja']) {
       await page.clock.runFor(499);
       await expect(page.locator('.question-type')).toHaveText(first.enemy);
       await page.clock.runFor(1);
+      await expect(page.locator('.question-type')).toHaveText(first.enemy);
+      await expect(wrong).toHaveAttribute('aria-disabled', 'true');
+      await expect(page.locator('.optionDamage')).toHaveCount(1);
+      await expect(page.locator(firstCorrect)).not.toHaveAttribute('aria-disabled', 'true');
+      await wrong.dispatchEvent('click');
+      await expect(page.locator('.optionDamage')).toHaveCount(1);
+      await expect(dialog.locator('.practice-remaining')).toHaveText(
+        text.PRACTICE_REMAINING.replace('{count}', 2),
+      );
+      await page.keyboard.press('Tab');
+      await expect(page.locator('.optionItem:focus')).not.toHaveAttribute('aria-disabled', 'true');
+      await page.locator(firstCorrect).focus();
+      await page.keyboard.press('Space');
+      await page.clock.runFor(500);
       expect(await readQuestion(page)).toEqual(second);
       await expect(page.locator('.optionDamage')).toHaveCount(0);
       await expect(page.locator('.optionItem').first()).toBeFocused();
@@ -120,12 +134,24 @@ for (const lang of ['en', 'zh', 'ja']) {
       await miss(page);
       await expect(dialog.getByRole('status')).toContainText(text.INCORRECT);
       await page.clock.runFor(500);
+      await expect(page.locator('.question-type')).toHaveText(first.enemy);
+      await expect(page.locator('.optionDamage')).toHaveCount(1);
+      await page.locator(firstCorrect).click();
+      await page.clock.runFor(500);
       expect(await readQuestion(page)).toEqual(first);
       await expect(page.locator('.optionDamage')).toHaveCount(0);
       await expect(dialog.getByRole('status')).toBeEmpty();
+      await expect(dialog.locator('.practice-remaining')).toHaveText(
+        text.PRACTICE_REMAINING.replace('{count}', 1),
+      );
       await miss(page);
       await expect(dialog.getByRole('status')).toContainText(text.INCORRECT);
       await page.clock.runFor(500);
+      await page.locator(firstCorrect).click();
+      await page.clock.runFor(500);
+      expect(await readQuestion(page)).toEqual(first);
+      await expect(page.locator('.optionDamage')).toHaveCount(0);
+      await expect(dialog.getByRole('status')).toBeEmpty();
       await page.locator(firstCorrect).click();
       await page.clock.runFor(500);
       await expect(dialog.getByRole('status')).toHaveText(text.PRACTICE_COMPLETE);

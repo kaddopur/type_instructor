@@ -11,12 +11,15 @@ import zhDefend from '../images/landing/zh-defend.png';
 import jaMenu from '../images/landing/ja-menu.png';
 import jaAttack from '../images/landing/ja-attack.png';
 import jaDefend from '../images/landing/ja-defend.png';
+import enResultActions from '../images/landing/en-result-actions.png';
+import zhResultActions from '../images/landing/zh-result-actions.png';
+import jaResultActions from '../images/landing/ja-result-actions.png';
 import { cn } from '../lib/utils.ts';
 
 const screenshots = {
-  en: { menu: enMenu, attack: enAttack, defend: enDefend },
-  zh: { menu: zhMenu, attack: zhAttack, defend: zhDefend },
-  ja: { menu: jaMenu, attack: jaAttack, defend: jaDefend },
+  en: { menu: enMenu, attack: enAttack, defend: enDefend, resultActions: enResultActions },
+  zh: { menu: zhMenu, attack: zhAttack, defend: zhDefend, resultActions: zhResultActions },
+  ja: { menu: jaMenu, attack: jaAttack, defend: jaDefend, resultActions: jaResultActions },
 };
 const repository = 'https://github.com/kaddopur/type_instructor';
 const contentWidth =
@@ -197,6 +200,37 @@ function Landing({ lang, messages: { HOME, APP_DESCRIPTION, FAN_NOTICE } }) {
             alt={text.menuAlt}
             width="390"
             height="844"
+            loading="lazy"
+          />
+          <figcaption className="mt-3 text-center text-[13px] text-muted">
+            {text.screenshotLabel}
+          </figcaption>
+        </figure>
+      </section>
+      <section
+        className={cn(
+          'landing-section landing-width',
+          contentWidth,
+          section,
+          'grid grid-cols-[minmax(0,1.3fr)_minmax(0,.7fr)] items-center gap-12 landing-mobile:grid-cols-1 landing-mobile:gap-8',
+        )}
+        aria-labelledby="practice-title"
+      >
+        <div>
+          <h2 className={heading} id="practice-title">
+            {text.practiceTitle}
+          </h2>
+          <p>{text.practiceIntro}</p>
+          <p className="mt-4">{text.practiceRule}</p>
+          <p className="mt-4">{text.practiceReset}</p>
+        </div>
+        <figure className="landing-practice-shot m-0 w-[min(100%,284px)] justify-self-center">
+          <img
+            className={image}
+            src={images.resultActions}
+            alt={text.practiceAlt}
+            width="284"
+            height="212"
             loading="lazy"
           />
           <figcaption className="mt-3 text-center text-[13px] text-muted">

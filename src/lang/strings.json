@@ -64,7 +64,7 @@
   "ABOUT_GAME": "About the game",
   "FAN_NOTICE": "An unofficial fan project. Not affiliated with, authorized, or sponsored by Pokémon.",
   "PRACTICE_TITLE": "Practice mistakes",
-  "PRACTICE_DESCRIPTION": "No score or timer. Wrong answers return at the end.",
+  "PRACTICE_DESCRIPTION": "No score or timer. Keep trying after a mistake. Finish the question, then retry it at the end. Get it right first try to clear it.",
   "PRACTICE_REMAINING": "{count} remaining",
   "PRACTICE_CLOSE": "Close",
   "PRACTICE_COMPLETE": "All mistakes cleared!",

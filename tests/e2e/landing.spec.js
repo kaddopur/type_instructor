@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
-const copy = JSON.parse(await readFile(new URL('../../src/lang/landing.json', import.meta.url))).zh;
+const translations = JSON.parse(
+  await readFile(new URL('../../src/lang/landing.json', import.meta.url)),
+);
+const copy = translations.zh;
 
 test('players can read the introduction, change language and enter the game', async ({ page }) => {
   await page.goto('./#/zh/');
@@ -10,6 +13,32 @@ test('players can read the introduction, change language and enter the game', as
   await expect(page.getByRole('heading', { name: 'Type Instructor', exact: true })).toBeVisible();
   await page.getByRole('button', { name: copy.howLink, exact: true }).click();
   await expect(page.locator('#how-title')).toBeInViewport();
+  for (const [lang, label] of [
+    ['zh', '中文'],
+    ['ja', '日本語'],
+    ['en', 'English'],
+  ]) {
+    await page
+      .locator('.landing-languages')
+      .getByRole('link', { name: label, exact: true })
+      .click();
+    await expect(page.locator('#practice-title')).toHaveText(translations[lang].practiceTitle);
+    const resultActions = page.getByRole('img', { name: translations[lang].practiceAlt });
+    await expect(resultActions).toBeVisible();
+    await expect(resultActions).toHaveAttribute('src', new RegExp(`/${lang}-result-actions-`));
+    await resultActions.scrollIntoViewIfNeeded();
+    await expect(resultActions).toHaveJSProperty('naturalWidth', 284);
+    await expect(page.getByText(translations[lang].practiceRule, { exact: true })).toBeVisible();
+    await expect(page.getByText(translations[lang].practiceReset, { exact: true })).toBeVisible();
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('#practice-title').scrollIntoViewIfNeeded();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      390,
+    );
+    await page.locator('[aria-labelledby="practice-title"]').screenshot({
+      path: `/tmp/practice-landing-${lang}.png`,
+    });
+  }
 
   await page
     .locator('.landing-languages')

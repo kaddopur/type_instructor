@@ -35,7 +35,9 @@ export default function MistakePractice({
             damage,
             ...(feedback && index === phase.selectedIndex
               ? { clicked: true, correct: phase.correct }
-              : {}),
+              : phase.wrongIndices.includes(index)
+                ? { clicked: true, correct: false }
+                : {}),
           })),
         };
 
