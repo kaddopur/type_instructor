@@ -1,20 +1,9 @@
-# Design
+# 設計
 
-Use the existing Tailwind 4 Vite integration and shadcn/Radix controls. Retain
-semantic class names as browser-test hooks without defining component selectors
-in CSS. Share only the repeated page layout/title/footer utility strings.
+沿用 Tailwind 4 的 Vite 整合與 shadcn／Radix 控制元件。語意類別名稱保留作瀏覽器測試定位，不在 CSS 定義元件選擇器。只共用重複的頁面版面、標題與頁尾工具類別字串。
 
-Preserve explicit pixel values because the root font size is 125%, making
-Tailwind's default rem spacing differ from the original pixel dimensions.
-Consolidate the final computed values of repeated CSS selectors rather than
-copying contradictory declarations. Define shared compact-height, short-height,
-compact-landscape and Landing-mobile variants with their original media queries.
+保留明確像素值：根字級為 125%，Tailwind 預設 rem 間距與原像素尺寸不同。重複 CSS 選擇器以最終計算值整併，不複製互相衝突的宣告。使用原媒體查詢定義共用 compact-height、short-height、compact-landscape 與 Landing-mobile 變體。
 
-Keep global typography, theme/font declarations and document-wide focus rules
-in index.css. Move progress-bar browser pseudo-elements and decorative elements
-to arbitrary Tailwind selectors. Remove the standalone Landing stylesheet.
+index.css 保留全域字型、主題／字型宣告及全文件焦點規則。進度條的瀏覽器偽元素與裝飾元素移至 Tailwind 任意選擇器。移除獨立 Landing 樣式表。
 
-Capture pre-migration computed styles and geometry for all routes, languages,
-viewport classes and Quiz states. Compare after migration and inspect actual
-screenshots. Existing layout, typography, gameplay, accessibility and offline
-checks remain the regression boundary; no visual redesign is intended.
+遷移前擷取全部路徑、語言、檢視區類型與答題狀態的計算樣式及版面尺寸。遷移後比對並檢視實際截圖。既有版面、字型、玩法、無障礙與離線檢查仍是回歸驗證範圍；本次不重新設計視覺。

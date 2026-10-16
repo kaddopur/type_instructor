@@ -1,31 +1,27 @@
-# Complete migration acceptance and release
+# 完成遷移驗收與發布
 
 ## Why
 
-Steps 1–5 are implemented and archived. The user requested step 6 and the remaining
-release work, including full acceptance, archive/commit, remote checks, and publication.
+第 1 至 5 步已實作並封存。使用者要求完成第 6 步與剩餘發布工作，包括完整驗收、封存與提交、遠端檢查及發布。
 
 ## What Changes
 
-- Verify all three languages and four game modes through completion and replay.
-- Cover desktop Chromium, Firefox, WebKit, and mobile WebKit emulation, layout,
-  feedback/timer boundaries, browser navigation, offline use, and worker updates.
-- Fix any demonstrated regressions without adding new gameplay.
-- Add repeatable acceptance checks to CI and finish the baseline evidence/checklist.
-- Archive and commit, push the branch, validate its PR, merge, deploy, and verify Pages.
+- 驗證三種語言與四種遊戲模式的完整結算及重玩。
+- 涵蓋桌面 Chromium、Firefox、WebKit、手機 WebKit 模擬，以及版面、回饋／計時邊界、瀏覽器導覽、離線使用與背景快取程式更新。
+- 修正實際重現的退化問題，不新增玩法。
+- 將可重複執行的驗收測試加入 CI，補齊基準證據與清單。
+- 封存並提交、推送分支、驗證 PR、合併、部署，再驗證 Pages。
 
 ## Capabilities
 
 ### New Capabilities
 
-- `migration-acceptance`: Repeatable behavior and layout checks with explicit browser limits.
+- `migration-acceptance`：可重複執行的行為與版面檢查，並明確列出瀏覽器驗證限制。
 
 ### Modified Capabilities
 
-None unless acceptance reveals a behavioral defect requiring a spec update.
+無。只有在驗收發現行為缺陷、需要更新規格時才調整。
 
 ## Impact
 
-Acceptance tests/config, CI, final documentation, and any evidenced compatibility
-fix. Release uses the existing master-only Pages workflow. Remote Pages source was
-read-only checked and is already workflow; no settings change is currently required.
+影響驗收測試與設定、CI、最終文件，以及有證據支持的相容性修正。發布沿用只允許 master 的 Pages 工作流程。已唯讀確認遠端 Pages 來源為 workflow，目前不用更動設定。

@@ -1,129 +1,124 @@
-# Gameplay baseline
+# 玩法基準
 
 ## Purpose
 
-記錄技術遷移前應保留的玩法。依據 commit `4f1e318` 的原始碼整理；這不是已完成的瀏覽器驗收，也不是對官方屬性表的獨立認證。已知問題與後續驗收見 `openspec/baseline.md`。
+記錄技術遷移前應保留的玩法。依據原始碼提交 `4f1e318` 的原始碼整理；這不是已完成的瀏覽器驗收，也不是對官方屬性表的獨立認證。已知問題與後續驗收見 `openspec/baseline.md`。
 
 ## Requirements
 
-### Requirement: Single-type questions
+### Requirement: 單屬性題目
 
 系統 SHALL 使用現有 18 種屬性產生單屬性題目，每題四個不重複選項，並且只有一個最佳答案。攻擊題選傷害倍率最高者，防禦題選受到傷害倍率最低者。
 
-#### Scenario: Attack question
+#### Scenario: 攻擊題
 
 - **WHEN** 產生攻擊題
 - **THEN** 題幹屬性代表防守方，選項代表攻擊屬性，正解倍率嚴格高於其他三個選項
 
-#### Scenario: Defense question
+#### Scenario: 防禦題
 
 - **WHEN** 產生防禦題
 - **THEN** 題幹屬性代表攻擊方，選項代表防守屬性，正解倍率嚴格低於其他三個選項
 
-### Requirement: Answer feedback and scoring
+### Requirement: 答案回饋與計分
 
 系統 SHALL 從零分開始，答對加一分、答錯減一分，允許負分；選過的選項顯示倍率與效果文字。答題後暫停接受作答 500 毫秒；同一選項每題只能計分一次。
 
-#### Scenario: Wrong answer
+#### Scenario: 答錯
 
 - **WHEN** 玩家選擇未作答的錯誤選項
 - **THEN** 扣一分、標記該選項，暫停後保留原題，玩家可選擇其他選項
 
-#### Scenario: Correct answer
+#### Scenario: 答對
 
 - **WHEN** 玩家選擇正確答案
 - **THEN** 加一分並顯示回饋，暫停後換題；若已達結束條件則進入結果頁
 
-#### Scenario: Repeated input
+#### Scenario: 重複輸入
 
 - **WHEN** 玩家在暫停期間點擊，或再次點擊已選過的選項
 - **THEN** 分數與題目不因該次點擊改變
 
-### Requirement: Basic mode
+### Requirement: 一般模式
 
 系統 SHALL 在玩家關閉開始說明後，以一秒為單位從 60 秒倒數；答題回饋期間仍計時，倒數至零進入分數結果頁。
 
-#### Scenario: Start and finish
+#### Scenario: 開始與結束
 
 - **WHEN** 玩家進入一般模式並關閉開始說明
 - **THEN** 開始倒數，時間歸零後顯示本場最終分數
 
-### Requirement: Speedrun mode
+### Requirement: 競速模式
 
 系統 SHALL 在玩家關閉開始說明後，從零秒開始累計用時，達到 20 分後完成 500 毫秒答題回饋並結束。遊戲邏輯與中英日三語目標說明 SHALL 使用同一個目標設定；結果顯示最後答對當下捕捉的整數秒。
 
-#### Scenario: Speedrun result
+#### Scenario: 競速結果
 
 - **WHEN** 本場分數從 19 分答對增加至 20 分
 - **THEN** 完成答題回饋後停止計時，顯示最後答對當下的本場用時
 
-#### Scenario: Below the goal
+#### Scenario: 尚未達標
 
 - **WHEN** 分數達到 19 分，或因答錯而扣分
 - **THEN** 遊戲繼續，未達 20 分不得進入結果頁
 
-#### Scenario: Localized goal
+#### Scenario: 各語言目標說明
 
 - **WHEN** 玩家以英文、中文或日文進入競速模式
 - **THEN** 開始說明顯示由同一目標設定產生的 20 分目標
 
-### Requirement: Reset on a new game
+### Requirement: 新遊戲重設
 
 系統 SHALL 在開始或重玩時清除上一場分數、答題標記與暫停狀態，依模式重設時間並顯示開始說明。
 
-#### Scenario: Retry
+#### Scenario: 重玩
 
 - **WHEN** 玩家從結果頁選擇重玩
 - **THEN** 以原語言、原模式及原攻防種類開始新的一場遊戲
 
-### Requirement: Feedback categories
+### Requirement: 回饋類別
 
 系統 SHALL 對倍率 0、0.5、1、2 分別顯示無效、不理想、一般與絕佳的對應語系文字。
 
-#### Scenario: An immune matchup
+#### Scenario: 免疫組合
 
 - **WHEN** 已選選項的倍率為零
 - **THEN** 顯示該語言的無效提示
 
-### Requirement: Balanced session target coverage
+### Requirement: 每場均衡涵蓋題幹屬性
 
-The system SHALL deal targets from session-local shuffled bags containing each
-of the 18 types exactly once. Consecutive questions SHALL have different targets,
-including across bag boundaries. Only generating a new question consumes a target.
+系統 SHALL 為每場維護獨立的洗牌屬性清單，每輪 18 種屬性各出現一次。相鄰題目的題幹屬性 SHALL 不同，跨輪次也適用。只有產生新題時才取用下一個屬性。
 
-#### Scenario: Complete rounds
+#### Scenario: 完整輪次
 
-- **WHEN** 36 questions are generated in one session
-- **THEN** each consecutive block of 18 contains every type once and no adjacent targets match
+- **WHEN** 同一場產生 36 題
+- **THEN** 以每 18 題分成的兩輪都各含全部屬性一次，且相鄰題幹屬性不重複
 
-#### Scenario: Retry and session isolation
+#### Scenario: 重試與場次隔離
 
-- **WHEN** an answer is wrong or a separate session advances
-- **THEN** the current session's pending target order is not consumed
+- **WHEN** 答錯，或另一個獨立場次推進
+- **THEN** 不消耗本場待出的題幹屬性
 
-#### Scenario: New game
+#### Scenario: 新場次
 
-- **WHEN** the player starts a new session
-- **THEN** it owns a fresh bag and defense preference history
+- **WHEN** 玩家開始新場次
+- **THEN** 新場次擁有全新的屬性清單與防禦偏好紀錄
 
-### Requirement: Defense immunity and resistance practice
+### Requirement: 防禦免疫與抗性練習
 
-The system SHALL alternate immunity and resistance preference independently for
-each defense target, starting with immunity. A missing category SHALL fall back
-to the available category. Every question SHALL retain four distinct options and
-exactly one best answer among the displayed options.
+系統 SHALL 按防禦題幹屬性分別交替優先練習免疫與抗性，從免疫開始。缺少某類時 SHALL 改用可用類別。每題 SHALL 保留四個不同選項，且顯示的選項中恰有一個最佳答案。
 
-#### Scenario: Target supports immunity and resistance
+#### Scenario: 題幹屬性同時支援免疫與抗性
 
-- **WHEN** the same defense target appears in successive rounds
-- **THEN** its first answer has multiplier 0, its second answer has multiplier 0.5 with no immune options, and its third answer has multiplier 0 again
+- **WHEN** 同一防禦題幹屬性在接連輪次出現
+- **THEN** 首次正解倍率為 0，第二次為 0.5 且選項不含免疫，第三次再為 0
 
-#### Scenario: No immunity
+#### Scenario: 沒有免疫
 
-- **WHEN** the target has resistance but no immunity
-- **THEN** its answer has multiplier 0.5 in either preference
+- **WHEN** 題幹屬性有抗性但沒有免疫
+- **THEN** 無論偏好哪類，正解倍率都是 0.5
 
-#### Scenario: Normal attack resistance
+#### Scenario: 一般屬性攻擊的抗性
 
-- **WHEN** a normal attack target appears with resistance preference
-- **THEN** its answer is rock or steel with multiplier 0.5 and ghost is excluded from the options
+- **WHEN** 一般屬性攻擊題幹以抗性偏好出題
+- **THEN** 正解為岩石或鋼，倍率 0.5，選項不含幽靈

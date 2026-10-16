@@ -1,77 +1,49 @@
-# Verification — step 5
+# 第 5 步驗證
 
-Date: 2026-10-15. Local environment: macOS, Node 22.23.2, pnpm 11.22.0,
-Google Chrome driven by Playwright 1.64.1. Workbox build version: 7.4.1.
+日期：2026-10-15。本機環境：macOS、Node 22.23.2、pnpm 11.22.0，以及由 Playwright 1.64.1 操作的 Google Chrome。Workbox 建置版本：7.4.1。
 
-## Result
+## 結果
 
-The build now uses Workbox to generate service-worker.js with an inline runtime
-and 11 precached local resources. The old URL and /type_instructor/ scope remain.
-sw-precache, its trim-newlines override, and cache-polyfill.js have been removed.
+建置現使用 Workbox 產生 service-worker.js，內嵌執行程式並預先快取 11 個本機資源。舊網址與 /type_instructor/ 範圍保留。sw-precache、其 trim-newlines 覆寫與 cache-polyfill.js 已移除。
 
-The user's staged pnpm workspace settings were retained. packageManager pins
-pnpm 11.22.0; pnpm-lock.yaml is updated and package-lock.json is removed. Scripts,
-Playwright server commands, current documentation, and CI use pnpm.
+保留使用者已暫存的 pnpm 工作區設定。packageManager 固定 pnpm 11.22.0；已更新 pnpm-lock.yaml，移除 package-lock.json。腳本、Playwright 伺服器指令、現行文件與 CI 都改用 pnpm。
 
-| Check | Evidence |
-| --- | --- |
-| Clean installation | Removed generated node_modules, then `pnpm install --frozen-lockfile`: passed with no force/peer overrides |
-| Logic tests | `pnpm test`: 12 passed |
-| Production build | `pnpm build`: Vite output plus Workbox generation passed |
-| Production browser tests | `PLAYWRIGHT_CHANNEL=chrome pnpm test:smoke`: 7 passed |
-| Development browser tests | `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev pnpm test:smoke`: 6 passed, worker-upgrade test intentionally skipped |
-| Dependency audit | `pnpm audit --audit-level=high`: no known vulnerabilities |
-| Workflow validation | actionlint v1.7.12 passed for .github/workflows/pages.yml; optional shellcheck integration disabled |
-| OpenSpec / whitespace | Strict validation and git diff --check passed |
+| 檢查           | 證據                                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------ |
+| 乾淨安裝       | 移除產生的 node_modules 後，`pnpm install --frozen-lockfile` 通過，未使用 force 或 peer 相依覆寫       |
+| 邏輯測試       | `pnpm test`：12 個通過                                                                                 |
+| 正式建置       | `pnpm build`：Vite 輸出與 Workbox 產生流程通過                                                         |
+| 正式瀏覽器測試 | `PLAYWRIGHT_CHANNEL=chrome pnpm test:smoke`：7 個通過                                                  |
+| 開發瀏覽器測試 | `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev pnpm test:smoke`：6 個通過，依設計略過背景快取程式更新測試 |
+| 套件稽核       | `pnpm audit --audit-level=high`：沒有已知弱點                                                          |
+| 工作流程驗證   | actionlint v1.7.12 對 .github/workflows/pages.yml 檢查通過；未啟用選用的 shellcheck 整合               |
+| OpenSpec／空白 | 嚴格驗證與 git diff --check 通過                                                                       |
 
-## Worker upgrade evidence
+## 背景快取程式更新證據
 
-tests/fixtures/legacy-service-worker.js preserves the generated worker engine
-from gh-pages commit fbecea9e343cf177c4a4641dd8e5f74c5fa3d47e. Only the precache list
-is reduced to an index.html fixture. A real local HTTP server serves successive
-builds under the same worker URL and scope; Playwright does not mock SW lifecycle.
+測試資料 tests/fixtures/legacy-service-worker.js 保留 gh-pages 提交 fbecea9e343cf177c4a4641dd8e5f74c5fa3d47e 產生的背景快取引擎，只將預快取清單縮減為 index.html 測試頁。真實本機 HTTP 伺服器在同一背景快取網址與範圍下，依序提供各版建置；Playwright 不模擬其生命週期。
 
-The production test verifies:
+正式建置測試驗證以下項目：
 
-1. The archived worker installs, controls a legacy page, and stores its cache.
-2. A generated Workbox build referencing a deliberately removed precache asset fails
-   to install, leaving the legacy cache active and the legacy page available offline.
-3. The actual current worker activates, deletes the exact legacy cache, and keeps
-   the current document open until explicit reload; the reload displays the new app.
-4. The new app can reload, navigate to Chinese defense mode, and answer offline.
-5. A second generated Workbox build changes index.html's revision and activates while
-   a game is open without changing its URL or score; explicit reload uses the new
-   build, and the updated build also reloads offline.
-6. Root-level unrelated and nested-app cache names and their stored contents survive
-   both updates; no duplicate worker registration is introduced.
+1. 封存的背景快取程式可安裝、控制舊版頁面並儲存快取。
+2. 產生的 Workbox 建置若引用刻意移除的預快取資源，就會安裝失敗；舊版仍啟用，舊頁面仍可離線開啟。
+3. 目前真實背景快取程式啟用後，只刪除確切舊快取；目前頁面保持開啟，明確重新載入後才顯示新版。
+4. 新應用程式可離線重新載入、前往中文防禦模式並作答。
+5. 第二版 Workbox 修改 index.html 版本，遊戲開啟時啟用，不改網址或分數；明確重新載入後使用新版，新版也能離線重新載入。
+6. 根層其他應用與巢狀應用的快取名稱及內容，在兩次更新後都保留；不新增重複註冊。
 
-Workbox cleanupOutdatedCaches is deliberately disabled because its substring
-matching also includes nested scopes. Workbox still removes stale entries from
-its own precache on activation. The legacy cleanup helper deletes only the exact
-sw-precache-v2-sw-precache-<registration.scope> name observed in the archived build.
+刻意停用 Workbox cleanupOutdatedCaches，因為其子字串比對也包含巢狀範圍。Workbox 啟用時仍會移除自己預快取中的過期項目。舊快取清理輔助程式只刪除封存建置觀察到的確切名稱 sw-precache-v2-sw-precache-<registration.scope>。
 
-## Pages workflow and current remote state
+## Pages 工作流程與當時遠端狀態
 
-The workflow validates PRs targeting master, pushes to master, and manual runs.
-It installs Node from .nvmrc, pinned pnpm with a frozen lockfile, runs logic and
-production browser checks, and uploads dist only for master deployment. The separate
-OIDC deployment job uses the github-pages environment and serializes deployments.
-Other branches' manual runs cannot publish. Actions are pinned to commit SHAs.
+工作流程驗證目標為 master 的 PR、master 推送與手動執行。依 .nvmrc 安裝 Node，安裝固定版本 pnpm，使用凍結鎖定檔，執行邏輯與正式瀏覽器檢查。只有 master 部署會上傳 dist。獨立的 OIDC 部署工作使用 github-pages 環境，依序部署，避免重疊。其他分支的手動執行不能發布。Actions 固定至提交 SHA。
 
-A read-only `gh api repos/kaddopur/type_instructor/pages` check returned build_type
-legacy, source branch gh-pages, path /, URL https://kaddopur.github.io/type_instructor/.
-No repository setting was changed. Before using the workflow to publish, merge the
-reviewed change into master, switch Settings → Pages → Source to GitHub Actions,
-and run the workflow on master. Instructions are in README.
+唯讀執行 `gh api repos/kaddopur/type_instructor/pages`，回傳 build_type 為 legacy、來源分支 gh-pages、路徑 /、網址 https://kaddopur.github.io/type_instructor/。未改儲存庫設定。
 
-## Limits and handoff
+使用工作流程發布前，須將審閱後的變更合併至 master，將 Settings → Pages → Source 改為 GitHub Actions，再於 master 執行。操作方式見 README。
 
-Local Chrome and real local HTTP fixtures validate worker behavior, not the
-complete archived 2016 frontend or an existing user's browser profile. No Linux
-GitHub Actions execution, live deployment, or broad multi-browser acceptance was
-performed. Full acceptance remains step 6. Workbox's installed glob dependency
-reports deprecation, while the current dependency audit reports no known vulnerabilities.
+## 限制與交接
 
-Implementation verification preceded the user's subsequent archive and commit
-request. This change was archived as 2026-10-15-modernize-offline-deployment.
-No push, deployment, or Pages settings change was performed.
+本機 Chrome 與真實 HTTP 測試資料可驗證背景快取行為，但未涵蓋完整封存的 2016 年前端或既有使用者瀏覽器設定檔。未執行 Linux GitHub Actions、線上部署或廣泛跨瀏覽器驗收；完整驗收仍屬第 6 步。Workbox 安裝的 glob 相依有棄用提示，但目前套件稽核沒有已知弱點。
+
+實作驗證早於使用者之後提出的封存與提交要求。本變更封存為 2026-10-15-modernize-offline-deployment，未推送、部署或修改 Pages 設定。

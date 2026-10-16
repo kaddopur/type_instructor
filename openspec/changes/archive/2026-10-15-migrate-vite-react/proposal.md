@@ -1,31 +1,27 @@
-# Migrate to Vite and React
+# 遷移至 Vite 與 React
 
 ## Why
 
-The application still uses React 15 and Create React App 0.4. Establish a working
-modern development and production build before changing gameplay or state ownership.
+應用程式仍使用 React 15 與 Create React App 0.4。改動玩法或狀態管理前，先建立可運作的現代開發環境與正式建置。
 
 ## What Changes
 
-- Replace react-scripts with Vite and its React plugin; commit a lockfile and Node version.
-- Upgrade React/React DOM together and use createRoot and JSX module entry points.
-- Upgrade Router and React Redux as required for React 19. Remove incompatible
-  react-router-redux; keep the existing Redux gameplay reducer until step 3.
-- Preserve hash URLs, translations, styles, game rules, and the known step-4 bugs.
-- Make static assets and the existing offline build work beneath /type_instructor/.
+- 以 Vite 與 React 外掛取代 react-scripts；提交鎖定檔與 Node 版本。
+- 一起升級 React／React DOM，使用 createRoot 與 JSX 模組入口。
+- 依 React 19 需求升級 Router 與 React Redux，移除不相容的 react-router-redux；既有 Redux 遊戲 reducer 保留至第 3 步。
+- 保留 hash 網址、翻譯、樣式、規則及第 4 步才修正的已知問題。
+- 讓靜態資源與既有離線建置在 /type_instructor/ 下運作。
 
 ## Capabilities
 
 ### New Capabilities
 
-- `development-build`: Reproducible Vite development, test, and production commands.
+- `development-build`：可重複執行的 Vite 開發、測試與正式建置指令。
 
 ### Modified Capabilities
 
-None. Existing gameplay and navigation baselines remain the acceptance reference.
+無。既有玩法與導覽基準仍作為驗收依據。
 
 ## Impact
 
-Build configuration, package manifest/lock, React entry and router integration,
-JSX filenames, JSON loading, static assets, and development documentation.
-Modern offline tooling and Pages deployment automation remain step 5.
+影響建置設定、套件清單與鎖定檔、React 入口與路由整合、JSX 檔名、JSON 載入、靜態資源及開發文件。現代離線工具與 Pages 自動部署仍屬第 5 步。

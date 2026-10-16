@@ -1,36 +1,39 @@
 ## ADDED Requirements
 
-### Requirement: Balanced session target coverage
-The system SHALL deal targets from session-local shuffled bags containing each
-of the 18 types exactly once. Consecutive questions SHALL have different targets,
-including across bag boundaries. Only generating a new question consumes a target.
+### Requirement: 每場均衡涵蓋題幹屬性
 
-#### Scenario: Complete rounds
-- **WHEN** 36 questions are generated in one session
-- **THEN** each consecutive block of 18 contains every type once and no adjacent targets match
+系統 SHALL 為每場維護獨立的洗牌屬性清單，每輪 18 種屬性各出現一次。相鄰題目的題幹屬性 SHALL 不同，跨輪次也適用。只有產生新題時才取用下一個屬性。
 
-#### Scenario: Retry and session isolation
-- **WHEN** an answer is wrong or a separate session advances
-- **THEN** the current session's pending target order is not consumed
+#### Scenario: 完整輪次
 
-#### Scenario: New game
-- **WHEN** the player starts a new session
-- **THEN** it owns a fresh bag and defense preference history
+- **WHEN** 同一場產生 36 題
+- **THEN** 以每 18 題分成的兩輪都各含全部屬性一次，且相鄰題幹屬性不重複
 
-### Requirement: Defense immunity and resistance practice
-The system SHALL alternate immunity and resistance preference independently for
-each defense target, starting with immunity. A missing category SHALL fall back
-to the available category. Every question SHALL retain four distinct options and
-exactly one best answer among the displayed options.
+#### Scenario: 重試與場次隔離
 
-#### Scenario: Target supports immunity and resistance
-- **WHEN** the same defense target appears in successive rounds
-- **THEN** its first answer has multiplier 0, its second answer has multiplier 0.5 with no immune options, and its third answer has multiplier 0 again
+- **WHEN** 答錯，或另一個獨立場次推進
+- **THEN** 不消耗本場待出的題幹屬性
 
-#### Scenario: No immunity
-- **WHEN** the target has resistance but no immunity
-- **THEN** its answer has multiplier 0.5 in either preference
+#### Scenario: 新場次
 
-#### Scenario: Normal attack resistance
-- **WHEN** a normal attack target appears with resistance preference
-- **THEN** its answer is rock or steel with multiplier 0.5 and ghost is excluded from the options
+- **WHEN** 玩家開始新場次
+- **THEN** 新場次擁有全新的屬性清單與防禦偏好紀錄
+
+### Requirement: 防禦免疫與抗性練習
+
+系統 SHALL 按防禦題幹屬性分別交替優先練習免疫與抗性，從免疫開始。缺少某類時 SHALL 改用可用類別。每題 SHALL 保留四個不同選項，且顯示的選項中恰有一個最佳答案。
+
+#### Scenario: 題幹屬性同時支援免疫與抗性
+
+- **WHEN** 同一防禦題幹屬性在接連輪次出現
+- **THEN** 首次正解倍率為 0，第二次為 0.5 且選項不含免疫，第三次再為 0
+
+#### Scenario: 沒有免疫
+
+- **WHEN** 題幹屬性有抗性但沒有免疫
+- **THEN** 無論偏好哪類，正解倍率都是 0.5
+
+#### Scenario: 一般屬性攻擊的抗性
+
+- **WHEN** 一般屬性攻擊題幹以抗性偏好出題
+- **THEN** 正解為岩石或鋼，倍率 0.5，選項不含幽靈

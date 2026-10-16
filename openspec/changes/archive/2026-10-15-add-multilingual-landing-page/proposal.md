@@ -1,28 +1,27 @@
-# Add a multilingual game landing page
+# 新增三語遊戲介紹頁
 
 ## Why
 
-The user requested a new branch with a responsive landing page introducing the
-game and its rules in English, Traditional Chinese and Japanese, using real
-game screenshots. The user later requested removing the repository link from Home.
+使用者要求在新分支製作遊戲介紹頁，支援英文、正體中文與日文，並依螢幕寬度調整版面。頁面需介紹遊戲與規則，使用真實遊戲截圖。使用者之後也要求移除首頁的儲存庫連結。
 
 ## What Changes
 
-- Add /:lang/about and a localized Home entry, preserving game routes.
-- Introduce the game, modes, attack/defense questions, scoring and keyboard controls.
-- Capture the actual built game in each language and bundle those screenshots locally.
-- Scope scrolling to the long-form landing page; preserve the game shell's fixed layout.
-- Remove Home's author link as requested; retain the source link on the introduction.
+- 新增 `/:lang/about` 與各語言的首頁入口，保留遊戲路徑。
+- 介紹遊戲、模式、攻防題目、計分與鍵盤操作。
+- 擷取各語言正式建置的實際遊戲畫面，將圖片存入專案。
+- 只讓長篇介紹頁捲動；遊戲頁面維持固定版面。
+- 依要求移除首頁作者連結；介紹頁保留原始碼連結。
 
 ## Capabilities
 
 ### New Capabilities
-- game-landing-page: Responsive three-language introduction, instructions and real screenshots.
+
+- game-landing-page：可依螢幕寬度調整的三語介紹、操作說明與真實截圖。
 
 ### Modified Capabilities
-None; existing gameplay/navigation guarantees remain in force.
+
+無；既有玩法與導覽要求繼續適用。
 
 ## Impact
 
-A route/component, localized copy, local screenshot assets/capture script, scoped
-layout, Home link and browser checks. No new runtime packages or gameplay changes.
+影響範圍包括路由與元件、三語文案、本機截圖與擷取腳本、介紹頁版面、首頁連結及瀏覽器測試。不新增執行時套件，也不改動玩法。

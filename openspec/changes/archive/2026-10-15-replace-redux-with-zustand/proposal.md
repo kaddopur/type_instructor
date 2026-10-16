@@ -1,31 +1,27 @@
-# Replace Redux with Zustand
+# 以 Zustand 取代 Redux
 
 ## Why
 
-The user selected Zustand for migration step 3. The application needs a small
-game-session store; language dictionaries and URL parameters do not need a store.
+使用者選擇第 3 步改用 Zustand。應用程式只需小型遊戲場次狀態儲存區；語言字典與網址參數不需放入。
 
 ## What Changes
 
-- Replace Redux actions/reducer/connect/Provider with Zustand session stores.
-- Keep only game state in Zustand; supply static translations from the language URL.
-- Replace class-based game orchestration with a hook that cleans up interval and
-  feedback timers when a session ends, changes route, or unmounts.
-- Preserve existing UI, URL formats, scoring, and the known step-4 speedrun defects.
-- Adapt baseline tests to production Zustand actions and extend lifecycle checks.
+- 用 Zustand 場次儲存區取代 Redux actions／reducer／connect／Provider。
+- Zustand 只放遊戲狀態；靜態翻譯依網址語言提供。
+- 以 hook 取代類別式遊戲流程，在場次結束、換路徑或卸載時清理週期與回饋計時器。
+- 保留既有介面、網址格式、計分及第 4 步才修正的競速問題。
+- 讓基準測試改用正式 Zustand 操作，擴充生命週期檢查。
 
 ## Capabilities
 
 ### New Capabilities
 
-- `game-session-state`: Isolated Zustand sessions and guarded game actions.
+- `game-session-state`：隔離的 Zustand 場次與具作答防護的遊戲操作。
 
 ### Modified Capabilities
 
-None. The behavior baseline remains the reference; session ownership changes.
+無。仍以行為基準為依據，只改變場次狀態管理。
 
 ## Impact
 
-Remove redux and react-redux dependencies and src/ducks. Update game rendering,
-localization wiring, tests, lockfile, and documentation. No persistence middleware
-or new gameplay features are introduced.
+移除 redux、react-redux 與 src/ducks，更新遊戲顯示、語系資料傳遞、測試、鎖定檔及文件。不加入持久化中介層或新玩法。

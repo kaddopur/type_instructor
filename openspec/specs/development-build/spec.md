@@ -1,48 +1,43 @@
-# development-build Specification
+# 開發與建置規格
 
 ## Purpose
 
-Document reproducible pnpm installation, Vite builds, and production resource compatibility.
+記錄可重現的 pnpm 安裝與 Vite 開發、建置及預覽指令。規格也定義 React 掛載、路由相容性，以及 Pages 基底路徑下的正式資源載入要求。
 
 ## Requirements
 
-### Requirement: Reproducible installation
+### Requirement: 可重現的安裝
 
-The project SHALL declare a supported Node version and pinned pnpm version, use
-the public npm registry, and commit a pnpm lockfile so pnpm install --frozen-lockfile
-installs the tested dependencies without peer-dependency overrides.
+專案 SHALL 宣告支援的 Node 版本及固定的 pnpm 版本，使用公開 npm 套件來源，並提交 pnpm 鎖定檔。pnpm install --frozen-lockfile SHALL 能安裝經測試的相依套件，不需覆寫 peer 相依要求。
 
-#### Scenario: Clean installation
+#### Scenario: 乾淨安裝
 
-- **WHEN** a developer runs pnpm install --frozen-lockfile with the declared Node/pnpm versions
-- **THEN** dependencies install without force or legacy-peer-deps overrides
+- **WHEN** 開發者用宣告的 Node／pnpm 版本執行 pnpm install --frozen-lockfile
+- **THEN** 相依套件安裝成功，不需 force 或 legacy-peer-deps 覆寫
 
-### Requirement: Vite commands
+### Requirement: Vite 指令
 
-The project SHALL provide dev and start commands for Vite development, build for
-Vite output plus Workbox generation in dist, preview for production, and test for logic checks.
+專案 SHALL 提供 dev 與 start 指令供 Vite 開發；build 在 dist 產生 Vite 輸出與 Workbox；preview 預覽正式建置；test 執行邏輯檢查。
 
-#### Scenario: Production build
+#### Scenario: 正式建置
 
-- **WHEN** pnpm build completes
-- **THEN** dist contains the application, its static assets, manifest, and a Workbox service worker at service-worker.js
+- **WHEN** pnpm build 完成
+- **THEN** dist 包含應用程式、靜態資源、manifest，以及位於 service-worker.js 的 Workbox 背景快取程式
 
-### Requirement: React and routing compatibility
+### Requirement: React 與路由相容性
 
-The application SHALL mount with createRoot, compatible state bindings, and hash
-routing while preserving the existing language-prefixed routes and gameplay baseline.
+應用程式 SHALL 使用 createRoot、相容的狀態綁定及 hash 路由掛載，保留既有語言前綴路徑與玩法基準。
 
-#### Scenario: Local navigation
+#### Scenario: 本機導覽
 
-- **WHEN** a developer starts the server and opens /type_instructor/
-- **THEN** the homepage renders and navigation to the menu and a game works without runtime errors
+- **WHEN** 開發者啟動伺服器並開啟 /type_instructor/
+- **THEN** 首頁正常顯示，可前往選單及遊戲，不發生執行時錯誤
 
-### Requirement: Base-relative resources
+### Requirement: 基底路徑下的資源
 
-The build SHALL resolve application assets and production service worker registration
-beneath /type_instructor/; development SHALL not register the production worker.
+建置 SHALL 在 /type_instructor/ 下解析應用程式資源與正式背景快取程式註冊位置；開發環境 SHALL 不註冊正式背景快取程式。
 
-#### Scenario: Preview at the Pages path
+#### Scenario: 預覽 Pages 路徑
 
-- **WHEN** the production build is previewed at /type_instructor/
-- **THEN** scripts, styles, fonts, icons, manifest, and service worker resolve successfully
+- **WHEN** 在 /type_instructor/ 預覽正式建置
+- **THEN** 腳本、樣式、字型、圖示、manifest 與背景快取程式都可成功取得

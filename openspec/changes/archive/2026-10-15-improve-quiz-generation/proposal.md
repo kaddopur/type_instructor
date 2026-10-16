@@ -1,23 +1,22 @@
-# Improve quiz generation
+# 改善出題
 
 ## Why
-Independent random targets leave gaps in short sessions. The unused lastEnemy
-argument does not prevent consecutive repeats. Defense always selects the global
-minimum, so immunity hides useful resistance matchups.
+
+每題獨立隨機選屬性，會讓短場次漏練部分屬性。未使用的 lastEnemy 參數無法避免連續重複。防禦題總選全體最低倍率，導致免疫選項遮住原本有用的抗性組合。
 
 ## What Changes
-- Deal each session's targets from shuffled bags of all 18 types, with no repeat
-  across bag boundaries.
-- Alternate immunity and resistance for each defense target across successive
-  rounds; exclude immune options in resistance questions.
-- Preserve four distinct options, one best answer, scoring, timers and languages.
-- Add generator/store regression tests and adapt browser tests to varying targets.
+
+- 每場將全部 18 種屬性洗牌後依序出題，跨輪次也不連續重複。
+- 各防禦題幹屬性在接連輪次交替練習免疫與抗性；抗性題排除免疫選項。
+- 保留四個不同選項、一個最佳答案、計分、計時與語言。
+- 加入出題／狀態回歸測試，讓瀏覽器測試支援變動題幹屬性。
 
 ## Capabilities
+
 ### Modified Capabilities
-- gameplay: Balanced target coverage and defense practice.
+
+- gameplay：均衡的題幹屬性涵蓋與防禦練習。
 
 ## Impact
-Quiz generation, session store, unit/browser tests and gameplay documentation.
-No dependencies, persistence, UI settings or changes to the damage matrix.
-Distractor difficulty tiers and delayed mistake review are deferred.
+
+影響出題、場次儲存區、單元／瀏覽器測試與玩法文件。不改相依套件、持久化、介面設定或傷害表。干擾選項難度分級與延後錯題複習留待後續。

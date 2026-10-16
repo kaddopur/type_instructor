@@ -1,12 +1,5 @@
-# Design
+# 設計
 
-Use the existing warm canvas, yellow/blue accents and pixel headings. Longer
-explanations use a readable system body font. The page is an article in the
-existing main landmark, with direct language links and localized play actions.
-Screenshots come from production Chromium renders, recorded with source revision
-and viewport. No generated UI images or external image hosts are used.
+沿用暖色背景、黃藍重點色與像素標題。較長的說明使用易讀的系統字型。介紹頁以文章形式放在現有的 main 主要內容區，提供語言連結與對應語言的遊玩按鈕。截圖取自正式建置在 Chromium 的實際畫面，並記錄原始碼版本與檢視區尺寸。不使用生成的介面圖片或外部圖片服務。
 
-The landing article scrolls within the existing safe-area viewport. Other routes
-keep the existing no-scroll shell. Hash routing remains Pages-compatible; the
-how-to action scrolls to a local element without replacing the router hash.
-Mobile stacks text/images, desktop uses a bounded two-column layout.
+介紹文章在現有的安全區域內捲動；其他路徑維持不能捲動的頁面外框。網址仍使用與 Pages 相容的 hash 路由。「玩法說明」按鈕捲動到頁內元素，不改寫路由使用的網址片段。手機版將文字與圖片上下排列；桌面版使用有寬度上限的雙欄。

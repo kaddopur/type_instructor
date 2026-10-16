@@ -1,57 +1,37 @@
-# Verification — part 3
+# 第 3 步驗證
 
-Date: 2026-10-15. Environment: macOS, Node 22.23.2, npm 10.9.8,
-Google Chrome driven by Playwright 1.64.1.
+日期：2026-10-15。環境：macOS、Node 22.23.2、npm 10.9.8，以及由 Playwright 1.64.1 操作的 Google Chrome。
 
-## Result
+## 結果
 
-Zustand 5.0.15 owns game-session state. redux, react-redux, their Provider/connect
-wiring, action creators, and reducers have been removed from runtime source and
-package manifest/lockfile. Each game creates a vanilla store and subscribes through
-useStore. Static language dictionaries are selected by I18nPage using URL params.
+遊戲場次狀態現由 Zustand 5.0.15 管理。執行時原始碼、套件清單與鎖定檔已移除 redux、react-redux、Provider／connect 整合、action 建立函式與 reducers。每場建立原生儲存區，透過 useStore 訂閱。I18nPage 依網址參數選擇靜態語言字典。
 
-| Check | Result |
-| --- | --- |
-| `npm ci --fetch-retries=0 --fetch-timeout=20000` | Passed without peer-dependency overrides |
-| `npm test` | 11 passed, 0 failed |
-| `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev npm run test:smoke` | 5 passed under React StrictMode |
-| `PLAYWRIGHT_CHANNEL=chrome npm run test:smoke` | Production build and all 5 tests passed |
-| `npm audit --audit-level=high` | 0 vulnerabilities |
-| OpenSpec strict validation and git whitespace check | Passed |
+| 檢查                                                            | 結果                         |
+| --------------------------------------------------------------- | ---------------------------- |
+| `npm ci --fetch-retries=0 --fetch-timeout=20000`                | 通過，未覆寫 peer 相依要求   |
+| `npm test`                                                      | 11 個通過，0 個失敗          |
+| `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev npm run test:smoke` | React StrictMode 下 5 個通過 |
+| `PLAYWRIGHT_CHANNEL=chrome npm run test:smoke`                  | 正式建置與全部 5 個測試通過  |
+| `npm audit --audit-level=high`                                  | 0 個弱點                     |
+| OpenSpec 嚴格驗證與 Git 空白檢查                                | 通過                         |
 
-## Covered behavior
+## 已涵蓋行為
 
-- Existing 18-type attack/defense question invariants and representative matchups.
-- New-session state for both game modes and both question types; immutable scoring
-  updates, negative scores, feedback categories, wrong-answer retries, next questions.
-- Action guards before start, during feedback, after completion, for invalid indices,
-  and for previously selected options; atomic completion snapshots and session isolation.
-- Speedrun preserves the integer seconds captured at the final correct answer,
-  even if the timer advances while its feedback is displayed.
-- Three-language navigation, existing result URLs and retry behavior, desktop and
-  mobile viewport smoke checks, 60-second countdown and result navigation.
-- Synchronous repeated clicks, feedback still active at 499 ms and cleared at 500 ms,
-  direct same-document mode changes during feedback, fresh speedrun state, and leaving
-  while feedback is pending without later navigation into an old result.
-- Speedrun completion and retry at the configured goal. Tests import SCORE_TARGET
-  rather than accepting the known incorrect numeric target as a gameplay requirement.
-- Existing Pages-base assets, worker activation, fresh offline homepage reload;
-  no service worker registration in development.
+- 既有 18 種屬性攻防題的不變條件與代表性相剋組合。
+- 兩種模式及攻防兩題型的新場次狀態、不直接修改原狀態的計分更新、負分、回饋類別、答錯重試與下一題。
+- 開始前、回饋中、結束後、無效索引與已選選項的操作防護；不可分割的結束快照與場次隔離。
+- 競速保留最後答對當下的整數秒，即使回饋期間時間繼續推進也不變。
+- 三語導覽、既有結果網址與重玩、桌面／手機檢視區冒煙測試、60 秒倒數與結果導頁。
+- 同步重複點擊、499 毫秒仍回饋且 500 毫秒解除、回饋期間在同一文件直接換模式、全新競速狀態，以及回饋未結束時離開後不再導向舊結果。
+- 競速在設定目標結束與重玩。測試匯入 SCORE_TARGET，不將已知錯誤數值當成玩法需求。
+- 既有 Pages 基底路徑資源、背景快取程式啟用、首次安裝後離線重新載入首頁；開發環境不註冊背景快取程式。
 
-The route key replaces the session store when pathname changes. Timer and feedback
-effects return cleanup functions, and their dependencies do not restart feedback
-on each timer tick. All development browser checks run with root StrictMode enabled.
+pathname 改變時，路由 key 會更換場次儲存區。計時與回饋 effects 回傳清理函式；其相依設定不會讓每秒計時重啟回饋。所有開發環境瀏覽器檢查都啟用根層 StrictMode。
 
-## Remaining scope
+## 剩餘範圍
 
-- Step 4 still owns BUG-01 (speedrun defense menu link) and BUG-02 (3-point runtime
-  target versus 20-point localized instructions). The defense speedrun test enters
-  via its correct deep link, and does not mask the incorrect menu link.
-- Step 5 still owns replacing sw-precache, upgrading old installed workers, and
-  deployment automation. Its existing scoped transitive override remains.
-- Full multi-browser/device acceptance, live Pages deployment, and the corrected
-  19/20-point boundary remain later steps. No persistence or cross-device state was added.
+- 第 4 步仍負責 BUG-01（競速防禦選單連結）與 BUG-02（程式 3 分目標，三語說明卻為 20 分）。競速防禦測試由正確深連結進入，不掩蓋錯誤選單連結。
+- 第 5 步仍負責取代 sw-precache、更新已安裝舊背景快取程式與自動部署。現有針對特定範圍的間接相依覆寫保留。
+- 完整跨瀏覽器／裝置驗收、線上 Pages 部署與修正後的 19／20 分邊界仍屬後續步驟。未加入持久化或跨裝置狀態。
 
-Implementation verification preceded the user's subsequent archive and commit
-request. This change was archived as 2026-10-15-replace-redux-with-zustand.
-No deployment was performed.
+實作驗證早於使用者之後提出的封存與提交要求。本變更封存為 2026-10-15-replace-redux-with-zustand，未部署。

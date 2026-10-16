@@ -1,9 +1,5 @@
-# Design
+# 設計
 
-Reuse I18nLink with the selected language and `/` destination. The existing
-I18nPage route effect updates the document language and focuses Home's first
-action, Start. There is no extra redirect effect or navigation state.
+沿用 I18nLink，帶入所選語言與 `/` 目的地。現有 I18nPage 路由效果會更新文件語言，並聚焦首頁第一個操作「開始」。不需額外重新導向效果或導覽狀態。
 
-Selecting the current language follows the same destination as other choices.
-The introduction's separate language links continue to target `/about`.
-Tests return to the picker after selection when comparing localized geometry.
+選擇目前語言與其他選項都前往相同目的地。介紹頁獨立的語言連結仍指向 `/about`。測試比對各語言版面時，選擇後會重新開啟語言頁。

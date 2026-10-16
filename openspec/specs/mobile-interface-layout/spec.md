@@ -1,61 +1,54 @@
-# mobile-interface-layout Specification
+# 手機介面版面規格
 
 ## Purpose
 
-Define safe mobile viewport ownership, bundled CJK typography and stable control geometry across supported languages.
+定義手機安全檢視區、隨專案提供的中日文字型，以及各支援語言中穩定的控制元件版面，確保小畫面、橫向顯示與切換語言時仍能操作。
 
 ## Requirements
 
-### Requirement: Shared safe viewport
+### Requirement: 共用安全檢視區
 
-The application SHALL use a shared shell to contain routes inside the dynamic
-viewport and device safe-area insets. Supported mobile layouts SHALL fit without
-document or inner page scrolling, including compact landscape navigation.
+應用程式 SHALL 用共用外框，將各路徑頁面限制在動態檢視區與裝置安全距離內。支援的手機版面 SHALL 不需文件或頁內捲動，包含小型橫向導覽畫面。
 
-#### Scenario: Compact navigation
+#### Scenario: 小畫面導覽
 
-- **WHEN** a player opens Home, Menu, language selection or results in a supported compact viewport
-- **THEN** the controls remain within the shell's usable area without scrolling
+- **WHEN** 玩家在支援的小檢視區開啟首頁、選單、語言選擇或結果
+- **THEN** 控制元件都在外框可用範圍內，不需捲動
 
-#### Scenario: Quiz viewport
+#### Scenario: 答題檢視區
 
-- **WHEN** a quiz starts inside the safe-area shell
-- **THEN** all four answer controls remain inside its usable viewport
+- **WHEN** 在安全區域外框內開始答題
+- **THEN** 四個答案控制元件都在可用檢視區內
 
-### Requirement: Local CJK pixel typography
+### Requirement: 本機中日文像素字型
 
-The application SHALL bundle Cubic 11 and its license locally as the primary UI
-font for English, Chinese and Japanese, including Latin letters, digits, kana,
-kanji and punctuation. PKMN/GB SHALL be fallbacks for missing glyphs. Equivalent
-UI roles SHALL retain the same font sizes and line heights across languages.
+應用程式 SHALL 在本機提供 Cubic 11 與授權，作為英文、正體中文與日文主要介面字型，涵蓋拉丁字母、數字、假名、漢字及標點。缺字時 SHALL 以 PKMN／GB 備援。相同用途的介面文字 SHALL 在各語言維持相同字級與行高。
 
-#### Scenario: Japanese mixed label
+#### Scenario: 日文混合字元標籤
 
-- **WHEN** the player sees やり直し or メニューに戻る
-- **THEN** kana and kanji use Cubic 11 with consistent glyph metrics
+- **WHEN** 玩家看到「やり直し」或「メニューに戻る」
+- **THEN** 假名與漢字使用 Cubic 11，字形尺寸一致
 
-#### Scenario: Offline font delivery
+#### Scenario: 離線字型載入
 
-- **WHEN** the production application reloads offline after worker activation
-- **THEN** the bundled CJK font remains available under the Pages base path
+- **WHEN** 背景快取程式啟用後，正式應用程式離線重新載入
+- **THEN** 仍可從 Pages 基底路徑取得專案內的中日文字型
 
-#### Scenario: Consistent Latin typography
+#### Scenario: 一致的拉丁字型
 
-- **WHEN** the player switches between English, Chinese and Japanese
-- **THEN** Latin text and digits retain consistent rendered glyph metrics without language-specific font scaling
+- **WHEN** 玩家在英文、正體中文與日文間切換
+- **THEN** 拉丁文字與數字的實際字形尺寸一致，不按語言縮放字型
 
-### Requirement: Stable action geometry
+### Requirement: 穩定的操作元件版面
 
-Home, Menu, language selection, result and quiz intro controls SHALL preserve
-size, position and corner radius across en, zh and ja at the same viewport.
-Dialog menu labels SHALL remain on one line, and intro actions SHALL be equally wide.
+在相同檢視區，首頁、選單、語言選擇、結果及開始說明的控制元件 SHALL 在 en、zh、ja 維持相同尺寸、位置與圓角。對話框選單標籤 SHALL 保持單行；開始說明的操作按鈕 SHALL 等寬。
 
-#### Scenario: Language switch
+#### Scenario: 切換語言
 
-- **WHEN** the selected language changes at the same viewport size
-- **THEN** translated text changes without resizing or repositioning controls
+- **WHEN** 在相同檢視區尺寸切換語言
+- **THEN** 只改翻譯文字，不調整控制元件尺寸或位置
 
-#### Scenario: Intro and feedback
+#### Scenario: 開始說明與回饋
 
-- **WHEN** translated quiz instructions or answer feedback are displayed
-- **THEN** reserved container space prevents language-dependent layout changes
+- **WHEN** 顯示各語言的答題說明或答案回饋
+- **THEN** 容器預留空間，避免版面隨語言改變

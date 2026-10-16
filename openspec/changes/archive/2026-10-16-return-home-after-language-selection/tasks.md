@@ -1,3 +1,3 @@
-- [x] 1. Update navigation requirements and the language link destination.
-- [x] 2. Update affected gameplay/navigation checks and cover keyboard selection, the current language, Home focus and picker geometry.
-- [x] 3. Validate, record evidence and archive.
+- [x] 1. 更新導覽需求與語言連結目的地。
+- [x] 2. 更新受影響的玩法／導覽檢查，涵蓋鍵盤選擇、目前語言、首頁焦點與語言頁版面。
+- [x] 3. 驗證、記錄證據並封存。

@@ -1,10 +1,10 @@
-# Eight commits
+# 八次提交
 
-- [x] 1. Establish shared visual tokens and controls.
-- [x] 2. Refresh Home.
-- [x] 3. Refresh Menu.
-- [x] 4. Refresh language selection.
-- [x] 5. Refresh the start dialog.
-- [x] 6. Refresh Quiz and progress feedback.
-- [x] 7. Refresh results.
-- [x] 8. Verify, document and archive the complete redesign; prepare PR handoff.
+- [x] 1. 建立共用視覺變數與控制元件。
+- [x] 2. 更新首頁。
+- [x] 3. 更新選單。
+- [x] 4. 更新語言選擇。
+- [x] 5. 更新開始對話框。
+- [x] 6. 更新答題頁與進度回饋。
+- [x] 7. 更新結果頁。
+- [x] 8. 驗證、記錄並封存完整改版，準備 PR 交接。

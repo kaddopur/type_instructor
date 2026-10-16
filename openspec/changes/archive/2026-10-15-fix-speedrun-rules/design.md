@@ -1,13 +1,7 @@
-# Design
+# 設計
 
-Put SCORE_TARGET in src/lib/gameRules.js to share between the Zustand store and
-Quiz instructions. Replace the single {scoreTarget} placeholder in GOAL_SPEEDRUN
-at render time; no general formatting library is needed.
+將 SCORE_TARGET 放在 src/lib/gameRules.js，供 Zustand 狀態儲存區與 Quiz 說明共用。顯示時替換 GOAL_SPEEDRUN 中唯一的 {scoreTarget} 佔位符，不需通用格式化函式庫。
 
-Keep the existing 500 ms final-answer feedback, +/-1 scoring, and integer seconds
-captured at the final correct answer. At 19 points the game continues; at 20 it
-finishes after feedback. Preserve existing URLs and fix only the incorrect menu entry.
+保留最後作答後 500 毫秒回饋、答對／答錯加減一分，以及最後答對當下記錄的整數秒。19 分繼續遊戲；20 分在回饋結束後完成。保留既有網址，只修正錯誤選單入口。
 
-Use native Node store tests for the explicit 20-point contract and deduction near
-the threshold. Browser tests cover localized entry routes/instructions and actual
-19-to-20 progression, feedback, result navigation, and replay.
+用原生 Node 狀態測試確認目標明確為 20 分，以及接近目標時的扣分行為。瀏覽器測試涵蓋三語入口路徑與說明、實際從 19 到 20 分、回饋、結果導頁與重玩。

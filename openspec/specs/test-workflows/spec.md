@@ -1,112 +1,98 @@
-# test-workflows Specification
+# 測試流程規格
 
 ## Purpose
 
-Define repeatable unit and browser checks, test locations, and the shared CI validation workflow.
+定義可重複執行的單元與瀏覽器測試、測試檔案位置、格式與提交前檢查，以及共用 CI 驗證流程，讓本機與部署前檢查使用一致指令與通過條件。
 
 ## Requirements
 
-### Requirement: Colocated unit tests
+### Requirement: 與原始碼並存的單元測試
 
-Unit tests SHALL use Vitest in a Node environment, reside beside source files as
-src/**/*.test.ts, and exclude browser specs. pnpm test and pnpm test:unit SHALL run
-the unit suite; pnpm test:unit:watch SHALL provide watch mode.
+單元測試 SHALL 在 Node 環境使用 Vitest，檔名為 src/**/*.test.ts，放在原始碼旁，排除瀏覽器測試。pnpm test 與 pnpm test:unit SHALL 執行單元測試；pnpm test:unit:watch SHALL 提供監看模式。
 
-#### Scenario: Run unit checks
+#### Scenario: 執行單元檢查
 
-- **WHEN** pnpm test:unit is executed
-- **THEN** quiz generation, damage status, routes, and game store tests run without launching a browser
+- **WHEN** 執行 pnpm test:unit
+- **THEN** 不啟動瀏覽器，執行出題、傷害狀態、路由與遊戲狀態測試
 
-### Requirement: Unified browser tests
+### Requirement: 統一瀏覽器測試
 
-Browser tests SHALL reside under tests/e2e and use one Playwright configuration.
-The player-flow suite SHALL cover desktop Chromium, Firefox, WebKit, and mobile
-WebKit emulation. Tags SHALL support smoke, gameplay, accessibility, and offline selection.
+瀏覽器測試 SHALL 放在 tests/e2e，使用同一份 Playwright 設定。玩家流程測試 SHALL 涵蓋桌面 Chromium、Firefox、WebKit 與手機 WebKit 模擬。標籤 SHALL 支援選取冒煙、玩法、無障礙與離線測試。
 
-#### Scenario: Complete browser acceptance
+#### Scenario: 完整瀏覽器驗收
 
-- **WHEN** pnpm test:e2e is executed
-- **THEN** all browser projects run against a production build at /type_instructor/
+- **WHEN** 執行 pnpm test:e2e
+- **THEN** 所有瀏覽器測試環境都對 /type_instructor/ 下的正式建置執行測試
 
-#### Scenario: Development smoke check
+#### Scenario: 開發環境冒煙檢查
 
-- **WHEN** E2E_SERVER=dev pnpm test:e2e:smoke is executed
-- **THEN** only Chromium smoke cases run against the development server
+- **WHEN** 執行 E2E_SERVER=dev pnpm test:e2e:smoke
+- **THEN** 只在開發伺服器執行 Chromium 冒煙案例
 
-### Requirement: CI uses the shared test commands
+### Requirement: CI 使用共用測試指令
 
-The Pages workflow SHALL run unit checks and one complete browser suite using the
-same scripts as local validation before allowing the existing deployment flow.
+Pages 工作流程 SHALL 使用與本機驗證相同的指令，執行單元測試與一輪完整瀏覽器測試。通過後才可進入既有部署流程。
 
-#### Scenario: CI validation
+#### Scenario: CI 驗證
 
-- **WHEN** the Pages workflow validates a revision
-- **THEN** formatting, lint, type checking, unit tests, and the complete browser suite must pass
-- **AND** deployment remains restricted to the existing main publication flow
+- **WHEN** Pages 工作流程驗證某個版本
+- **THEN** 格式、lint、型別檢查、單元測試與完整瀏覽器測試都必須通過
+- **AND** 部署仍限於既有 main 發布流程
 
-#### Scenario: Shared quality checks
+#### Scenario: 共用品質檢查
 
-- **WHEN** the Pages workflow validates a revision
-- **THEN** a single `checks` job runs formatting, lint, type checking and unit tests once
-- **AND** the two browser matrix jobs start independently in parallel without repeating those checks
-- **AND** deployment requires both the shared checks and all browser shards to succeed
+- **WHEN** Pages 工作流程驗證某個版本
+- **THEN** 由單一 `checks` 工作各執行一次格式、lint、型別與單元測試
+- **AND** 兩個瀏覽器矩陣工作獨立並行啟動，不重複上述檢查
+- **AND** 部署須等共用檢查及全部瀏覽器分批都成功
 
-#### Scenario: Parallel CI shards
+#### Scenario: CI 並行分批
 
-- **WHEN** the Pages workflow runs the complete browser suite
-- **THEN** two parallel matrix jobs run Playwright shards 1/2 and 2/2
-- **AND** their union includes every browser case without omission or duplication
-- **AND** failure in either shard prevents deployment while the other shard completes
+- **WHEN** Pages 工作流程執行完整瀏覽器測試
+- **THEN** 兩個矩陣工作並行執行 Playwright 第 1/2 與 2/2 批
+- **AND** 合計涵蓋每個瀏覽器案例，沒有遺漏或重複
+- **AND** 任一批失敗就阻止部署，另一批仍執行至完成
 
-### Requirement: Consistent repository formatting
+### Requirement: 一致的儲存庫格式
 
-The project SHALL use pinned Prettier and the official Tailwind class-sorting
-plugin, with `src/index.css` as the Tailwind theme entry. `pnpm format` SHALL
-write formatting changes and `pnpm format:check` SHALL check without writing.
-The shared `checks` job SHALL require the formatting check before deployment.
-Generated output, the pnpm lockfile, archived OpenSpec records, third-party test
-fixtures, fonts and image source assets SHALL be excluded through `.prettierignore`.
+專案 SHALL 固定 Prettier 版本，使用官方 Tailwind 類別排序外掛，並以 `src/index.css` 作為 Tailwind 主題入口。`pnpm format` SHALL 寫入格式調整；`pnpm format:check` SHALL 只檢查，不寫入。
 
-#### Scenario: Local and CI formatting
+共用 `checks` 工作 SHALL 在部署前要求格式檢查通過。`.prettierignore` SHALL 排除產生的輸出、pnpm 鎖定檔、OpenSpec 封存、第三方測試資料、字型與圖片來源資源。
 
-- **WHEN** a contributor runs `pnpm format` followed by `pnpm format:check`
-- **THEN** supported maintained source, configuration and documentation files have consistent formatting
-- **AND** ESLint remains responsible for code correctness and React Hooks rules
+#### Scenario: 本機與 CI 格式檢查
 
-### Requirement: Automatic staged-file checks
+- **WHEN** 貢獻者依序執行 `pnpm format` 與 `pnpm format:check`
+- **THEN** 支援且持續維護的原始碼、設定與文件使用一致格式
+- **AND** ESLint 仍負責程式正確性與 React Hooks 規則
 
-Installing development dependencies SHALL install a simple-git-hooks pre-commit
-hook. lint-staged SHALL run ESLint fixes, Prettier, then ESLint checks on staged
-JavaScript and TypeScript; other supported staged files SHALL use Prettier.
-Remaining lint errors SHALL block commits. Unstaged changes SHALL remain outside
-commits using lint-staged's default backup and restore behavior.
+### Requirement: 自動檢查暫存檔
 
-#### Scenario: Fixable staged changes
+安裝開發相依套件時 SHALL 安裝 simple-git-hooks 的提交前鉤子。lint-staged SHALL 對已暫存的 JavaScript／TypeScript 依序執行 ESLint 修正、Prettier 與 ESLint 檢查；其他支援的暫存檔使用 Prettier。
 
-- **WHEN** a contributor commits files with formatting or automatically fixable lint issues
-- **THEN** the tools fix and stage those changes before the commit completes
+未解決的 lint 錯誤 SHALL 阻止提交。lint-staged SHALL 透過預設備份與還原行為，讓未暫存的修改不進入提交。
 
-#### Scenario: Remaining lint error
+#### Scenario: 可自動修正的暫存修改
 
-- **WHEN** a staged file contains a lint error that ESLint cannot fix
-- **THEN** the commit fails and the contributor's staged and unstaged changes remain available
+- **WHEN** 貢獻者提交含格式問題或可自動修正 lint 問題的檔案
+- **THEN** 工具在提交完成前修正並暫存這些變更
 
-### Requirement: Player-flow E2E scope
+#### Scenario: 未解決的 lint 錯誤
 
-Required E2E checks SHALL cover navigation, gameplay completion/replay, exit
-confirmation, record persistence, keyboard/touch focus and offline use. Pixel
-geometry, font metrics, broad accessibility scans, analytics wiring and exhaustive
-algorithm permutations SHALL NOT be required E2E checks. Existing unit coverage
-SHALL retain game rules, routes, records and analytics validation.
+- **WHEN** 暫存檔含有 ESLint 無法修正的 lint 錯誤
+- **THEN** 提交失敗，已暫存與未暫存的修改都保留
 
-#### Scenario: Representative player journeys
+### Requirement: 玩家流程端對端測試範圍
 
-- **WHEN** the required browser suite runs
-- **THEN** all four browser/device projects exercise full basic/speedrun attack/defense games in Traditional Chinese
-- **AND** all three languages exercise switching, starting, answering and leaving a game
-- **AND** keyboard, pointer/touch focus, records and offline worker upgrades remain covered
+必要端對端測試 SHALL 涵蓋導覽、完整遊玩／重玩、離開確認、紀錄保存、鍵盤／觸控焦點與離線使用。像素尺寸、字型度量、全面無障礙掃描、分析整合及窮舉演算法組合 SHALL NOT 列為必要端對端檢查。既有單元測試 SHALL 保留規則、路由、紀錄與分析驗證。
 
-#### Scenario: Focused accessibility selection
+#### Scenario: 代表性玩家流程
 
-- **WHEN** `pnpm test:a11y` runs
-- **THEN** it checks keyboard and focus journeys, without claiming a broad axe or WCAG audit
+- **WHEN** 執行必要瀏覽器測試
+- **THEN** 四個瀏覽器／裝置測試環境都以正體中文完成一般／競速、攻擊／防禦的完整遊戲
+- **AND** 三種語言都測試切換、開始、作答與離開
+- **AND** 持續涵蓋鍵盤、滑鼠／觸控焦點、紀錄與離線背景快取程式更新
+
+#### Scenario: 鍵盤與焦點無障礙測試
+
+- **WHEN** 執行 `pnpm test:a11y`
+- **THEN** 檢查鍵盤與焦點流程，不宣稱已完成全面 axe 或 WCAG 稽核

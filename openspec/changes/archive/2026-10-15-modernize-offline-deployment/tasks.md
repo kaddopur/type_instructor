@@ -1,16 +1,16 @@
-## 1. Build and offline migration
+## 1. 建置與離線遷移
 
-- [x] 1.1 Pin pnpm and update its lockfile; remove the npm lock and obsolete offline dependencies.
-- [x] 1.2 Generate the production worker with Workbox and scope-safe legacy cleanup.
-- [x] 1.3 Preserve production registration URL, disable HTTP script cache for updates, and keep development unregistered.
+- [x] 1.1 固定 pnpm 版本並更新鎖定檔；移除 npm 鎖定檔及舊離線相依套件。
+- [x] 1.2 用 Workbox 產生正式背景快取程式，只清理指定範圍的舊快取。
+- [x] 1.3 保留正式註冊網址，更新時停用 HTTP 腳本快取，開發環境不註冊。
 
-## 2. Pages automation
+## 2. Pages 自動化
 
-- [x] 2.1 Add master/PR/manual validation and master-only artifact deployment.
-- [x] 2.2 Document package manager, Pages settings, update behavior, and deployment procedure.
+- [x] 2.1 加入 master／PR／手動驗證，以及只允許 master 的成品部署。
+- [x] 2.2 說明套件管理器、Pages 設定、更新行為與部署步驟。
 
-## 3. Verification
+## 3. 驗證
 
-- [x] 3.1 Verify legacy-to-Workbox and Workbox-to-Workbox updates, scoped cleanup, and failed-install recovery.
-- [x] 3.2 Verify offline gameplay and that updates do not force-reload a running game.
-- [x] 3.3 Verify frozen installation, logic tests, development/production browser checks, audit, workflow syntax, and OpenSpec; record limits.
+- [x] 3.1 驗證舊版到 Workbox、Workbox 到 Workbox 的更新、按範圍清理，以及安裝失敗復原。
+- [x] 3.2 驗證離線遊玩，確認更新不強制重新載入正在玩的遊戲。
+- [x] 3.3 驗證凍結鎖定檔安裝、邏輯測試、開發／正式瀏覽器測試、套件稽核、工作流程語法及 OpenSpec，並記錄限制。

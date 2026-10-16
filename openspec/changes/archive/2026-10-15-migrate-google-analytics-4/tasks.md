@@ -1,4 +1,4 @@
-- [x] 1. Record GA4 requirements, design and validation scenarios.
-- [x] 2. Replace UA, integrate hash-route page views and add regression tests.
-- [x] 3. Document GA4 setup, verify, sync specs and archive.
-- [x] 4. Use the newly created Type Instructor stream G-6H3DMT5TLL; update code, tests and specs, and rerun analytics checks.
+- [x] 1. 記錄 GA4 需求、設計與驗證情境。
+- [x] 2. 更換 UA，整合 hash 路由網頁瀏覽事件並加入回歸測試。
+- [x] 3. 說明 GA4 設定，驗證、同步規格並封存。
+- [x] 4. 使用新建的 Type Instructor 串流 G-6H3DMT5TLL；更新程式、測試與規格，重跑分析檢查。

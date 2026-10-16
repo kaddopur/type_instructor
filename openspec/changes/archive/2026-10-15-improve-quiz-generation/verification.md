@@ -1,38 +1,26 @@
-# Verification
+# 驗證紀錄
 
-Date: 2026-10-15. Node 24.19.0, pnpm 11.22.0.
+日期：2026-10-15。環境：Node 24.19.0、pnpm 11.22.0。
 
-## Results
-- `pnpm test:unit`: 21 tests passed in 5 files.
-- `pnpm typecheck`: passed.
-- `pnpm lint`: passed with no warnings.
-- `pnpm exec playwright test --workers=4`: 152 passed (1.5 minutes).
-  Chromium desktop, Firefox desktop, WebKit desktop and iPhone 13-sized WebKit;
-  38 cases per project. Production build and service-worker generation passed
-  as part of the Playwright web-server startup.
-- `pnpm exec playwright test --list --shard=1/2` and `--shard=2/2`:
-  76 tests per CI shard.
-- `openspec validate improve-quiz-generation --strict`: passed before archive.
-- `openspec validate --all --strict`: all 12 main specs passed after archive.
-- `git diff --check`: passed.
+## 結果
 
-## Acceptance coverage
-- Generator unit checks cover ten shuffled rounds for both quiz kinds, forced
-  bag-boundary collisions under constant randomness and independent generators.
-- Store regression checks collect two rounds while interleaving wrong attempts,
-  timer ticks and a second session, preserving coverage and avoiding repeats.
-- Defense checks cover all 18 targets under both preferences, unique best
-  answers, immunity exclusion in resistance questions, three alternating rounds
-  and fresh-session preference reset. Electric and dragon have explicit checks.
-- Browser checks use an independent matchup fixture to solve the displayed
-  options; no application answer is exposed to the tests. Both quiz kinds run
-  two full bags in every browser project, checking coverage, no adjacent repeats,
-  answer multipliers and scores. Defense round two requires 0.5 for every target.
-- Existing language, keyboard, scoring, 20-point completion, retry, layout,
-  accessibility and offline-update checks all pass with changing targets.
+- `pnpm test:unit`：5 個檔案共 21 個測試通過。
+- `pnpm typecheck`：通過。
+- `pnpm lint`：通過，沒有警告。
+- `pnpm exec playwright test --workers=4`：152 個通過，耗時 1.5 分鐘。涵蓋桌面 Chromium、Firefox、WebKit 與 iPhone 13 尺寸 WebKit，每個環境 38 個案例。Playwright 啟動網頁伺服器時，正式建置與背景快取程式產生流程通過。
+- `pnpm exec playwright test --list --shard=1/2` 與 `--shard=2/2`：CI 每批 76 個測試。
+- `openspec validate improve-quiz-generation --strict`：封存前通過。
+- `openspec validate --all --strict`：封存後全部 12 份正式規格通過。
+- `git diff --check`：通過。
 
-## Limits
-Coverage is balanced by target, not by correct-answer type or difficulty.
-Targets with immunity begin with immunity practice; their resistance practice
-starts in round two. No persisted history, difficulty tiers or delayed review.
-Browser device emulation does not replace testing on physical phones.
+## 驗收涵蓋範圍
+
+- 出題單元測試涵蓋兩題型各十輪洗牌、固定亂數下強制輪次邊界重複，以及獨立出題器。
+- 狀態回歸測試收集兩輪題目，交錯執行答錯、計時跳動及第二場次，確認屬性涵蓋完整且不連續重複。
+- 防禦測試涵蓋全部 18 種題幹屬性與兩種偏好、唯一最佳答案、抗性題排除免疫、三輪交替，以及新場次重設偏好。另明確檢查電與龍。
+- 瀏覽器測試用獨立相剋資料判斷畫面選項，不向測試暴露應用程式的答案。每個瀏覽器環境的兩題型都執行兩輪，檢查涵蓋率、不連續重複、答案倍率與分數。防禦第二輪要求每種題幹屬性的正解倍率都是 0.5。
+- 題幹變動後，既有語言、鍵盤、計分、20 分結束、重玩、版面、無障礙與離線更新測試都通過。
+
+## 限制
+
+均衡的是題幹屬性，不是正解屬性或難度。有免疫的屬性先練免疫，第二輪才練抗性。不加入持久化紀錄、難度分級或延後複習。瀏覽器裝置模擬不能取代實體手機測試。

@@ -1,41 +1,35 @@
-# migration-acceptance Specification
+# 遷移驗收規格
 
 ## Purpose
 
-Define representative player journeys, browser coverage and verified-release acceptance.
+定義遷移後的代表性玩家流程、支援的瀏覽器測試環境與發布證據。驗收涵蓋完整遊戲及各語言操作，報告須清楚區分本機、遠端、模擬與實機結果。
 
 ## Requirements
 
-### Requirement: Complete game matrix
+### Requirement: 完整遊戲測試組合
 
-Acceptance checks SHALL cover full basic/speedrun attack/defense completion,
-results and retry in Traditional Chinese. English, Chinese and Japanese SHALL
-cover localized navigation, starting, answering and leaving a game.
+驗收 SHALL 以正體中文完整測試一般／競速、攻擊／防禦的結束、結果與重玩。英文、正體中文與日文 SHALL 都涵蓋對應語言的導覽、開始、作答及離開遊戲。
 
-#### Scenario: Complete a game
+#### Scenario: 完成一場遊戲
 
-- **WHEN** the acceptance suite runs against the production build
-- **THEN** every mode/question-type combination in the representative locale reaches a correct result and starts a clean replay
-- **AND** shorter journeys validate operation in all supported languages
+- **WHEN** 對正式建置執行驗收測試
+- **THEN** 代表語言的每種模式／題型組合都得到正確結果，並開始乾淨的新一場
+- **AND** 用較短流程驗證全部支援語言可操作
 
-### Requirement: Browser player-flow coverage
+### Requirement: 瀏覽器玩家流程涵蓋範圍
 
-Acceptance SHALL verify desktop Chromium, Firefox, WebKit, and mobile WebKit emulation,
-with real answer controls operable through browser actions. Required E2E checks
-SHALL focus on player journeys rather than exact geometry. Reports SHALL
-distinguish emulation from physical devices.
+驗收 SHALL 涵蓋桌面 Chromium、Firefox、WebKit 與手機 WebKit 模擬，透過瀏覽器操作真實答案控制元件。必要的端對端測試 SHALL 聚焦玩家流程，不要求精確版面尺寸。報告 SHALL 區分模擬與實機。
 
-#### Scenario: Answer operation
+#### Scenario: 答案操作
 
-- **WHEN** a game is shown in a supported test viewport
-- **THEN** players can start the game, select an answer and receive feedback through the rendered controls
+- **WHEN** 遊戲在支援的測試檢視區顯示
+- **THEN** 玩家可用畫面控制元件開始遊戲、選擇答案並取得回饋
 
-### Requirement: Release evidence
+### Requirement: 發布證據
 
-Release SHALL follow passing local and remote validation and record the deployed
-revision and live verification. The report SHALL identify tests not executed.
+發布 SHALL 在本機與遠端驗證通過後執行，並記錄部署版本及線上驗證。報告 SHALL 列出未執行的測試。
 
-#### Scenario: Pages publication
+#### Scenario: Pages 發布
 
-- **WHEN** the passing migration PR merges to main
-- **THEN** the Pages workflow deploys and the published game's asset and gameplay checks pass
+- **WHEN** 通過檢查的遷移 PR 合併至 main
+- **THEN** Pages 工作流程完成部署，已發布遊戲的資源與玩法檢查通過

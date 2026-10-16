@@ -1,34 +1,18 @@
-# Design
+# 設計
 
-## Context
-The application uses Tailwind CSS 4, shared shadcn/Radix Button and Dialog,
-Zustand game sessions, hash routes and a safe viewport shell. Current specs
-previously required PKMN/GB Latin glyphs and always focusing the first answer.
-The user approved the changed typography and input-method-aware focus flow.
+## 背景
 
-## Decisions
-- Keep time, exit and score in one row. Exit opens a modal focused on continuing;
-  dismissing restores the trigger. The timer and existing result transition
-  continue during confirmation, and answers are blocked behind the dialog.
-- Track keyboard versus pointer input in a ref. For a fresh question, keyboard
-  input focuses the first answer; pointer/touch focuses a non-tab-stop answer
-  group, so the next Tab enters its first child. Existing feedback behavior stays.
-- Persist best values only from the completed Quiz result transition, before
-  navigation. Result URLs are display-only and cannot create records. Separate
-  localStorage keys represent mode and question kind; languages share keys.
-  Basic uses maximum scores, including negative initial values; speedrun uses
-  minimum nonnegative integer times, including zero. Storage errors are optional
-  persistence failures and cannot interrupt play.
-- Use the already bundled Cubic 11 for all supported scripts and digits instead
-  of full-width GB Latin glyphs. Keep role-based sizes constant across locales.
-- Put changed component layout, spacing and typography in Tailwind utilities.
-  Retain font faces, theme tokens and existing shared CSS. No new dependencies.
-- Capture actual built pages at 390 x 844 with fixed randomness and clock. Wait
-  for fonts and paint, and click neutral headings before capture so navigation
-  focus rings do not obscure the screenshots. Preserve provenance for uncommitted
-  source changes and permit the installed Chrome channel.
+應用程式使用 Tailwind CSS 4、共用 shadcn／Radix Button 與 Dialog、Zustand 場次、hash 路由與安全檢視區外框。先前規格要求拉丁字母使用 PKMN／GB，並一律聚焦第一個答案。使用者已核准字型變更，以及依輸入方式調整焦點流程。
 
-## Limits
-Records belong to this browser and are not synchronized. Clearing storage clears
-records; storage-denied environments still work without persistence. Automated
-Chrome and touch emulation do not replace physical iOS or screen-reader checks.
+## 決策
+
+- 時間、離開與分數維持同列。離開會開啟模態對話框，預設聚焦繼續遊戲；關閉後焦點回到觸發按鈕。確認期間計時與既有結果切換繼續，對話框後方答案不可作答。
+- 用 ref 記錄鍵盤或指標輸入。新題若由鍵盤操作，聚焦第一個答案；滑鼠／觸控則聚焦不列入 Tab 順序的答案群組，下一次 Tab 進入第一個子項。保留既有回饋行為。
+- 只有 Quiz 正常結束並轉往結果時，才在導頁前儲存最佳成績。結果網址只顯示，不建立紀錄。localStorage 依模式與題型分鍵，跨語言共用。一般模式取最高分，初次可為負；競速取最短非負整數秒，可為零。儲存失敗只影響紀錄保存，不中斷遊戲。
+- 所有支援文字與數字使用已打包的 Cubic 11，取代 GB 全形拉丁字母。同一用途的文字在各語言維持相同尺寸。
+- 改動的元件版面、間距與字型使用 Tailwind 工具類別。保留字型宣告、主題變數與既有共用 CSS，不新增相依套件。
+- 固定亂數與時鐘，在 390 x 844 擷取實際建置頁面。等待字型與畫面繪製完成，截圖前點擊一般標題，避免導覽焦點框遮住畫面。記錄未提交原始碼的來源，並允許使用已安裝 Chrome。
+
+## 限制
+
+紀錄只屬於目前瀏覽器，不會同步。清除儲存空間會清除紀錄；禁止儲存的環境仍可遊玩，但無法保存。自動 Chrome 與觸控模擬不能取代實體 iOS 或螢幕閱讀器檢查。

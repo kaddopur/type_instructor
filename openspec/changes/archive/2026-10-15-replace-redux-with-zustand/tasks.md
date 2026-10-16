@@ -1,16 +1,16 @@
-## 1. State and localization
+## 1. 狀態與語系處理
 
-- [x] 1.1 Add Zustand and implement isolated session stores with guarded actions.
-- [x] 1.2 Remove Redux dependencies, reducer/actions, connect, and Provider.
-- [x] 1.3 Select static translations by URL without store subscriptions.
+- [x] 1.1 加入 Zustand，實作具操作防護的獨立場次儲存區。
+- [x] 1.2 移除 Redux 相依、reducer／actions、connect 與 Provider。
+- [x] 1.3 依網址選擇靜態翻譯，不訂閱狀態儲存區。
 
-## 2. Game lifecycle
+## 2. 遊戲生命週期
 
-- [x] 2.1 Replace the game class with a hook and preserve the existing presentation.
-- [x] 2.2 Isolate route sessions, clean up timers, and verify under StrictMode.
+- [x] 2.1 用 hook 取代遊戲類別，保留既有呈現。
+- [x] 2.2 隔離各路徑場次，清理計時器，並在 StrictMode 下驗證。
 
-## 3. Verification
+## 3. 驗證
 
-- [x] 3.1 Adapt baseline tests and verify action guards, completion, and session isolation.
-- [x] 3.2 Verify browser navigation, repeated input, route changes, timers, and production build.
-- [x] 3.3 Verify clean installation/audit, document results and remaining scope, validate OpenSpec.
+- [x] 3.1 調整基準測試，驗證操作防護、結束與場次隔離。
+- [x] 3.2 驗證瀏覽器導覽、重複輸入、路徑變更、計時及正式建置。
+- [x] 3.3 驗證乾淨安裝與套件稽核，記錄結果及剩餘範圍，驗證 OpenSpec。

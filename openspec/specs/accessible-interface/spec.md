@@ -1,57 +1,50 @@
-# accessible-interface Specification
+# 無障礙介面規格
 
 ## Purpose
 
-Define keyboard focus, dialog behavior, localized feedback, and control contrast for the game interface.
+定義遊戲介面的鍵盤焦點、開始對話框、各語言答案回饋與文字對比要求，讓鍵盤、滑鼠、觸控及輔助技術使用者都能辨識題目並操作遊戲。
 
 ## Requirements
 
-### Requirement: First available action receives focus
+### Requirement: 第一個可用操作項目取得焦點
 
-The interface SHALL focus the first available action after route navigation.
-When a new quiz question becomes answerable, keyboard input SHALL focus the first
-available answer; pointer or touch input SHALL focus the answer group so the next
-Tab enters its first answer. Question and result context SHALL be programmatically
-associated with the answer group, focused answer or retry control.
+介面 SHALL 在路徑切換後聚焦第一個可用操作項目。新題可作答時，鍵盤操作 SHALL 聚焦第一個可用答案；滑鼠或觸控操作 SHALL 聚焦答案群組，讓下一次 Tab 進入第一個答案。題目與結果內容 SHALL 透過程式關聯到答案群組、目前聚焦的答案或重玩控制元件。
 
-#### Scenario: Home navigation
+#### Scenario: 前往首頁
 
-- **WHEN** the home route is displayed
-- **THEN** the Start action receives keyboard focus
+- **WHEN** 首頁路徑顯示
+- **THEN** 鍵盤焦點移到「開始」
 
-#### Scenario: Next question
+#### Scenario: 下一題
 
-- **WHEN** keyboard answer feedback ends and the next question becomes answerable
-- **THEN** the first available answer receives focus and exposes the question as its description
+- **WHEN** 鍵盤作答回饋結束，下一題可作答
+- **THEN** 焦點移到第一個可用答案，並以題目作為其描述
 
-#### Scenario: Next question after pointer input
+#### Scenario: 滑鼠操作後的下一題
 
-- **WHEN** mouse or touch answer feedback ends and the next question becomes answerable
-- **THEN** focus moves to the answer group and the first Tab focuses the first answer with a visible focus indicator
+- **WHEN** 滑鼠或觸控作答回饋結束，下一題可作答
+- **THEN** 焦點移到答案群組；第一次按 Tab 時聚焦第一個答案，並顯示焦點標記
 
-### Requirement: Accessible start dialog
+### Requirement: 無障礙開始對話框
 
-The quiz SHALL use a named modal dialog with a description and contained keyboard
-focus. The game SHALL start only after explicit confirmation.
+答題頁 SHALL 使用有名稱、有描述的模態對話框，並將鍵盤焦點限制在框內。遊戲 SHALL 只有在玩家明確確認後才開始。
 
-#### Scenario: Confirm start
+#### Scenario: 確認開始
 
-- **WHEN** the player activates the dialog start action
-- **THEN** the dialog closes and focus enters the answers according to the input method
+- **WHEN** 玩家啟動對話框的開始按鈕
+- **THEN** 對話框關閉，依輸入方式將焦點移入答案區
 
-#### Scenario: Dismiss start
+#### Scenario: 關閉開始說明
 
-- **WHEN** the player dismisses the start dialog
-- **THEN** navigation returns to the menu without starting the game timer
+- **WHEN** 玩家關閉開始對話框
+- **THEN** 返回選單，不啟動遊戲計時器
 
-### Requirement: Accessible answer feedback
+### Requirement: 無障礙答案回饋
 
-Answers SHALL use native keyboard-operable controls. Feedback SHALL be localized
-and exposed through a polite status region. Timer ticks SHALL NOT be live announcements.
-Text on type-colored controls SHALL meet a contrast ratio of at least 4.5:1.
+答案 SHALL 使用可由鍵盤操作的原生控制元件。回饋 SHALL 使用目前語言，並透過不打斷朗讀的狀態區提供。計時跳動 SHALL NOT 即時宣告。屬性配色控制元件上的文字對比 SHALL 至少達 4.5:1。
 
-#### Scenario: Answer submitted
+#### Scenario: 提交答案
 
-- **WHEN** a player submits an answer
-- **THEN** localized correctness feedback is visible and available through the status region
-- **AND** unavailable answers cannot change the game state
+- **WHEN** 玩家提交答案
+- **THEN** 畫面顯示目前語言的正誤回饋，狀態區也提供同樣資訊
+- **AND** 不可用的答案不能改變遊戲狀態

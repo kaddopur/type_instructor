@@ -1,4 +1,4 @@
-- [x] 1. Document branch-rename requirements and deployment validation.
-- [x] 2. Update workflow/current instructions and the environment branch policy; verify main publication and non-main/PR exclusion.
-- [x] 3. Run checks, record evidence, sync specs and archive.
-- [x] 4. Fix the Firefox palette test's wall-clock race reported by CI; repeat the case and rerun shard 1/2 before pushing the PR fix.
+- [x] 1. 記錄分支改名需求與部署驗證方式。
+- [x] 2. 更新工作流程、現行說明及環境分支政策；確認 main 可發布，其他分支與 PR 不會發布。
+- [x] 3. 執行檢查、記錄證據、同步規格並封存。
+- [x] 4. 修正 CI 回報的 Firefox 色盤測試時鐘競態；推送 PR 修正前，重複執行該案例並重跑第 1/2 批。

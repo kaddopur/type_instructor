@@ -1,29 +1,20 @@
-# Verification
+# 驗證紀錄
 
-The user approved the generated attack/defense comparison before implementation.
-This follow-up is additional to the eight completed UI-refresh commits.
+使用者已在實作前核准生成的攻防題對照圖。這次追加變更接續在已完成的八個介面更新提交之後。
 
-## Local checks
+## 本機檢查
 
-- pnpm lint and pnpm typecheck passed.
-- Chromium targeted layout/gameplay checks: 19 passed before final phrase wrapping.
-- Final complete browser matrix: 120 passed (two workers, approximately 2.2 minutes).
-- Matrix: desktop Chromium, Firefox, WebKit and mobile WebKit emulation.
-- Existing complete games now assert condition label, explicit question, unparenthesized
-  type name and accessible answer-group context in all three languages and four modes.
-- Cross-language geometry checks include the separate instruction slot in intro,
-  playing and feedback states at portrait, landscape and desktop sizes.
-- Keyboard/axe, all type-color contrast, resource and offline-update checks passed.
-- Chromium rendered-font inspection confirmed Pokemon GB for both English questions
-  and Cubic 11 alone for both Chinese and Japanese questions, without system fallback.
-- Actual Japanese attack/defense screenshots were inspected after adding deliberate
-  phrase-boundary line breaks. docs/ui-refresh also contains updated Chinese feedback.
-- OpenSpec strict validation and git diff --check passed before commit.
+- pnpm lint 與 pnpm typecheck 通過。
+- 最後調整詞組換行前，針對 Chromium 執行的版面與玩法檢查有 19 個通過。
+- 最終完整瀏覽器測試組合：120 個通過，以兩個工作程序執行，約 2.2 分鐘。
+- 測試組合：桌面 Chromium、Firefox、WebKit 與手機 WebKit 模擬。
+- 既有完整遊戲案例新增檢查：三種語言與四種模式都顯示條件標籤、明確提問、無括號屬性名稱，以及答案群組的輔助技術描述。
+- 跨語言版面檢查包含直向、橫向與桌面尺寸下，開始說明、遊玩及回饋狀態的獨立提問區塊。
+- 鍵盤／axe、所有屬性配色對比、資源與離線更新檢查通過。
+- Chromium 實際字型檢查確認：兩種英文提問使用 Pokemon GB；中文與日文提問只使用 Cubic 11，沒有退回系統字型。
+- 加入詞組邊界換行後，已檢視日文攻防題實際截圖。docs/ui-refresh 也加入更新後的中文回饋畫面。
+- 提交前 OpenSpec 嚴格驗證與 git diff --check 通過。
 
-## Rules and limitations
+## 規則與限制
 
-The damage matrix, strongest/weakest answer selection, scoring, timers and 500ms
-feedback boundary are unchanged. No physical iPhone or manual screen-reader check
-was performed. Existing eight-step revision 28f3610 passed remote CI run
-38699057021; the new follow-up revision must receive its own CI result after push.
-No merge or deployment is claimed by this record.
+傷害表、最強／最弱答案選取、計分、計時與 500 毫秒回饋邊界均未改動。未使用實體 iPhone 或手動螢幕閱讀器檢查。既有八步驟版本 28f3610 已通過遠端 CI 執行 38699057021；此次追加版本仍須在推送後取得自己的 CI 結果。本紀錄不代表已合併或部署。

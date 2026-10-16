@@ -1,33 +1,17 @@
-# Design
+# 設計
 
-## Interface
+## 介面
 
-Tailwind supplies static type-color utilities and pixel-themed layout styles.
-Shared Button and Dialog components use shadcn conventions and Radix primitives;
-the vendored component license is retained. Native buttons and links expose
-keyboard semantics. The controlled start dialog traps focus and starts the timer
-only after explicit confirmation; dismissal returns to the menu.
+Tailwind 提供靜態屬性配色工具類別與像素版面樣式。共用 Button 與 Dialog 採 shadcn 慣例及 Radix 基礎元件，保留引入的元件授權。原生按鈕與連結提供鍵盤語意。受控開始對話框將焦點限制在框內，只有明確確認後才計時；關閉則返回選單。
 
-Route navigation focuses the first available action. Each new quiz question
-focuses its first available answer, whose description includes the question.
-Results connect Retry to the result summary. Localized polite status feedback
-announces answer outcomes without announcing timer ticks. Contrast checks cover
-all type colors and incorrect-answer styling.
+切換路徑後聚焦第一個可操作項目。每道新題聚焦第一個可用答案，其描述包含題目。結果頁將重玩按鈕與結果摘要關聯。翻譯後的狀態回饋以不打斷朗讀的方式宣告作答結果，不宣告每秒計時。對比檢查涵蓋所有屬性配色與答錯樣式。
 
-## Test boundaries
+## 測試範圍
 
-Vitest runs only src/**/*.test.ts in Node and shares Vite configuration. Four
-colocated suites cover quiz generation, status, routes, and the Zustand store.
-Browser specs, fixtures, and support servers live under tests/e2e. They use one
-Playwright configuration and tags @smoke, @gameplay, @a11y, and @offline.
+Vitest 只在 Node 執行 src/**/*.test.ts，並共用 Vite 設定。四組測試放在原始碼旁，涵蓋出題、狀態、路由與 Zustand 狀態儲存區。瀏覽器規格、測試資料與支援伺服器放在 tests/e2e，使用同一份 Playwright 設定與 @smoke、@gameplay、@a11y、@offline 標籤。
 
-The default browser server builds and previews the Pages artifact. E2E_SERVER=dev
-selects Vite development mode for a local smoke run. All projects use the Pages
-base path; the mobile project is WebKit device emulation, not physical-device proof.
-CI runs unit tests and one full browser suite before the existing Pages flow.
+預設瀏覽器伺服器會建置並預覽 Pages 成品。E2E_SERVER=dev 可選擇 Vite 開發模式，執行本機冒煙測試。所有測試環境都使用 Pages 基底路徑；手機環境為 WebKit 裝置模擬，不代表實機驗證。CI 在既有 Pages 流程前執行單元測試與一輪完整瀏覽器測試。
 
-## Limits
+## 限制
 
-Automated axe and keyboard checks do not establish complete accessibility
-conformance or replace assistive-technology testing. This branch has not been
-pushed or deployed; the existing release-evidence gate applies before publication.
+自動 axe 與鍵盤檢查不能證明全面符合無障礙要求，也不能取代輔助技術測試。此分支尚未推送或部署；發布前仍須符合既有發布證據要求。

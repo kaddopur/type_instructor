@@ -1,20 +1,9 @@
-# Acceptance and release design
+# 遷移驗收與發布設計
 
-Keep the existing smoke suite as the quick Chromium check. A separate acceptance
-config reuses its production server and runs all 12 language/mode combinations
-on desktop Chromium, Firefox, WebKit, and mobile WebKit emulation, plus the existing
-real worker-upgrade integration on each engine.
+保留現有冒煙測試，供 Chromium 快速檢查。另設驗收設定，沿用正式建置伺服器，在桌面 Chromium、Firefox、WebKit 與手機 WebKit 模擬環境執行全部 12 種語言／模式組合，並在各引擎執行既有的真實背景快取程式更新整合測試。
 
-Use a paused browser clock and a fixed normal-type enemy to verify scoring, exact
-500 ms feedback, the final countdown/feedback race, 19/20-point completion, replay,
-and browser history without waiting real minutes or exposing internal state.
+暫停瀏覽器時鐘，固定敵方為一般屬性，驗證計分、精確的 500 毫秒回饋、最後倒數與回饋的競態、19／20 分結束邊界、重玩及瀏覽紀錄。測試不必等待實際數分鐘，也不需暴露內部狀態。
 
-Initial acceptance demonstrated clipped answer choices: at 1280×720, a choice's
-bottom was 1011.1875px because percentage padding scaled height with viewport width.
-Cap each answer row at 25dvh, retaining the original 37.5% sizing on narrow screens.
-Use 100dvh with a vh fallback for the game viewport. Assert all four bounds.
+首次驗收發現答案遭裁切：在 1280×720 畫面，選項底部位於 1011.1875px，原因是百分比垂直內距隨檢視區寬度增大。將每列答案高度上限設為 25dvh，窄螢幕保留原本 37.5% 尺寸。遊戲檢視區使用 100dvh，並以 vh 作為備援。檢查全部四個答案的邊界。
 
-Run the same acceptance matrix in remote CI before merging. Pages is already set
-to workflow. Publish through the existing master-only workflow and verify the
-actual live asset revision and game. Record browser emulation and physical-device
-limits rather than claiming real-device coverage.
+合併前在遠端 CI 執行相同驗收組合。Pages 已設為 workflow。透過現有只允許 master 的工作流程發布，確認線上資源版本與遊戲行為。報告須區分瀏覽器模擬與實機驗證，並記錄限制。

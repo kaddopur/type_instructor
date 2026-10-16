@@ -1,17 +1,17 @@
-## 1. Build migration
+## 1. 建置遷移
 
-- [x] 1.1 Configure Node, public registry, Vite, package commands, and lockfile.
-- [x] 1.2 Rename JSX modules, update entry/imports and static JSON loading.
-- [x] 1.3 Move public assets and retain the current offline build under the Pages base.
+- [x] 1.1 設定 Node、公開套件來源、Vite、套件指令與鎖定檔。
+- [x] 1.2 重新命名 JSX 模組，更新入口／匯入與靜態 JSON 載入。
+- [x] 1.3 移動公開資源，讓既有離線建置在 Pages 基底路徑下運作。
 
-## 2. Required React compatibility
+## 2. 必要的 React 相容調整
 
-- [x] 2.1 Mount React with createRoot and upgrade Redux bindings.
-- [x] 2.2 Replace legacy Router integration while preserving hash URLs.
-- [x] 2.3 Update lifecycle integration and clean up timers, retaining Redux gameplay ownership.
+- [x] 2.1 用 createRoot 掛載 React，升級 Redux 綁定。
+- [x] 2.2 更換舊 Router 整合，保留 hash 網址。
+- [x] 2.3 更新生命週期整合並清理計時器，遊戲狀態仍由 Redux 管理。
 
-## 3. Verification and handoff
+## 3. 驗證與交接
 
-- [x] 3.1 Verify clean npm ci, baseline tests, and production build.
-- [x] 3.2 Smoke-test development and production navigation, languages, games, and static assets.
-- [x] 3.3 Record evidence and remaining step-3/4/5 work; update README and validate OpenSpec.
+- [x] 3.1 驗證乾淨 npm ci、基準測試與正式建置。
+- [x] 3.2 對開發及正式環境執行冒煙測試，涵蓋導覽、語言、遊戲與靜態資源。
+- [x] 3.3 記錄證據及第 3／4／5 步剩餘工作，更新 README 並驗證 OpenSpec。

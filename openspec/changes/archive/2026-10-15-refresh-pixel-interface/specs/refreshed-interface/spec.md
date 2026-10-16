@@ -1,42 +1,42 @@
 ## ADDED Requirements
 
-### Requirement: Consistent pixel navigation
-The interface SHALL use shared warm-canvas, white-surface, charcoal-outline and
-yellow-primary tokens. Home SHALL group start/language actions; Menu SHALL show
-two described mode cards with paired attack/defense actions. Language selection
-SHALL distinguish the current language from keyboard focus with a visible check.
+### Requirement: 一致的像素導覽
 
-#### Scenario: Localized navigation
-- **WHEN** players navigate or change between en, zh and ja
-- **THEN** controls keep consistent sizes, corner radii and positions at the same viewport
+介面 SHALL 共用暖色背景、白色表面、炭黑外框與黃色主要操作的主題變數。首頁 SHALL 將開始／語言操作分組；選單 SHALL 顯示兩張有說明的模式卡片，各有成對攻防按鈕。語言選擇 SHALL 以可見勾選區分目前語言與鍵盤焦點。
 
-### Requirement: Clear game hierarchy
-The intro dialog SHALL show the selected mode and goal with equal-width primary
-and secondary actions. Quiz SHALL reserve feedback space and retain four
-colored answer controls. Results SHALL emphasize the score or elapsed seconds.
+#### Scenario: 各語言導覽
 
-#### Scenario: Score progress
-- **WHEN** a speedrun is active
-- **THEN** progress targets 20 score points, preserves the actual score and never changes the game state
+- **WHEN** 玩家切頁，或在 en、zh、ja 間切換
+- **THEN** 相同檢視區的控制元件維持一致尺寸、圓角與位置
 
-#### Scenario: Feedback and replay
-- **WHEN** an answer is submitted and the game completes
-- **THEN** localized text and symbols accompany feedback and Retry remains the first result action
+### Requirement: 清楚的遊戲資訊層級
 
-### Requirement: Responsive accessible delivery
-The redesign SHALL preserve the safe-area shell, keyboard flows, contrast,
-Pages base and offline use. Automated checks SHALL cover all locales and browser
-projects; physical-device limits SHALL be stated explicitly.
+開始對話框 SHALL 顯示所選模式與目標，主要及次要按鈕等寬。答題頁 SHALL 預留回饋空間，保留四個彩色答案控制元件。結果頁 SHALL 突出分數或所用秒數。
 
-#### Scenario: Browser acceptance
-- **WHEN** the production build is validated
-- **THEN** complete games, layout invariance, accessibility and offline checks pass
+#### Scenario: 分數進度
 
-### Requirement: Matching app icons
-Browser favicon, Apple touch icon and PWA manifest icons SHALL use the local
-pixel-T artwork with yellow, charcoal and blue. SVG/ICO/PNG delivery SHALL work
-under the Pages base and be included in offline precaching.
+- **WHEN** 競速模式進行中
+- **THEN** 進度以 20 分為目標，保留實際分數，不改變遊戲狀態
 
-#### Scenario: Icon delivery
-- **WHEN** the application loads browser and manifest icons
-- **THEN** all referenced assets resolve and raster dimensions match their declarations
+#### Scenario: 回饋與重玩
+
+- **WHEN** 提交答案且遊戲完成
+- **THEN** 回饋同時提供目前語言文字與符號，結果頁第一個操作仍是重玩
+
+### Requirement: 響應式與無障礙支援
+
+改版 SHALL 保留安全區域外框、鍵盤流程、對比、Pages 基底路徑與離線使用。自動檢查 SHALL 涵蓋全部語言與瀏覽器測試環境；實機驗證限制 SHALL 明確記錄。
+
+#### Scenario: 瀏覽器驗收
+
+- **WHEN** 驗證正式建置
+- **THEN** 完整遊戲、跨語言版面一致性、無障礙與離線檢查都通過
+
+### Requirement: 配套應用圖示
+
+瀏覽器 favicon、Apple 觸控圖示與 PWA manifest 圖示 SHALL 使用本機黃、炭黑、藍配色的像素 T 圖。SVG／ICO／PNG SHALL 可在 Pages 基底路徑下取得，並納入離線預快取。
+
+#### Scenario: 圖示載入
+
+- **WHEN** 應用程式載入瀏覽器及 manifest 圖示
+- **THEN** 所有引用資源都可取得，點陣圖尺寸與宣告相符

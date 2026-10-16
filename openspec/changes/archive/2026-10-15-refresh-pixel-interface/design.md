@@ -1,19 +1,9 @@
-# Design
+# 設計
 
-Use the first approved four-screen concept: warm canvas, white panels, charcoal
-outlines, yellow primary actions, blue mode accents and existing type colors.
-Keep Cubic/PKMN typography and a single root font scale. Fixed block slots and
-responsive grids must accommodate all translations without moving controls.
-Use native links/buttons, Radix modal behavior and existing focus management.
+採用第一款已核准的四畫面概念：暖色背景、白色面板、炭黑外框、黃色主要按鈕、藍色模式重點與既有屬性配色。保留 Cubic／PKMN 字型與單一根字級。固定區塊及響應式格線須容納全部翻譯，不移動控制元件。使用原生連結／按鈕、Radix 模態行為與既有焦點管理。
 
-Progress is presentation only: basic mode shows remaining seconds; speedrun
-shows a clamped 0–20 progress value while keeping the actual (possibly negative)
-score visible. Store/timers and 500ms answer boundaries remain authoritative.
+進度只供顯示：一般模式顯示剩餘秒數；競速顯示限制在 0–20 的進度值，實際分數仍可見，也可能為負。遊戲仍以狀態儲存區、計時器與 500 毫秒作答邊界為準。
 
-Small viewports use compact spacing; landscape places mode cards side by side
-and uses a compact quiz layout. The AppShell retains dynamic viewport ownership
-and all safe-area insets. Browser emulation does not prove iPhone Safari chrome.
+小檢視區縮小間距；橫向時模式卡片並排，答題頁使用緊湊版面。AppShell 仍管理動態檢視區與四側安全距離。瀏覽器模擬不能證明實體 iPhone Safari 介面的行為。
 
-The user also requested a favicon during implementation. A local pixel-T SVG
-is the source for browser, Apple and manifest icons; old cropped-title icons
-are replaced. PNG sizes and all icon paths are checked with the resource suite.
+使用者在實作期間追加網站圖示需求。本機像素 T SVG 作為瀏覽器、Apple 與 manifest 圖示來源，取代舊裁切標題圖示。資源測試檢查 PNG 尺寸與全部圖示路徑。

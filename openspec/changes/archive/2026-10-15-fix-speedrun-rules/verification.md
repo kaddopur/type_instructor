@@ -1,43 +1,26 @@
-# Verification — part 4
+# 第 4 步驗證
 
-Date: 2026-10-15. Environment: macOS, Node 22.23.2, npm 10.9.8,
-Google Chrome driven by Playwright 1.64.1.
+日期：2026-10-15。環境：macOS、Node 22.23.2、npm 10.9.8，以及由 Playwright 1.64.1 操作的 Google Chrome。
 
-## Result
+## 結果
 
-BUG-01 and BUG-02 are fixed. The defense speedrun entry uses speedrun/defend;
-SCORE_TARGET is defined once as 20 in src/lib/gameRules.js and imported by the
-store and Quiz. All three GOAL_SPEEDRUN strings use {scoreTarget}, substituted
-at render time. No dependencies or lockfile changed.
+BUG-01 與 BUG-02 已修正。競速防禦入口使用 speedrun/defend；SCORE_TARGET 只在 src/lib/gameRules.js 定義一次，值為 20，由狀態儲存區與 Quiz 匯入。三語 GOAL_SPEEDRUN 文字均使用 {scoreTarget}，在顯示時替換。相依套件與鎖定檔未改動。
 
-| Check | Result |
-| --- | --- |
-| `npm test` | 12 passed, 0 failed |
-| `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev npm run test:smoke` | 6 passed under StrictMode |
-| `PLAYWRIGHT_CHANNEL=chrome npm run test:smoke` | Production build and all 6 browser tests passed |
-| OpenSpec strict validation and whitespace check | Passed |
+| 檢查                                                            | 結果                              |
+| --------------------------------------------------------------- | --------------------------------- |
+| `npm test`                                                      | 12 個通過，0 個失敗               |
+| `PLAYWRIGHT_CHANNEL=chrome SMOKE_SERVER=dev npm run test:smoke` | StrictMode 下 6 個通過            |
+| `PLAYWRIGHT_CHANNEL=chrome npm run test:smoke`                  | 正式建置與全部 6 個瀏覽器測試通過 |
+| OpenSpec 嚴格驗證與空白檢查                                     | 通過                              |
 
-## Regression evidence
+## 回歸驗證證據
 
-- Store tests explicitly require the target to equal 20. For attack and defense,
-  answering from 18 reaches 19 without completing; a wrong answer deducts a point,
-  recovery to 19 still continues, and only 20 completes after advance/feedback.
-- Existing completion tests preserve the final answer's integer seconds and reject
-  input after completion. General-mode scoring, timing, and question tests still pass.
-- Browser tests click both speedrun links in English, Chinese, and Japanese and
-  assert the exact route, corresponding attack/defense stem, zero initial timer,
-  and correctly formatted 20-point goal without an unresolved placeholder.
-- The browser completion test enters defense via the menu, plays through 19 and
-  20 points, stays in-game at 19 and at 499 ms after the final answer, then enters
-  the result after 500 ms. Final answer time, clean retry, and leaving during
-  pending feedback remain verified.
-- Existing three-language basic games, session isolation, resource-path checks,
-  worker activation, and fresh offline homepage reload still pass.
+- 狀態測試明確要求目標等於 20。攻防兩題型從 18 分答對到 19 分時不結束；答錯扣一分，再回到 19 分仍繼續；只有 20 分在推進／回饋後完成。
+- 既有結束測試保留最後答案的整數秒，並拒絕結束後輸入。一般模式的計分、計時與出題測試仍通過。
+- 瀏覽器測試點擊英、中、日三語的兩個競速連結，檢查正確路徑、對應攻防題幹、初始零秒，以及正確顯示 20 分目標，不留下未替換的佔位符。
+- 瀏覽器結束測試從選單進入防禦題，實際玩到 19 與 20 分。19 分及最後答案後 499 毫秒仍在遊戲，500 毫秒後才進入結果。也驗證最後作答時間、乾淨重玩，以及回饋尚未結束時離開。
+- 既有三語一般模式、場次隔離、資源路徑、背景快取程式啟用及首次安裝後離線重新載入首頁仍通過。
 
-## Remaining scope
+## 剩餘範圍
 
-Step 5 owns offline tooling replacement, updates from an old installed service
-worker, and Pages deployment automation. Step 6 owns complete device/browser
-acceptance. Implementation verification preceded the user's archive and commit
-request. This change was archived as 2026-10-15-fix-speedrun-rules.
-No deployment was performed.
+第 5 步處理離線工具更換、舊背景快取程式更新與 Pages 自動部署。第 6 步處理完整裝置／瀏覽器驗收。實作驗證早於使用者提出封存與提交要求。本變更封存為 2026-10-15-fix-speedrun-rules，未部署。

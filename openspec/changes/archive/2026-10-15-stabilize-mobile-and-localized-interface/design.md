@@ -1,36 +1,23 @@
-# Design
+# 設計
 
-## Shared viewport
+## 共用檢視區
 
-AppShell owns 100dvh (with a vh fallback), all four safe-area insets and the
-main landmark. viewport-fit=cover enables explicit safe-area handling. Pages
-fill its available content box. Document and inner scrolling are disabled;
-short screens use less spacing and landscape menus place modes side by side.
+AppShell 管理 100dvh（以 vh 備援）、四側安全距離與 main 主要內容區。viewport-fit=cover 允許明確處理安全區域。各頁填滿可用內容範圍，停用文件及頁內捲動；短螢幕縮小間距，橫向選單將模式並排。
 
-## Stable localized layouts
+## 穩定的三語版面
 
-The root font size is a CSS constant, 125% (normally 20px), independent of the
-selected language. Earlier local fixes used explicit dimensions for Home,
-Menu and language selection; the shared root now also stabilizes rem-based
-result, quiz and dialog dimensions. Home keeps its larger responsive title,
-24px Start text, 20px author text and 175px Start width. Dialog actions share
-a maximum 240px width and 24px corners. Results use 240px actions to avoid
-Japanese wrapping. Intro descriptions reserve two lines and quiz feedback
-uses the full stem width.
+根字級固定為 CSS 的 125%（通常 20px），不隨語言改變。較早的本機修正已為首頁、選單與語言選擇明訂尺寸；共用根字級現在也讓以 rem 設定的結果頁、答題頁及對話框尺寸穩定。
 
-Translation text may have different natural widths. The invariant is the
-layout of controls and containers; footer text keeps its center and line height.
+首頁保留較大的響應式標題、24px「開始」文字、20px 作者文字與 175px「開始」寬度。對話框按鈕共用最大 240px 寬度及 24px 圓角。
 
-## Font delivery
+結果頁用 240px 按鈕避免日文換行。開始說明預留兩行，答案回饋使用整個題幹寬度。
 
-Cubic 11 WOFF2 is copied unmodified from upstream revision
-4c566f7d6cc5c05ee360fe9cff56b5da1fcafd4d with its OFL license. Unicode ranges and
-language stacks apply it to CJK text; Japanese kana, kanji and punctuation use
-one font. PKMN/GB retain Latin/digits. Vite bundles the font and Workbox
-precaches it. Unused Early GameBoy assets and redundant GB WOFF are removed.
+翻譯文字的自然寬度可以不同。固定的是控制元件與容器版面；頁尾文字保留中心位置與行高。
 
-## Verification limits
+## 字型載入
 
-Playwright WebKit emulation cannot reproduce iPhone Safari's Liquid Glass
-browser chrome. Physical-device browser-bar states and manual screen readers
-were not tested. No claim of deployment or remote CI is made by this archive.
+Cubic 11 WOFF2 未經修改，取自上游版本 4c566f7d6cc5c05ee360fe9cff56b5da1fcafd4d，附帶 OFL 授權。透過 Unicode 範圍與各語言字型清單套用於中日文字；日文假名、漢字與標點使用同一字型。PKMN／GB 保留給拉丁字母與數字。Vite 打包字型，Workbox 預先快取。移除未用的 Early GameBoy 資源及多餘 GB WOFF。
+
+## 驗證限制
+
+Playwright WebKit 模擬無法重現 iPhone Safari 的 Liquid Glass 瀏覽器介面。未測試實機瀏覽器工具列狀態或手動螢幕閱讀器。本封存不代表部署或遠端 CI 已完成。
