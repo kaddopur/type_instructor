@@ -82,7 +82,8 @@
     "practiceTitle": "Practise the questions you missed",
     "practiceIntro": "After a challenge, open mistake practice from the results. It keeps the original questions and choices, with no score, timer or changes to your personal bests.",
     "practiceRule": "After a wrong answer, stay on the same question and try another choice. When you get it right, any question you missed during this visit goes to the back of the queue. Get it right on your first try during a later visit to remove it.",
-    "practiceReset": "Close and reopen practice to restart the session’s full mistake list. Reloading or starting a new challenge clears that list."
+    "practiceReset": "Close and reopen practice to restart the session’s full mistake list. Reloading or starting a new challenge clears that list.",
+    "practiceAlt": "Actual English result buttons: Retry, Practice mistakes and Menu. Open Practice mistakes to review this session’s missed questions."
   },
   "zh": {
     "eyebrow": "一個小遊戲，練習記住屬性相剋。",
@@ -167,7 +168,8 @@
     "practiceTitle": "挑戰後，把本場錯題練熟",
     "practiceIntro": "挑戰結束後，可從結果頁開啟「本場錯題重練」。保留原題與原選項，不計分、不計時，也不影響最佳紀錄。",
     "practiceRule": "答錯後留在原題，繼續選其他答案。本輪曾答錯的題目，答對後會排到最後再練。這一輪一次答對，才會移除，直到全部練完。",
-    "practiceReset": "關閉後重開，會從本場全部錯題重新開始。重新載入或開始新挑戰，會清除本場錯題。"
+    "practiceReset": "關閉後重開，會從本場全部錯題重新開始。重新載入或開始新挑戰，會清除本場錯題。",
+    "practiceAlt": "實際中文結果頁按鈕，由上而下為「重玩」、「本場錯題練習」、「目錄」。按「本場錯題練習」可重練本場錯題。"
   },
   "ja": {
     "eyebrow": "短いゲームで、タイプ相性を覚えよう。",
@@ -252,6 +254,7 @@
     "practiceTitle": "チャレンジの後に、まちがえた問題を復習",
     "practiceIntro": "結果画面から、今回まちがえた問題を練習できます。問題と選択肢はそのまま。得点や制限時間はなく、自己ベストも変わりません。",
     "practiceRule": "まちがえても同じ問題に残り、別の選択肢を選べます。その回に一度でもまちがえた問題は、正解した後に最後に回ります。次に出たとき、最初の回答で正解すると一覧から消えます。",
-    "practiceReset": "閉じて開き直すと、今回まちがえた全問題からやり直します。再読み込みや新しいチャレンジで一覧は消えます。"
+    "practiceReset": "閉じて開き直すと、今回まちがえた全問題からやり直します。再読み込みや新しいチャレンジで一覧は消えます。",
+    "practiceAlt": "実際の日本語の結果画面。「やり直し」「まちがえた問題を練習」「メニューに戻る」の順に並び、中央のボタンから今回の復習を始めます。"
   }
 }

@@ -23,6 +23,11 @@ test('players can read the introduction, change language and enter the game', as
       .getByRole('link', { name: label, exact: true })
       .click();
     await expect(page.locator('#practice-title')).toHaveText(translations[lang].practiceTitle);
+    const resultActions = page.getByRole('img', { name: translations[lang].practiceAlt });
+    await expect(resultActions).toBeVisible();
+    await expect(resultActions).toHaveAttribute('src', new RegExp(`/${lang}-result-actions-`));
+    await resultActions.scrollIntoViewIfNeeded();
+    await expect(resultActions).toHaveJSProperty('naturalWidth', 284);
     await expect(page.getByText(translations[lang].practiceRule, { exact: true })).toBeVisible();
     await expect(page.getByText(translations[lang].practiceReset, { exact: true })).toBeVisible();
     await page.setViewportSize({ width: 390, height: 844 });
@@ -30,7 +35,9 @@ test('players can read the introduction, change language and enter the game', as
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       390,
     );
-    await page.screenshot({ path: `/tmp/practice-landing-${lang}.png` });
+    await page.locator('[aria-labelledby="practice-title"]').screenshot({
+      path: `/tmp/practice-landing-${lang}.png`,
+    });
   }
 
   await page

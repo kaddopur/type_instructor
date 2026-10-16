@@ -170,7 +170,7 @@ pnpm preview
 Vite 的 base 固定為 `/type_instructor/`；字型、圖示、manifest 與離線資源皆使用此子路徑。
 正式建置由 Workbox 產生 `service-worker.js`，並預先快取本機資源。
 
-`pnpm screenshots:landing` 會建置遊戲，使用 Chromium 重拍三語的選單、攻擊與防禦題，共九張實際截圖。
+`pnpm screenshots:landing` 會建置遊戲，使用 Chromium 重拍三語的選單、攻擊與防禦題，及結果頁三個按鈕，共十二張實際截圖。
 圖片直接擷取遊戲，來源紀錄位於 `src/images/landing/capture.json`。
 重拍前需安裝 Playwright Chromium；操作方式見[截圖更新說明](docs/landing-page/README.md)。
 
