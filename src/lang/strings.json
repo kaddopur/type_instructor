@@ -62,5 +62,11 @@
   "ATTACK_QUESTION": "Which attack type is\nmost effective?",
   "DEFEND_QUESTION": "Which type takes\nthe least damage?",
   "ABOUT_GAME": "About the game",
-  "FAN_NOTICE": "An unofficial fan project. Not affiliated with, authorized, or sponsored by Pokémon."
+  "FAN_NOTICE": "An unofficial fan project. Not affiliated with, authorized, or sponsored by Pokémon.",
+  "PRACTICE_TITLE": "Practice mistakes",
+  "PRACTICE_DESCRIPTION": "No score or timer. Wrong answers return at the end.",
+  "PRACTICE_REMAINING": "{count} remaining",
+  "PRACTICE_CLOSE": "Close",
+  "PRACTICE_COMPLETE": "All mistakes cleared!",
+  "PRACTICE_RETURN": "Return to results"
 }

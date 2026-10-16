@@ -234,3 +234,46 @@ test('wrong retries and another session do not consume the current target bag', 
     );
   }
 });
+
+test('first valid mistake preserves exact clean options once, including unfinished timeout', () => {
+  const store = createQuizStore('basic', 'defend');
+  const original = structuredClone(store.getState().quiz);
+  const wrong = original.options.flatMap((option, index) =>
+    option.type !== original.answer ? [index] : [],
+  );
+  store.getState().answer(wrong[0]);
+  expect(store.getState().missedQuestions).toEqual([]);
+  store.getState().start();
+  store.getState().answer(-1);
+  expect(store.getState().missedQuestions).toEqual([]);
+  store.getState().answer(wrong[0]);
+  const captured = store.getState().missedQuestions;
+  expect(captured).toEqual([original]);
+  expect(captured[0]).not.toBe(store.getState().quiz);
+  expect(captured[0].options).not.toBe(store.getState().quiz.options);
+  store.getState().answer(wrong[1]);
+  expect(store.getState().missedQuestions).toBe(captured);
+  store.getState().advance();
+  store.getState().answer(wrong[1]);
+  expect(store.getState().missedQuestions).toBe(captured);
+  store.setState({ timer: 1 });
+  store.getState().tick();
+  expect(store.getState().result).toBe(-2);
+  expect(store.getState().missedQuestions).toEqual([original]);
+  expect(createQuizStore('basic', 'defend').getState().missedQuestions).toEqual([]);
+});
+
+test('a later identical generated occurrence is a separate mistake', () => {
+  const store = createQuizStore('speedrun', 'attack');
+  const original = structuredClone(store.getState().quiz);
+  const wrong = original.options.findIndex((option) => option.type !== original.answer);
+  const right = original.options.findIndex((option) => option.type === original.answer);
+  store.getState().start();
+  store.getState().answer(wrong);
+  store.getState().advance();
+  store.getState().answer(right);
+  store.getState().advance();
+  store.setState({ quiz: structuredClone(original) });
+  store.getState().answer(wrong);
+  expect(store.getState().missedQuestions).toEqual([original, original]);
+});

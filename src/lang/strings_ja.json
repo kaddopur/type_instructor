@@ -62,5 +62,11 @@
   "ATTACK_QUESTION": "どの攻撃タイプが\n最も効果的？",
   "DEFEND_QUESTION": "どのタイプなら受ける\nダメージが最も少ない？",
   "ABOUT_GAME": "ゲーム紹介",
-  "FAN_NOTICE": "非公式のファン作品です。Pokémon 公式とは関係がなく、公認・許諾・協賛を受けていません。"
+  "FAN_NOTICE": "非公式のファン作品です。Pokémon 公式とは関係がなく、公認・許諾・協賛を受けていません。",
+  "PRACTICE_TITLE": "まちがえた問題を練習",
+  "PRACTICE_DESCRIPTION": "得点・制限時間なし。まちがえた問題は最後に回ります。",
+  "PRACTICE_REMAINING": "残り {count} 問",
+  "PRACTICE_CLOSE": "閉じる",
+  "PRACTICE_COMPLETE": "すべて正解！",
+  "PRACTICE_RETURN": "結果に戻る"
 }
