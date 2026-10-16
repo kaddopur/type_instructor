@@ -51,15 +51,6 @@ same scripts as local validation before allowing the existing deployment flow.
 - **AND** the two browser matrix jobs start independently in parallel without repeating those checks
 - **AND** deployment requires both the shared checks and all browser shards to succeed
 
-#### Scenario: Independent browser regression cases
-
-- **WHEN** browser tests are collected for parallel execution
-- **THEN** `fullyParallel` distributes individual cases across the two shards
-- **AND** project ordering places one WebKit project in each shard
-- **AND** layout and typography comparisons are parameterized by viewport, keeping route comparisons in the same context
-- **AND** each comparison retains the original languages, states and assertions
-- **AND** CI installs Chromium headless shell with `--only-shell` while retaining Firefox and WebKit
-
 #### Scenario: Parallel CI shards
 
 - **WHEN** the Pages workflow runs the complete browser suite
