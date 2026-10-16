@@ -78,7 +78,11 @@
     ],
     "installBrowserNote": "Opening from Threads or another app? Open the page in Safari, Chrome or Edge first. Menu names vary by browser version. If installation is unavailable, you can still play in your browser.",
     "installOfflineNote": "Offline play needs a completed first online load and resource cache. Installing the app alone does not finish this download. If the browser clears website data, reconnect to download it again.",
-    "installGuide": "Official installation guide"
+    "installGuide": "Official installation guide",
+    "practiceTitle": "Practise the questions you missed",
+    "practiceIntro": "After a challenge, open mistake practice from the results. It keeps the original questions and choices, with no score, timer or changes to your personal bests.",
+    "practiceRule": "After a wrong answer, stay on the same question and try another choice. When you get it right, any question you missed during this visit goes to the back of the queue. Get it right on your first try during a later visit to remove it.",
+    "practiceReset": "Close and reopen practice to restart the session’s full mistake list. Reloading or starting a new challenge clears that list."
   },
   "zh": {
     "eyebrow": "一個小遊戲，練習記住屬性相剋。",
@@ -159,7 +163,11 @@
     ],
     "installBrowserNote": "如果從 Threads 或其他 App 內開啟，請先改用 Safari、Chrome 或 Edge。選單名稱可能隨瀏覽器版本不同；無法安裝時，仍可直接在瀏覽器玩。",
     "installOfflineNote": "離線遊玩需要先在連網時完成首次載入與資源快取。安裝成功不代表下載已完成；如果瀏覽器清除了網站資料，需要再次連網下載。",
-    "installGuide": "官方安裝說明"
+    "installGuide": "官方安裝說明",
+    "practiceTitle": "挑戰後，把本場錯題練熟",
+    "practiceIntro": "挑戰結束後，可從結果頁開啟「本場錯題重練」。保留原題與原選項，不計分、不計時，也不影響最佳紀錄。",
+    "practiceRule": "答錯後留在原題，繼續選其他答案。本輪曾答錯的題目，答對後會排到最後再練。這一輪一次答對，才會移除，直到全部練完。",
+    "practiceReset": "關閉後重開，會從本場全部錯題重新開始。重新載入或開始新挑戰，會清除本場錯題。"
   },
   "ja": {
     "eyebrow": "短いゲームで、タイプ相性を覚えよう。",
@@ -240,6 +248,10 @@
     ],
     "installBrowserNote": "Threads などのアプリ内で開いた場合は、先に Safari、Chrome、Edge のいずれかで開き直してください。メニュー名はバージョンによって異なります。インストールできなくても、ブラウザで遊べます。",
     "installOfflineNote": "オフラインで遊ぶには、オンラインで初回の読み込みとリソースの保存を完了する必要があります。インストールだけではダウンロードは完了しません。ブラウザがサイトデータを削除した場合は、再度接続してダウンロードしてください。",
-    "installGuide": "公式のインストール手順"
+    "installGuide": "公式のインストール手順",
+    "practiceTitle": "チャレンジの後に、まちがえた問題を復習",
+    "practiceIntro": "結果画面から、今回まちがえた問題を練習できます。問題と選択肢はそのまま。得点や制限時間はなく、自己ベストも変わりません。",
+    "practiceRule": "まちがえても同じ問題に残り、別の選択肢を選べます。その回に一度でもまちがえた問題は、正解した後に最後に回ります。次に出たとき、最初の回答で正解すると一覧から消えます。",
+    "practiceReset": "閉じて開き直すと、今回まちがえた全問題からやり直します。再読み込みや新しいチャレンジで一覧は消えます。"
   }
 }

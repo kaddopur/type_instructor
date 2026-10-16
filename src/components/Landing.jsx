@@ -206,6 +206,17 @@ function Landing({ lang, messages: { HOME, APP_DESCRIPTION, FAN_NOTICE } }) {
       </section>
       <section
         className={cn('landing-section landing-width', contentWidth, section)}
+        aria-labelledby="practice-title"
+      >
+        <h2 className={heading} id="practice-title">
+          {text.practiceTitle}
+        </h2>
+        <p>{text.practiceIntro}</p>
+        <p className="mt-4">{text.practiceRule}</p>
+        <p className="mt-4">{text.practiceReset}</p>
+      </section>
+      <section
+        className={cn('landing-section landing-width', contentWidth, section)}
         aria-labelledby="questions-title"
       >
         <h2 className={heading} id="questions-title">

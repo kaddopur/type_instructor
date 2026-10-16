@@ -15,33 +15,86 @@ const a: Quiz = {
 const b: Quiz = { ...a, enemy: { title: 'ENEMY_ATTACK', type: 'steel' } };
 const c: Quiz = { ...a, enemy: { title: 'ENEMY_ATTACK', type: 'ice' } };
 
-test('wrong rotates A to B,C,A and correct removes each question without changing source', () => {
+test('wrong stays on A until correct, then revisits A after B,C with clean attempts', () => {
   const questions = structuredClone([a, b, c]);
+  const original = structuredClone(questions);
   const store = createMistakePracticeStore(questions);
-  store.getState().answer(0);
-  expect(store.getState().phase).toMatchObject({
-    kind: 'feedback',
-    current: a,
-    selectedIndex: 0,
-    correct: false,
-  });
+  for (const index of [0, 2]) {
+    store.getState().answer(index);
+    expect(store.getState().phase).toMatchObject({
+      kind: 'feedback',
+      current: a,
+      selectedIndex: index,
+      correct: false,
+    });
+    store.getState().advance();
+    expect(store.getState().phase).toEqual({
+      kind: 'answering',
+      current: a,
+      pending: [b, c],
+      wrongIndices: index === 0 ? [0] : [0, 2],
+    });
+    const answering = store.getState();
+    answering.answer(index);
+    expect(store.getState()).toBe(answering);
+  }
+  store.getState().answer(1);
   store.getState().advance();
-  expect(store.getState().phase).toEqual({ kind: 'answering', current: b, pending: [c, a] });
+  expect(store.getState().phase).toEqual({
+    kind: 'answering',
+    current: b,
+    pending: [c, a],
+    wrongIndices: [],
+  });
   for (const [current, pending] of [
     [c, [a]],
     [a, []],
   ]) {
     store.getState().answer(1);
     store.getState().advance();
-    expect(store.getState().phase).toEqual({ kind: 'answering', current, pending });
+    expect(store.getState().phase).toEqual({
+      kind: 'answering',
+      current,
+      pending,
+      wrongIndices: [],
+    });
   }
   store.getState().answer(1);
   store.getState().advance();
   expect(store.getState().phase).toEqual({ kind: 'complete' });
-  expect(questions).toEqual([a, b, c]);
+  expect(questions).toEqual(original);
+  expect(createMistakePracticeStore(questions).getState().phase).toEqual({
+    kind: 'answering',
+    current: a,
+    pending: [b, c],
+    wrongIndices: [],
+  });
 });
 
-test('sole wrong question returns with no feedback marks and all phase guards reject input', () => {
+test('sole question resets after wrong then correct and completes only on a clean visit', () => {
+  const store = createMistakePracticeStore([a]);
+  store.getState().answer(0);
+  store.getState().advance();
+  expect(store.getState().phase).toEqual({
+    kind: 'answering',
+    current: a,
+    pending: [],
+    wrongIndices: [0],
+  });
+  store.getState().answer(1);
+  store.getState().advance();
+  expect(store.getState().phase).toEqual({
+    kind: 'answering',
+    current: a,
+    pending: [],
+    wrongIndices: [],
+  });
+  store.getState().answer(1);
+  store.getState().advance();
+  expect(store.getState().phase).toEqual({ kind: 'complete' });
+});
+
+test('invalid answers, feedback input, and completed input leave state unchanged', () => {
   const store = createMistakePracticeStore([a]);
   const initial = store.getState();
   initial.advance();
@@ -53,13 +106,16 @@ test('sole wrong question returns with no feedback marks and all phase guards re
   feedback.answer(0);
   expect(store.getState()).toBe(feedback);
   feedback.advance();
-  expect(store.getState().phase).toEqual({ kind: 'answering', current: a, pending: [] });
-  store.getState().answer(0);
-  expect(store.getState().phase.kind).toBe('feedback');
+  const answering = store.getState();
+  answering.answer(0);
+  answering.advance();
+  expect(store.getState()).toBe(answering);
+  store.getState().answer(1);
   store.getState().advance();
   store.getState().answer(1);
   store.getState().advance();
   const completed = store.getState();
+  expect(completed.phase).toEqual({ kind: 'complete' });
   completed.answer(0);
   completed.advance();
   expect(store.getState()).toBe(completed);
