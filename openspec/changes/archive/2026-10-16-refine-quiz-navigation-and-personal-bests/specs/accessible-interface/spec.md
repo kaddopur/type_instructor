@@ -1,34 +1,34 @@
 ## MODIFIED Requirements
 
-### Requirement: First available action receives focus
+### Requirement: 第一個可用操作項目取得焦點
 
-The interface SHALL focus the first available action after route navigation.
-When a new quiz question becomes answerable, keyboard input SHALL focus the first
-available answer; pointer or touch input SHALL focus the answer group so the next
-Tab enters its first answer. Question and result context SHALL be programmatically
-associated with the answer group, focused answer or retry control.
+介面 SHALL 在路徑切換後聚焦第一個可用操作項目。新題可作答時，鍵盤操作 SHALL 聚焦第一個可用答案；滑鼠或觸控操作 SHALL 聚焦答案群組，讓下一次 Tab 進入第一個答案。題目與結果內容 SHALL 透過程式關聯到答案群組、目前聚焦的答案或重玩控制元件。
 
-#### Scenario: Home navigation
-- **WHEN** the home route is displayed
-- **THEN** the Start action receives keyboard focus
+#### Scenario: 前往首頁
 
-#### Scenario: Next question
-- **WHEN** keyboard answer feedback ends and the next question becomes answerable
-- **THEN** the first available answer receives focus and exposes the question as its description
+- **WHEN** 首頁路徑顯示
+- **THEN** 鍵盤焦點移到「開始」
 
-#### Scenario: Next question after pointer input
-- **WHEN** mouse or touch answer feedback ends and the next question becomes answerable
-- **THEN** focus moves to the answer group and the first Tab focuses the first answer with a visible focus indicator
+#### Scenario: 下一題
 
-### Requirement: Accessible start dialog
+- **WHEN** 鍵盤作答回饋結束，下一題可作答
+- **THEN** 焦點移到第一個可用答案，並以題目作為其描述
 
-The quiz SHALL use a named modal dialog with a description and contained keyboard
-focus. The game SHALL start only after explicit confirmation.
+#### Scenario: 滑鼠操作後的下一題
 
-#### Scenario: Confirm start
-- **WHEN** the player activates the dialog start action
-- **THEN** the dialog closes and focus enters the answers according to the input method
+- **WHEN** 滑鼠或觸控作答回饋結束，下一題可作答
+- **THEN** 焦點移到答案群組；第一次按 Tab 時聚焦第一個答案，並顯示焦點標記
 
-#### Scenario: Dismiss start
-- **WHEN** the player dismisses the start dialog
-- **THEN** navigation returns to the menu without starting the game timer
+### Requirement: 無障礙開始對話框
+
+答題頁 SHALL 使用有名稱、有描述的模態對話框，並將鍵盤焦點限制在框內。遊戲 SHALL 只有在玩家明確確認後才開始。
+
+#### Scenario: 確認開始
+
+- **WHEN** 玩家啟動對話框的開始按鈕
+- **THEN** 對話框關閉，依輸入方式將焦點移入答案區
+
+#### Scenario: 關閉開始說明
+
+- **WHEN** 玩家關閉開始對話框
+- **THEN** 返回選單，不啟動遊戲計時器

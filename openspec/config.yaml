@@ -1,8 +1,7 @@
 schema: spec-driven
 context: |
-  Pokémon single-type matchup memory game; current source baseline is 4f1e318.
-  See openspec/baseline.md for evidence, known bugs, and verification coverage.
-  Current stack: Vite, React, hash routing, Zustand; preserve gameplay.
-  Current tooling: pnpm 11.22.0, Node .nvmrc, Workbox build, Pages Actions workflow.
-  Baseline docs and tests precede implementation. Keep current observations distinct
-  from bug-fix targets and pending browser acceptance checks.
+  這是寶可夢單屬性相剋記憶遊戲；目前原始碼基準為 4f1e318。
+  證據、已知問題與驗證範圍見 openspec/baseline.md。
+  目前技術：Vite、React、hash 路由、Zustand；保留既有玩法。
+  目前工具：pnpm 11.22.0、.nvmrc 指定的 Node、Workbox 建置與 Pages Actions 工作流程。
+  實作前先建立基準文件與測試。清楚區分目前觀察、問題修正目標與待做的瀏覽器驗收。

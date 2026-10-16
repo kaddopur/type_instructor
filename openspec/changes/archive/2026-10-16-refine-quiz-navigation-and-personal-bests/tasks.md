@@ -1,6 +1,6 @@
-- [x] 1. Add localized exit confirmation and the time/exit/score layout.
-- [x] 2. Reproduce and fix pointer/touch Tab ordering while preserving keyboard play.
-- [x] 3. Add validated browser-local personal bests and menu record descriptions.
-- [x] 4. Normalize multilingual font metrics, enlarge Home branding and use Tailwind for changed component styles.
-- [x] 5. Refresh and inspect all nine real game screenshots and capture provenance.
-- [x] 6. Validate final source, synchronize specs, record evidence and archive.
+- [x] 1. 加入三語離開確認與時間／離開／分數同列版面。
+- [x] 2. 重現並修正滑鼠／觸控後的 Tab 順序，保留鍵盤玩法。
+- [x] 3. 加入經驗證的瀏覽器本機最佳紀錄與選單紀錄說明。
+- [x] 4. 統一各語言字型尺寸，加大首頁品牌文字，變更的元件樣式使用 Tailwind。
+- [x] 5. 更新並檢視全部九張真實遊戲截圖，記錄來源。
+- [x] 6. 驗證最終原始碼、同步規格、記錄證據並封存。

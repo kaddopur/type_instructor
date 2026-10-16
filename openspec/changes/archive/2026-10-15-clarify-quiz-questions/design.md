@@ -1,12 +1,5 @@
-# Design
+# 設計
 
-The colored card presents only the known condition: enemy type for attack and
-enemy attack type for defense. A separate h1 immediately below asks for an
-attack type maximizing damage or an own type minimizing received damage.
-Both retain fixed slots across languages. Compact landscape reduces spacing
-and text size consistently, keeping the existing answer grid available.
-The first answer and answer group reference both condition and instruction.
+彩色卡片只顯示已知條件：攻擊題顯示敵方屬性，防禦題顯示敵方攻擊屬性。卡片下方另用 h1 提問：哪種攻擊屬性傷害最高，或己方哪種屬性受到傷害最低。兩個區塊在各語言中維持固定位置。窄橫向畫面一致縮小間距與字級，保留現有答案格線。第一個答案與答案群組都關聯條件及提問文字。
 
-Translations include a deliberate line break at a phrase boundary; pre-line
-rendering keeps two readable lines instead of stranding the final Japanese
-characters. Accessible descriptions normalize this whitespace.
+翻譯在詞組邊界明確換行，以 pre-line 顯示為兩行，避免日文最後幾個字單獨成行。輔助技術使用的描述會將這些空白正規化。

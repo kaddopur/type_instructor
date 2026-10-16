@@ -1,21 +1,20 @@
 ## ADDED Requirements
 
-### Requirement: Explicit quiz condition and question
-Every quiz SHALL separate the given enemy condition from the question the
-player answers. Attack SHALL identify the enemy type and ask for the most
-effective attack type. Defense SHALL identify the enemy attack type and ask
-for the player's own type taking the least damage. The type name SHALL appear
-without ambiguous parentheses. Both contexts SHALL be associated with answer
-controls for keyboard and assistive-technology users in en, zh and ja.
+### Requirement: 明確區分題目條件與提問
 
-#### Scenario: Attack question
-- **WHEN** an attack quiz gives poison as the enemy type
-- **THEN** the card labels poison as the enemy type and a separate question asks for the most effective attack type
+每道題目 SHALL 分開顯示已知敵方條件與玩家要回答的問題。攻擊題 SHALL 標明敵方屬性，問最有效的攻擊屬性。防禦題 SHALL 標明敵方攻擊屬性，問己方哪種屬性受到傷害最低。屬性名稱 SHALL 不加易混淆的括號。en、zh、ja 的兩段內容 SHALL 都關聯到答案控制元件，供鍵盤與輔助技術使用者辨識。
 
-#### Scenario: Defense question
-- **WHEN** a defense quiz gives poison as the enemy attack type
-- **THEN** the card labels poison as the enemy attack type and a separate question asks for the own type minimizing damage
+#### Scenario: 攻擊題
 
-#### Scenario: Stable localized slots
-- **WHEN** players switch between the supported languages at the same viewport
-- **THEN** the condition card, question slot and answer controls retain their positions and sizes
+- **WHEN** 攻擊題給定敵方為毒屬性
+- **THEN** 卡片將毒標為敵方屬性，另以獨立提問詢問最有效攻擊屬性
+
+#### Scenario: 防禦題
+
+- **WHEN** 防禦題給定敵方攻擊為毒屬性
+- **THEN** 卡片將毒標為敵方攻擊屬性，另以獨立提問詢問受到傷害最低的己方屬性
+
+#### Scenario: 固定的三語區塊
+
+- **WHEN** 玩家在相同檢視區切換支援語言
+- **THEN** 條件卡片、提問區塊與答案控制元件的位置及尺寸不變

@@ -1,15 +1,15 @@
-# Completed work
+# 已完成工作
 
-These tasks document completed work retrospectively.
+這些任務是工作完成後補寫的紀錄。
 
-- [x] 1. Configure Tailwind and shadcn for the Pages build (8f22d2b).
-- [x] 2. Add shared controls and type-color tokens (d6d8e5f).
-- [x] 3. Migrate navigation pages (1a08b1c).
-- [x] 4. Migrate quiz controls and start dialog (2b6c719).
-- [x] 5. Add localized keyboard and accessible feedback (bf1ae32).
-- [x] 6. Verify accessibility and Pages browser compatibility (5bd4929).
-- [x] 7. Correct initial and next-question focus (20f4027).
-- [x] 8. Migrate logic tests to Vitest (c14fac3).
-- [x] 9. Colocate unit tests and isolate browser tests (7a723fe).
-- [x] 10. Consolidate Playwright projects, tags, and CI (526cd42).
-- [x] 11. Record completed local verification and archive the specifications.
+- [x] 1. 為 Pages 建置設定 Tailwind 與 shadcn（8f22d2b）。
+- [x] 2. 加入共用控制元件與屬性配色變數（d6d8e5f）。
+- [x] 3. 遷移導覽頁面（1a08b1c）。
+- [x] 4. 遷移答案控制元件與開始對話框（2b6c719）。
+- [x] 5. 加入三語鍵盤與無障礙回饋（bf1ae32）。
+- [x] 6. 驗證無障礙與 Pages 瀏覽器相容性（5bd4929）。
+- [x] 7. 修正初始與下一題焦點（20f4027）。
+- [x] 8. 將邏輯測試改為 Vitest（c14fac3）。
+- [x] 9. 將單元測試放到原始碼旁，分開瀏覽器測試（7a723fe）。
+- [x] 10. 整併 Playwright 測試環境、標籤與 CI（526cd42）。
+- [x] 11. 記錄已完成的本機驗證，封存規格。

@@ -1,20 +1,21 @@
-# Return Home after choosing a language
+# 選擇語言後返回首頁
 
 ## Why
-Choosing a language currently leaves the player on the language page and requires
-another action to return Home. The user approved returning Home immediately,
-including when selecting the current language, while preserving the introduction
-page during its own language switches.
+
+目前選擇語言後仍停在語言頁，玩家需再操作才能回首頁。使用者已核准選擇後立即回首頁，選目前語言也相同；介紹頁自身的語言切換則繼續停在介紹頁。
 
 ## What Changes
-- Point language-picker choices at the selected language's Home route.
-- Retain the shared route behavior that focuses Start on arrival.
-- Update navigation, gameplay and picker geometry checks for the shorter flow.
+
+- 將語言選項連到所選語言的首頁路徑。
+- 保留到達後聚焦「開始」的共用路由行為。
+- 更新導覽、玩法與語言頁版面檢查，配合縮短後的流程。
 
 ## Capabilities
+
 ### Modified Capabilities
-- navigation-and-language: Home destination and Start focus after selection.
+
+- navigation-and-language：選擇語言後前往首頁，並聚焦「開始」。
 
 ## Impact
-One route target in Lang, current navigation requirements and browser checks.
-No styling, dependencies, game rules or introduction-page navigation changes.
+
+影響 Lang 的一個路由目的地、現行導覽需求與瀏覽器檢查。不改樣式、相依套件、規則或介紹頁導覽。

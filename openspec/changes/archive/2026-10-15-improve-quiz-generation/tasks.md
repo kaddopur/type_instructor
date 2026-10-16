@@ -1,8 +1,8 @@
-# Tasks
+# 任務
 
-Each numbered task is one commit, including its tests and completion entry.
+每個編號任務各用一次提交，包含測試與完成紀錄。
 
-- [x] 1. Define proposal, design, gameplay delta and testable acceptance scenarios.
-- [x] 2. Implement session-local shuffled target bags and no consecutive repeats; add unit/store coverage and adapt browser tests to varying questions.
-- [x] 3. Implement alternating immunity/resistance practice per defense target, with fallback and unique-best-answer tests.
-- [x] 4. Run validation, reconcile gameplay spec/README, record evidence and archive the change.
+- [x] 1. 定義提案、設計、玩法規格差異與可測試的驗收情境。
+- [x] 2. 實作場次專屬的屬性洗牌順序，避免連續重複；加入單元／狀態測試，讓瀏覽器測試支援變動題目。
+- [x] 3. 按防禦題幹屬性交替練習免疫與抗性，測試替代處理與唯一最佳答案。
+- [x] 4. 執行驗證，更新玩法規格與 README，記錄證據並封存。

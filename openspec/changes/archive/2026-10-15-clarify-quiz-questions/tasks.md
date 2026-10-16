@@ -1,4 +1,4 @@
-- [x] 1. Add clear condition and question translations in all three languages.
-- [x] 2. Separate the card and instruction with shared responsive slots and accessible context.
-- [x] 3. Verify both modes, layout, keyboard flows and existing complete acceptance.
-- [x] 4. Record evidence, archive, commit and update PR #6.
+- [x] 1. 為三種語言加入清楚的條件與提問翻譯。
+- [x] 2. 分開卡片與提問，使用共用響應式區塊及輔助技術描述。
+- [x] 3. 驗證兩種題型、版面、鍵盤流程及既有完整驗收案例。
+- [x] 4. 記錄證據、封存、提交並更新 PR #6。

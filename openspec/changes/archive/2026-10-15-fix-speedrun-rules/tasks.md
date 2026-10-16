@@ -1,10 +1,10 @@
-## 1. Fixes
+## 1. 修正
 
-- [x] 1.1 Share a 20-point target between gameplay and localized goal instructions.
-- [x] 1.2 Correct the speedrun defense menu entry.
+- [x] 1.1 讓玩法與各語言目標說明共用 20 分設定。
+- [x] 1.2 修正競速防禦選單入口。
 
-## 2. Verification and documentation
+## 2. 驗證與文件
 
-- [x] 2.1 Verify both store question types continue at 19 and finish at 20, including deductions.
-- [x] 2.2 Verify localized attack/defense entries, displayed target, feedback and results in the browser.
-- [x] 2.3 Run logic tests, development/production smoke checks and OpenSpec validation; record results and resolve known-bug docs.
+- [x] 2.1 確認狀態儲存區的攻防兩題型都在 19 分繼續、20 分完成，並涵蓋扣分。
+- [x] 2.2 在瀏覽器驗證各語言攻防入口、顯示目標、回饋與結果。
+- [x] 2.3 執行邏輯測試、開發／正式建置冒煙測試與 OpenSpec 驗證；記錄結果並更新已知問題文件。

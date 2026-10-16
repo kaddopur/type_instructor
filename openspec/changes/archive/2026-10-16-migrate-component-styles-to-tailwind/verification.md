@@ -1,63 +1,34 @@
-# Verification
+# 驗證紀錄
 
-## Final checks
-- `pnpm lint` and `pnpm typecheck`: passed.
-- `pnpm test:unit`: all 27 tests in seven files passed.
-- `CI=1 pnpm test:e2e`: all 212 tests passed with two workers (3.3 minutes).
-  Projects: Chromium desktop, Firefox desktop, WebKit desktop and iPhone-size
-  WebKit emulation. Production Vite and Workbox generation ran as part of testing.
-- Strict OpenSpec validation passed for the change and current specs before
-  archival. Specs were synchronized before archival, so `--skip-specs` avoids
-  reapplying the integrated modified requirement.
-- Strict validation after archival: all 13 current specs and all 17 archived changes passed.
-- `git diff --check` passed.
+## 最終檢查
 
-## Pre/post migration comparison
-A temporary browser harness captured 264 states of the previous main build and
-migrated build. It covered English, Chinese and Japanese; 320 x 568, 390 x 600,
-844 x 390 and 1280 x 900; Home, Menu, Lang, About, both result modes, all four
-Quiz modes and Quiz intro/playing/feedback/exit states.
+- `pnpm lint` 與 `pnpm typecheck`：通過。
+- `pnpm test:unit`：7 個檔案共 27 個測試全部通過。
+- `CI=1 pnpm test:e2e`：212 個全部通過，兩個工作程序，耗時 3.3 分鐘。環境為桌面 Chromium、Firefox、WebKit 與 iPhone 尺寸 WebKit 模擬；測試同時執行正式 Vite 建置與 Workbox 產生流程。
+- 封存前，變更與現行規格的 OpenSpec 嚴格驗證通過。規格已先同步，封存使用 `--skip-specs`，避免重複套用已整合的修改需求。
+- 封存後嚴格驗證：13 份現行規格與 17 個封存變更全部通過。
+- `git diff --check` 通過。
 
-For every DOM element in the application and dialogs, the harness recorded
-bounding rectangles, fonts, text sizes, line heights, colors, border dimensions,
-radii, alignment, overflow, outlines and box shadows, including before-elements.
-The resulting JSON records matched with zero differences. Both SHA-256 values:
-`a3c59fba5fe95e04e66dae67e8d77afcb09e10b1d44d0f8b245fe6292c96f27c`.
-The temporary harness and raw data remain outside the repository. Actual Home,
-Menu, About, Quiz and exit-dialog screenshots were visually inspected.
+## 遷移前後比對
 
-The first comparison found inherited line-height drift in three About headings;
-explicit line-height utilities resolved it. A direct shadow property utility
-preserves the original decorative shadow serialization as well as appearance.
-Existing real game PNGs remain accurate because their rendered layouts match.
+暫存瀏覽器測試工具擷取遷移前 main 建置與遷移後建置的 264 種狀態。涵蓋英文、正體中文與日文，320 x 568、390 x 600、844 x 390、1280 x 900 四種尺寸，以及 Home、Menu、Lang、About、兩種結果模式、四種答題模式與開始說明／遊玩／回饋／離開確認狀態。
 
-## Scope and limitations
-Landing.css is removed. index.css falls from 790 lines to 104, retaining only
-Tailwind imports, theme variables, font faces, document-wide base rules and
-shared responsive variants. No component selectors or @apply blocks remain.
-The shared pageStyles module contains only repeated page/title/footer utilities.
-No dependency, route, translation, storage or gameplay changes are included.
-Browser downloads are local test tooling and do not change application packages.
-Physical devices, installed iOS mode and manual screen readers were not tested.
-Remote CI, merge and deployment are separate from these local results.
+測試工具對應用程式與對話框的每個 DOM 元素，記錄外框範圍、字型、字級、行高、顏色、邊框尺寸、圓角、對齊、溢出、外框線及陰影，也涵蓋 before 偽元素。JSON 紀錄比對結果零差異，兩份 SHA-256 都是 `a3c59fba5fe95e04e66dae67e8d77afcb09e10b1d44d0f8b245fe6292c96f27c`。
 
-The user requested deferring PR creation. This handoff stops after commit and push.
+暫存測試工具與原始資料留在儲存庫外。已檢視 Home、Menu、About、Quiz 與離開對話框的實際截圖。
 
-## Canonical utility follow-up
-The spacing theme now declares `--spacing: 4px`, independent of the 125% root
-font. Pixel spacing/dimension utilities use canonical numeric classes such as
-`mt-8`; existing rem-based button spacing was adjusted to preserve its geometry.
-Pixel typography and radii remain explicit when default theme values differ.
-The same 264-state comparison again reports zero differences. Lint, typecheck,
-all 27 unit tests and seven Chromium smoke tests passed after this cleanup.
-The full four-browser suite was not repeated for this follow-up.
+首次比對發現三個 About 標題的繼承行高偏移，已用明確行高工具類別修正。直接設定陰影屬性的工具類別，同時保留原裝飾陰影的序列化值與外觀。既有真實遊戲 PNG 仍正確，因為顯示版面一致。
 
-## Complete canonical-class review
-The installed Tailwind 4.3.3 design system was used to scan source class tokens
-with the project theme, custom variants and a 20px root font. Equivalent
-canonical suggestions were applied, including `rotate-2`, `underline-offset-4`,
-`leading-normal`, selected radii and `max-w-md`. Workspace IntelliSense settings
-use the same root font size. The final scanner reports no remaining suggestions.
-The 264-state computed-style comparison reports zero differences. Lint,
-typecheck, all 27 unit tests and seven Chromium smoke tests passed; the complete
-four-browser suite was not repeated. No PR was created.
+## 範圍與限制
+
+已移除 Landing.css。index.css 從 790 行降至 104 行，只保留 Tailwind 匯入、主題變數、字型宣告、全文件基礎規則與共用響應式變體，不再有元件選擇器或 @apply 區塊。共用 pageStyles 模組只包含重複頁面、標題與頁尾工具類別。本次不改相依套件、路由、翻譯、儲存或玩法。瀏覽器下載僅供本機測試，不改應用套件。未測試實機、iOS 安裝模式與手動螢幕閱讀器。遠端 CI、合併與部署須另外確認。
+
+使用者要求暫緩建立 PR；本次交接只完成提交與推送。
+
+## 後續調整：標準工具類別
+
+間距主題現宣告 `--spacing: 4px`，不受 125% 根字級影響。像素間距／尺寸使用 `mt-8` 等標準數字類別；既有 rem 按鈕間距已調整，保留原尺寸。字型與圓角若不同於主題預設，仍明訂像素值。同一組 264 狀態比對再次零差異。清理後 lint、型別檢查、全部 27 個單元測試與 7 個 Chromium 冒煙測試通過；未重跑完整四瀏覽器測試。
+
+## 完整標準類別檢查
+
+使用已安裝的 Tailwind 4.3.3 設計系統，依專案主題、自訂變體與 20px 根字級掃描原始碼類別。已套用效果相同的標準類別建議，包括 `rotate-2`、`underline-offset-4`、`leading-normal`、部分圓角與 `max-w-md`。工作區 IntelliSense 也使用相同根字級。最終掃描沒有剩餘建議。264 狀態的計算樣式比對零差異。lint、型別檢查、全部 27 個單元測試與 7 個 Chromium 冒煙測試通過；未重跑完整四瀏覽器測試，也未建立 PR。

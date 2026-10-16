@@ -1,22 +1,11 @@
-# Design
+# 設計
 
-Create a vanilla Zustand store per mounted game session with createStore. React's
-useStore subscribes the game component; Node tests instantiate the same production
-store directly. A singleton or Provider is unnecessary for a single-screen session.
+每個掛載的遊戲場次以 createStore 建立獨立的原生 Zustand 狀態儲存區。React 元件透過 useStore 訂閱；Node 測試直接建立相同的正式儲存區。單畫面場次不需單例或 Provider。
 
-Store actions start the game, tick elapsed/remaining time, answer an option, and
-advance after feedback. The store derives correctness and damage feedback itself,
-and rejects input during the overlay, feedback, after completion, or for an already
-selected option. Score and completion snapshots are updated atomically.
+狀態操作負責開始遊戲、更新累計／剩餘時間、作答，以及回饋後換題。狀態儲存區自行判斷正誤與傷害回饋；開始說明、回饋期間、結束後或已選過的選項都拒絕作答。分數與結束快照在同一次更新中完成。
 
-useGame owns the interval and 500 ms timeout in separate effects. Timer ticks do
-not restart feedback. Effects clean up on completion/unmount; a pathname key starts
-a new game store on direct game route changes. Enable StrictMode to exercise cleanup.
+useGame 用分開的 effects 管理週期計時器與 500 毫秒延遲計時器。每秒更新不重啟回饋。結束或卸載時清理 effects；遊戲路徑直接變更時，以 pathname 作為 key 建立新儲存區。啟用 StrictMode 驗證清理。
 
-I18nPage reads the static dictionary using the existing language URL and supplies
-messages/lang to pages. Non-game pages need no store subscription. Preserve the
-existing JSX/CSS rather than rewriting unrelated page components.
+I18nPage 依既有語言網址讀取靜態字典，將 messages／lang 傳給頁面。非遊戲頁不需訂閱狀態儲存區。保留既有 JSX／CSS，不重寫無關頁面元件。
 
-The known speedrun defense link and 3-versus-20 target remain step 4. Offline tooling
-and deployment remain step 5. Test those boundaries without declaring the defects
-correct requirements.
+已知競速防禦連結與 3／20 分目標問題仍留第 4 步；離線工具與部署仍留第 5 步。測試這些邊界，但不將缺陷宣告為正確需求。

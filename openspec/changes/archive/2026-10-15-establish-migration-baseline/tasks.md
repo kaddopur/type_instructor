@@ -1,20 +1,18 @@
-## 1. Baseline documentation
+## 1. 基準文件
 
-- [x] 1.1 Inspect existing question generation, scoring, routing, and translations.
-- [x] 1.2 Write gameplay and navigation/language specs from source commit 4f1e318.
-- [x] 1.3 Record known bugs, timer risks, and pending browser acceptance checks.
+- [x] 1.1 查看既有出題、計分、路由與翻譯。
+- [x] 1.2 依原始碼提交 4f1e318 撰寫玩法及導覽／語言規格。
+- [x] 1.3 記錄已知問題、計時風險與待做的瀏覽器驗收。
 
-## 2. Logic verification
+## 2. 邏輯驗證
 
-- [x] 2.1 Add minimal tests against production logic using the existing Lodash dependency.
-- [x] 2.2 Document isolated dependency setup and add the test:baseline command.
-- [x] 2.3 Verify all 7 tests pass with Node 22.23.2 and Lodash 4.15.0.
+- [x] 2.1 沿用 Lodash 相依套件，對正式邏輯加入必要測試。
+- [x] 2.2 說明隔離安裝相依套件的方式，加入 test:baseline 指令。
+- [x] 2.3 確認 Node 22.23.2 與 Lodash 4.15.0 下全部 7 個測試通過。
 
-## 3. Handoff
+## 3. 交接
 
-- [x] 3.1 Validate both OpenSpec specs with strict validation and check whitespace.
-- [x] 3.2 Link baseline documentation from README and document verification limits.
+- [x] 3.1 對兩份 OpenSpec 規格執行嚴格驗證與空白檢查。
+- [x] 3.2 從 README 連到基準文件，記錄驗證限制。
 
-This completion record was added after the work, at the user's archive request.
-Detailed evidence is in `openspec/baseline.md`. Runtime migration and the two bug
-fixes are subsequent steps and are not included in these completed tasks.
+這份完成紀錄依使用者的封存要求，在工作完成後補寫。詳細證據見 `openspec/baseline.md`。執行時遷移與兩項問題修正屬於後續步驟，不包含在這些已完成任務內。

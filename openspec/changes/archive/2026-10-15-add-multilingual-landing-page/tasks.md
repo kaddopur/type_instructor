@@ -1,4 +1,4 @@
-- [x] 1. Capture reproducible real screenshots in all three languages.
-- [x] 2. Implement localized responsive landing, route, Home entry and project-link updates.
-- [x] 3. Verify layout, language navigation, screenshots, accessibility and offline use; archive and commit.
-- [x] 4. Split CI browser checks into two complete shards, verify all 144 cases and record the deployment gate.
+- [x] 1. 擷取三種語言的真實截圖，並提供可重複執行的擷取方式。
+- [x] 2. 完成三語響應式介紹頁、路由、首頁入口與專案連結調整。
+- [x] 3. 驗證版面、語言導覽、截圖、無障礙與離線使用；封存並提交。
+- [x] 4. 將 CI 瀏覽器測試分成兩批，驗證全部 144 個案例，並記錄部署條件。

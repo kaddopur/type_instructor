@@ -1,15 +1,19 @@
 ## ADDED Requirements
 
-### Requirement: Confirm leaving an active game
-Quiz SHALL 在同一列依序顯示計時、離開遊戲與分數。離開入口 SHALL 開啟本地化確認視窗，優先聚焦繼續遊戲；確認期間計時繼續。取消或關閉視窗 SHALL 保留本場進度並將焦點還給離開入口；確認離開 SHALL 返回目前語言的選單。
+### Requirement: 離開進行中遊戲前確認
 
-#### Scenario: Cancel exit
+Quiz SHALL 在同一列依序顯示計時、離開遊戲與分數。離開入口 SHALL 開啟目前語言的確認視窗，優先聚焦繼續遊戲；確認期間計時繼續。取消或關閉視窗 SHALL 保留本場進度並將焦點還給離開入口；確認離開 SHALL 返回目前語言的選單。
+
+#### Scenario: 取消離開
+
 - **WHEN** 玩家選擇繼續遊戲或關閉離開確認視窗
 - **THEN** 保留本場進度並繼續答題
 
-### Requirement: Local personal bests
+### Requirement: 本機最佳紀錄
+
 選單 SHALL 在攻擊、防禦入口下分別顯示一般模式最高分及競速模式最短完成秒數，使用目前瀏覽器儲存並跨語言共用。僅正常完成一局 SHALL 更新紀錄；中途離開或直接開啟結果網址 SHALL NOT 寫入紀錄。沒有紀錄時 SHALL 顯示「—」；儲存失敗 SHALL NOT 阻止遊戲完成。
 
-#### Scenario: Completed game
+#### Scenario: 正常完成遊戲
+
 - **WHEN** 玩家正常完成一局，且成績優於該模式及題目種類的既有紀錄
 - **THEN** 更新本機紀錄，返回選單或重新載入後仍可查看

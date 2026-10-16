@@ -1,14 +1,14 @@
-# Completed implementation
+# 已完成實作
 
-These tasks record user-requested work retrospectively.
+這些任務是使用者要求的工作完成後，補寫的紀錄。
 
-- [x] Add AppShell, safe-area handling and compact viewport layouts (35ab2bb).
-- [x] Bundle Cubic 11, fix Chinese text and remove unused assets (534a9e3, 246edfb).
-- [x] Correct Japanese font coverage and unify Japanese typography (bcc084f, f2b08bf).
-- [x] Stabilize language selection size, position and corners (4d7c222, 6d62560).
-- [x] Stabilize Home title, text and Start width (82587f9, 2c3e791, 9b76f84).
-- [x] Align intro dialog widths, single-line labels and corners (d47af03, 2943e02, c0fa519).
-- [x] Align Menu dimensions and typography (74cc78f).
-- [x] Remove language-dependent root sizing and reserve stable result/dialog/feedback space.
-- [x] Compare all route geometries across languages and run the complete suite.
-- [x] Record evidence, synchronize specifications and archive the completed work.
+- [x] 加入 AppShell、安全區域處理與小檢視區版面（35ab2bb）。
+- [x] 打包 Cubic 11、修正中文並移除未用資源（534a9e3、246edfb）。
+- [x] 修正日文字型字元涵蓋範圍，統一日文字型（bcc084f、f2b08bf）。
+- [x] 固定語言選擇尺寸、位置與圓角（4d7c222、6d62560）。
+- [x] 固定首頁標題、文字與「開始」寬度（82587f9、2c3e791、9b76f84）。
+- [x] 統一開始對話框寬度、單行標籤與圓角（d47af03、2943e02、c0fa519）。
+- [x] 統一選單尺寸與字型（74cc78f）。
+- [x] 移除依語言改變的根字級，為結果、對話框與回饋預留固定空間。
+- [x] 比對各語言全部路徑的版面，執行完整測試。
+- [x] 記錄證據、同步規格並封存已完成工作。

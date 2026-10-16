@@ -1,13 +1,7 @@
-# Verification
+# 驗證紀錄
 
-- `pnpm lint` and `pnpm typecheck` passed.
-- All 15 targeted Chromium cases passed: complete/retry/navigation in all twelve
-  language/mode/question-kind combinations, three-language navigation, the
-  introduction language links and the language picker.
-- The picker check uses keyboard activation and covers selecting the current
-  language, returning Home, focusing Start, retaining the menu language and
-  preserving picker geometry after reopening at 390 x 600, 390 x 844 and
-  844 x 390.
-- The OpenSpec change passed strict validation before archival. Current specs
-  were synchronized before archival, which uses `--skip-specs`.
-- No physical-device or manual screen-reader validation is claimed.
+- `pnpm lint` 與 `pnpm typecheck` 通過。
+- 15 個目標 Chromium 案例全部通過：12 種語言／模式／題型組合的完成、重玩與導覽，以及三語導覽、介紹頁語言連結與語言選擇。
+- 語言選擇檢查使用鍵盤啟動，涵蓋選擇目前語言、返回首頁、聚焦「開始」、選單保留語言，以及在 390 x 600、390 x 844、844 x 390 重新開啟語言頁後維持版面。
+- OpenSpec 變更於封存前通過嚴格驗證。現行規格已先同步，封存使用 `--skip-specs`。
+- 未宣稱完成實機或手動螢幕閱讀器驗證。

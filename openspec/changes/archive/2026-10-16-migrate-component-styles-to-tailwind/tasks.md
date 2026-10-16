@@ -1,7 +1,7 @@
-- [x] 1. Record the current visual/style baseline and validate the change proposal.
-- [x] 2. Migrate shared shell, page layout, Home, Menu, Lang and Result.
-- [x] 3. Migrate shared Dialog, Quiz and progress pseudo-elements.
-- [x] 4. Migrate Landing and remove component-specific CSS rules/files.
-- [x] 5. Compare styles and geometry; run browser, unit, build and static checks.
-- [x] 6. Sync specifications, document verification and archive.
-- [x] 7. Prepare Conventional Commit metadata for commit/push handoff; defer PR creation at the user's request.
+- [x] 1. 記錄目前視覺／樣式基準，驗證變更提案。
+- [x] 2. 遷移共用外框、頁面版面、Home、Menu、Lang 與 Result。
+- [x] 3. 遷移共用 Dialog、Quiz 與進度條偽元素。
+- [x] 4. 遷移 Landing，移除元件專屬 CSS 規則與檔案。
+- [x] 5. 比對樣式及版面；執行瀏覽器、單元、建置與靜態檢查。
+- [x] 6. 同步規格、記錄驗證並封存。
+- [x] 7. 準備 Conventional Commit 提交資訊，供提交／推送交接；依使用者要求暫緩建立 PR。

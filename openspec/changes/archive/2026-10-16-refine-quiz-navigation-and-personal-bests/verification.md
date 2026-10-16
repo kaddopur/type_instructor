@@ -1,32 +1,18 @@
-# Verification
+# 驗證紀錄
 
-## Final local source
-- `pnpm lint` and `pnpm typecheck`: passed.
-- `pnpm test:unit`: 27 tests in seven files passed.
-- `PLAYWRIGHT_CHANNEL=chrome pnpm exec playwright test --project=chromium-desktop`:
-  all 53 tests passed on the final application and refreshed screenshot assets.
-- Vite production build and Workbox generation ran as part of browser validation.
-- Strict OpenSpec validation before archival: 14 items passed (13 current specs
-  and this change). Current specs were synchronized before archival, so archival
-  uses `--skip-specs` to avoid reapplying already integrated added requirements.
-- Strict validation after archival: all 13 current specs and all 15 archived
-  changes passed; `git diff --check` also passed.
+## 最終本機原始碼
 
-## Coverage and visual review
-Coverage includes complete games in all locales and modes, keyboard-only play,
-mouse/touch-to-keyboard transitions, exit cancellation/confirmation and expiry,
-local best-score/time comparison, storage failures, reloads, result-URL exclusion,
-three-language glyph metrics, narrow dialogs, mobile/desktop layout, automated
-accessibility, all type palettes, offline updates and localized asset delivery.
-All nine 390 x 844 browser captures were visually inspected. They show the new
-font, centered exit action and personal-best labels without navigation focus
-rings. Home branding was inspected at narrow mobile, portrait, landscape and
-desktop sizes. Capture metadata records the source revision and dirty worktree.
+- `pnpm lint` 與 `pnpm typecheck`：通過。
+- `pnpm test:unit`：7 個檔案共 27 個通過。
+- `PLAYWRIGHT_CHANNEL=chrome pnpm exec playwright test --project=chromium-desktop`：最終應用程式與更新截圖的全部 53 個測試通過。
+- 瀏覽器驗證包含 Vite 正式建置與 Workbox 產生流程。
+- 封存前嚴格 OpenSpec 驗證：14 項通過，包含 13 份現行規格與本變更。規格已先同步，封存使用 `--skip-specs`，避免重複套用已整合的新增需求。
+- 封存後嚴格驗證：13 份現行規格與 15 個封存變更全部通過；`git diff --check` 也通過。
 
-## Commit scope and limits
-The pre-existing package.json/pnpm-lock.yaml package-manager upgrade is excluded
-from this change and retained in the local worktree. No application dependencies
-are added. Browser records are local and cannot synchronize between devices.
-This run used installed Chrome; Firefox/WebKit are not claimed as local results.
-Physical devices, installed iOS mode and manual screen readers were not tested.
-Remote CI, merge and deployment are not claimed by this local evidence.
+## 測試範圍與畫面檢視
+
+測試涵蓋全部語言及模式的完整遊戲、純鍵盤遊玩、滑鼠／觸控轉鍵盤、離開取消／確認與確認中到期、本機最佳分數／時間比較、儲存失敗、重新載入、結果網址不寫紀錄、三語字形尺寸、窄對話框、手機／桌面版面、自動無障礙檢查、全部屬性配色、離線更新與各語言資源載入。已檢視全部九張 390 x 844 真實截圖，確認新字型、置中離開按鈕與最佳紀錄標籤，且沒有導覽焦點框。首頁品牌文字也在窄手機、直向、橫向及桌面尺寸檢視。截圖中繼資料記錄原始碼版本與含未提交修改的工作目錄。
+
+## 提交範圍與限制
+
+既有 package.json／pnpm-lock.yaml 套件管理器升級不納入本變更，留在本機工作目錄。不新增應用相依套件。瀏覽器紀錄只在本機，不跨裝置同步。本次用已安裝 Chrome，不宣稱本機 Firefox／WebKit 結果。未測試實機、iOS 安裝模式或手動螢幕閱讀器。本機證據不代表遠端 CI、合併或部署已完成。

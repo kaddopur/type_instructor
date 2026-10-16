@@ -1,39 +1,31 @@
-# Stabilize mobile and localized interfaces
+# 穩定手機與多語介面
 
-## Record status
+## 紀錄狀態
 
-This retrospective record covers the user-requested work on
-fix/mobile-safari-app-shell after PR #4. Implementation preceded this record;
-it does not claim an earlier proposal approval. Remote CI and deployment are
-not part of the completed local verification.
+這份補寫紀錄涵蓋 PR #4 後，使用者要求在 fix/mobile-safari-app-shell 完成的工作。實作早於紀錄，不代表事前已有提案核准。遠端 CI 與部署不包含在已完成的本機驗證內。
 
 ## Why
 
-Safari browser controls could obscure navigation pages. Missing CJK fonts and
-language-dependent root font sizing also caused inconsistent typography, button
-sizes, corners and positions when changing languages.
+Safari 瀏覽器控制列可能遮住導覽頁。缺少中日文字型，加上根字級隨語言改變，使切換語言時字型、按鈕尺寸、圓角與位置不一致。
 
 ## What Changes
 
-- Add a shared safe-area application shell and compact viewport layouts.
-- Bundle licensed Cubic 11 for Chinese and Japanese, retain PKMN/GB for Latin
-  and digits, correct 没有效果 to 沒有效果, and remove unused font files.
-- Stabilize Home, Menu, language selection, result and dialog actions.
-- Use one root font size for every language; reserve description/feedback space.
-- Add cross-language geometry, font-loading and offline resource checks.
+- 加入共用安全區域外框與小檢視區版面。
+- 打包附授權的 Cubic 11 供中文與日文使用；拉丁字母及數字保留 PKMN／GB。將「没有效果」修正為「沒有效果」，移除未用字型。
+- 固定首頁、選單、語言選擇、結果及對話框操作元件的版面。
+- 所有語言共用根字級，為說明與回饋預留空間。
+- 加入跨語言版面、字型載入與離線資源檢查。
 
 ## Capabilities
 
 ### New Capabilities
 
-- mobile-interface-layout: Shared viewport ownership and localized font delivery.
+- mobile-interface-layout：共用檢視區管理與各語言字型載入。
 
 ### Modified Capabilities
 
-- navigation-and-language: Changing language must preserve layout geometry.
+- navigation-and-language：切換語言必須保留版面尺寸與位置。
 
 ## Impact
 
-Shared shell, CSS, page components, fonts/license, language strings, browser
-checks, specifications and documentation. Existing game rules, hash routes and
-Pages base remain supported.
+影響共用外框、CSS、頁面元件、字型與授權、翻譯文字、瀏覽器檢查、規格及文件。繼續支援既有規則、hash 路由與 Pages 基底路徑。

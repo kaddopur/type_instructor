@@ -1,100 +1,82 @@
-# refreshed-interface Specification
+# 更新後介面規格
 
 ## Purpose
 
-Define the approved pixel UI hierarchy, localized navigation, progress feedback and matching app icons.
+定義已核准的像素介面層級、各語言導覽、進度回饋與配套應用圖示，並規範以 Tailwind 管理元件樣式，同時保留既有玩法、焦點與離線使用。
 
 ## Requirements
 
-### Requirement: Tailwind component styling
+### Requirement: Tailwind 元件樣式
 
-All component layout, spacing, typography, responsive, state and pseudo-element
-styles SHALL use Tailwind CSS utilities with shared shadcn/Radix controls and
-theme tokens. CSS SHALL be limited to Tailwind imports, theme variables, font
-faces, shared responsive variants and document-wide base rules. Semantic class
-names MAY remain as test hooks without component-specific CSS declarations.
+所有元件的版面、間距、字型、響應式、狀態及偽元素樣式 SHALL 使用 Tailwind CSS 工具類別，搭配共用 shadcn／Radix 控制元件與主題變數。CSS SHALL 只保留 Tailwind 匯入、主題變數、字型宣告、共用響應式變體與全文件基礎規則。語意類別名稱 MAY 保留作測試定位，但不定義元件專屬 CSS。
 
-#### Scenario: UI changes
+#### Scenario: 介面變更
 
-- **WHEN** a page or shared control renders
-- **THEN** its component styles come from Tailwind utilities, and no standalone Landing stylesheet or component-selector CSS rules are required
+- **WHEN** 頁面或共用控制元件顯示
+- **THEN** 元件樣式來自 Tailwind 工具類別，不需獨立 Landing 樣式表或元件選擇器 CSS 規則
 
-#### Scenario: Equivalent rendered behavior
+#### Scenario: 顯示行為一致
 
-- **WHEN** the migration is compared with the approved interface
-- **THEN** pixel dimensions, locale geometry, responsive behavior, keyboard focus and gameplay remain unchanged
+- **WHEN** 將遷移結果與已核准介面比對
+- **THEN** 像素尺寸、各語言版面、響應式行為、鍵盤焦點與玩法均不變
 
-### Requirement: Consistent pixel navigation
+### Requirement: 一致的像素導覽
 
-The interface SHALL use shared warm-canvas, white-surface, charcoal-outline and
-yellow-primary tokens. Home SHALL group start/language actions; Menu SHALL show
-two described mode cards with paired attack/defense actions. Language selection
-SHALL distinguish the current language from keyboard focus with a visible check.
+介面 SHALL 共用暖色背景、白色表面、炭黑外框與黃色主要操作的主題變數。首頁 SHALL 將開始／語言操作分組；選單 SHALL 顯示兩張有說明的模式卡片，各有成對攻防按鈕。語言選擇 SHALL 以可見勾選區分目前語言與鍵盤焦點。
 
-#### Scenario: Localized navigation
+#### Scenario: 各語言導覽
 
-- **WHEN** players navigate or change between en, zh and ja
-- **THEN** controls keep consistent sizes, corner radii and positions at the same viewport
+- **WHEN** 玩家切頁，或在 en、zh、ja 間切換
+- **THEN** 相同檢視區的控制元件維持一致尺寸、圓角與位置
 
-### Requirement: Clear game hierarchy
+### Requirement: 清楚的遊戲資訊層級
 
-The intro dialog SHALL show the selected mode and goal with equal-width primary
-and secondary actions. Quiz SHALL reserve feedback space and retain four
-colored answer controls. Results SHALL emphasize the score or elapsed seconds.
+開始對話框 SHALL 顯示所選模式與目標，主要及次要按鈕等寬。答題頁 SHALL 預留回饋空間，保留四個彩色答案控制元件。結果頁 SHALL 突出分數或所用秒數。
 
-#### Scenario: Score progress
+#### Scenario: 分數進度
 
-- **WHEN** a speedrun is active
-- **THEN** progress targets 20 score points, preserves the actual score and never changes the game state
+- **WHEN** 競速模式進行中
+- **THEN** 進度以 20 分為目標，保留實際分數，不改變遊戲狀態
 
-#### Scenario: Feedback and replay
+#### Scenario: 回饋與重玩
 
-- **WHEN** an answer is submitted and the game completes
-- **THEN** localized text and symbols accompany feedback and Retry remains the first result action
+- **WHEN** 提交答案且遊戲完成
+- **THEN** 回饋同時提供目前語言文字與符號，結果頁第一個操作仍是重玩
 
-### Requirement: Responsive accessible delivery
+### Requirement: 響應式與無障礙支援
 
-The redesign SHALL preserve the safe-area shell, keyboard flows, contrast,
-Pages base and offline use. Automated checks SHALL cover all locales and browser
-projects; physical-device limits SHALL be stated explicitly.
+改版 SHALL 保留安全區域外框、鍵盤流程、對比、Pages 基底路徑與離線使用。自動檢查 SHALL 涵蓋全部語言與瀏覽器測試環境；實機驗證限制 SHALL 明確記錄。
 
-#### Scenario: Browser acceptance
+#### Scenario: 瀏覽器驗收
 
-- **WHEN** the production build is validated
-- **THEN** representative complete games, localized navigation, keyboard operation and offline updates pass
-- **AND** exact layout/font audits and broad accessibility scans are outside the required E2E scope
+- **WHEN** 驗證正式建置
+- **THEN** 代表性完整遊戲、各語言導覽、鍵盤操作與離線更新都通過
+- **AND** 精確版面／字型稽核及全面無障礙掃描，不在必要端對端測試範圍內
 
-### Requirement: Matching app icons
+### Requirement: 配套應用圖示
 
-Browser favicon, Apple touch icon and PWA manifest icons SHALL use the local
-pixel-T artwork with yellow, charcoal and blue. SVG/ICO/PNG delivery SHALL work
-under the Pages base and be included in offline precaching.
+瀏覽器 favicon、Apple 觸控圖示與 PWA manifest 圖示 SHALL 使用本機黃、炭黑、藍配色的像素 T 圖。SVG／ICO／PNG SHALL 可在 Pages 基底路徑下取得，並納入離線預快取。
 
-#### Scenario: Icon delivery
+#### Scenario: 圖示載入
 
-- **WHEN** the application loads browser and manifest icons
-- **THEN** all referenced assets resolve and raster dimensions match their declarations
+- **WHEN** 應用程式載入瀏覽器及 manifest 圖示
+- **THEN** 所有引用資源都可取得，點陣圖尺寸與宣告相符
 
-### Requirement: Explicit quiz condition and question
+### Requirement: 明確區分題目條件與提問
 
-Every quiz SHALL separate the given enemy condition from the question the
-player answers. Attack SHALL identify the enemy type and ask for the most
-effective attack type. Defense SHALL identify the enemy attack type and ask
-for the player's own type taking the least damage. The type name SHALL appear
-without ambiguous parentheses. Both contexts SHALL be associated with answer
-controls for keyboard and assistive-technology users in en, zh and ja.
+每道題目 SHALL 分開顯示已知敵方條件與玩家要回答的問題。攻擊題 SHALL 標明敵方屬性，問最有效的攻擊屬性。防禦題 SHALL 標明敵方攻擊屬性，問己方哪種屬性受到傷害最低。屬性名稱 SHALL 不加易混淆的括號。en、zh、ja 的兩段內容 SHALL 都關聯到答案控制元件，供鍵盤與輔助技術使用者辨識。
 
-#### Scenario: Attack question
+#### Scenario: 攻擊題
 
-- **WHEN** an attack quiz gives poison as the enemy type
-- **THEN** the card labels poison as the enemy type and a separate question asks for the most effective attack type
+- **WHEN** 攻擊題給定敵方為毒屬性
+- **THEN** 卡片將毒標為敵方屬性，另以獨立提問詢問最有效攻擊屬性
 
-#### Scenario: Defense question
+#### Scenario: 防禦題
 
-- **WHEN** a defense quiz gives poison as the enemy attack type
-- **THEN** the card labels poison as the enemy attack type and a separate question asks for the own type minimizing damage
+- **WHEN** 防禦題給定敵方攻擊為毒屬性
+- **THEN** 卡片將毒標為敵方攻擊屬性，另以獨立提問詢問受到傷害最低的己方屬性
 
-#### Scenario: Stable localized slots
+#### Scenario: 固定的三語區塊
 
-- **WHEN** players switch between the supported languages at the same viewport
-- **THEN** the condition card, question slot and answer controls retain their positions and sizes
+- **WHEN** 玩家在相同檢視區切換支援語言
+- **THEN** 條件卡片、提問區塊與答案控制元件的位置及尺寸不變

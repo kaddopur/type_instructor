@@ -1,19 +1,20 @@
 ## MODIFIED Requirements
 
-### Requirement: Local CJK pixel typography
-The application SHALL bundle Cubic 11 and its license locally as the primary UI
-font for English, Chinese and Japanese, including Latin letters, digits, kana,
-kanji and punctuation. PKMN/GB SHALL be fallbacks for missing glyphs. Equivalent
-UI roles SHALL retain the same font sizes and line heights across languages.
+### Requirement: 本機中日文像素字型
 
-#### Scenario: Japanese mixed label
-- **WHEN** the player sees やり直し or メニューに戻る
-- **THEN** kana and kanji use Cubic 11 with consistent glyph metrics
+應用程式 SHALL 在本機提供 Cubic 11 與授權，作為英文、正體中文與日文主要介面字型，涵蓋拉丁字母、數字、假名、漢字及標點。缺字時 SHALL 以 PKMN／GB 備援。相同用途的介面文字 SHALL 在各語言維持相同字級與行高。
 
-#### Scenario: Offline font delivery
-- **WHEN** the production application reloads offline after worker activation
-- **THEN** the bundled CJK font remains available under the Pages base path
+#### Scenario: 日文混合字元標籤
 
-#### Scenario: Consistent Latin typography
-- **WHEN** the player switches between English, Chinese and Japanese
-- **THEN** Latin text and digits retain consistent rendered glyph metrics without language-specific font scaling
+- **WHEN** 玩家看到「やり直し」或「メニューに戻る」
+- **THEN** 假名與漢字使用 Cubic 11，字形尺寸一致
+
+#### Scenario: 離線字型載入
+
+- **WHEN** 背景快取程式啟用後，正式應用程式離線重新載入
+- **THEN** 仍可從 Pages 基底路徑取得專案內的中日文字型
+
+#### Scenario: 一致的拉丁字型
+
+- **WHEN** 玩家在英文、正體中文與日文間切換
+- **THEN** 拉丁文字與數字的實際字形尺寸一致，不按語言縮放字型

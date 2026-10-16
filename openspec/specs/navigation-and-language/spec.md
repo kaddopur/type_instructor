@@ -1,73 +1,73 @@
-# Navigation and language baseline
+# 導覽與語言基準
 
 ## Purpose
 
-記錄遷移時應保留的頁面流程、既有網址與語系行為。依據 commit `4f1e318` 的原始碼整理；已知錯誤連結見 `openspec/baseline.md`。
+記錄遷移時應保留的頁面流程、既有網址與語系行為。依據原始碼提交 `4f1e318` 的原始碼整理；已知錯誤連結見 `openspec/baseline.md`。
 
 ## Requirements
 
-### Requirement: Hash routes
+### Requirement: hash 路由
 
 系統 SHALL 使用 hash 路由提供首頁、選單、語言選擇、遊戲與結果頁。遊戲路徑為 `/:lang/quizzes/:category/:gameType/:quizType`，結果路徑附加 `/result/:value`；保留既有網址相容性及 `s` 單屬性分類值。
 
-#### Scenario: Root entry
+#### Scenario: 根路徑入口
 
 - **WHEN** 玩家開啟沒有語言前綴的根路徑
 - **THEN** 顯示英文首頁
 
-#### Scenario: Result navigation
+#### Scenario: 結果頁導覽
 
 - **WHEN** 玩家完成遊戲
 - **THEN** 結果頁提供重玩與返回選單，並可返回首頁
 
-### Requirement: Localized navigation
+### Requirement: 各語言導覽
 
-系統 SHALL 支援 `en`、`zh`、`ja`，在切頁、遊戲、結果與重玩時保留 URL 中的語言。語系文字取自現有 JSON；保留像素字體風格；切換語言 SHALL NOT 改變全站根字級、控制元件尺寸、圓角或布局位置。翻譯文字可有不同字寬，容器應預留足夠空間。
+系統 SHALL 支援 `en`、`zh`、`ja`，在切頁、遊戲、結果與重玩時保留 網址中的語言。語系文字取自現有 JSON；保留像素字體風格；切換語言 SHALL NOT 改變全站根字級、控制元件尺寸、圓角或版面位置。翻譯文字可有不同字寬，容器應預留足夠空間。
 
-#### Scenario: Change language
+#### Scenario: 切換語言
 
 - **WHEN** 玩家從語言頁選擇英文、正體中文或日文，包括目前選取的語言
 - **THEN** 前往所選語言的首頁，並將鍵盤焦點移到「開始」
 - **AND** 後續頁面保留該語言；再次開啟語言頁時，控制元件維持相同尺寸、位置與圓角
 
-#### Scenario: Change language on the introduction page
+#### Scenario: 在介紹頁切換語言
 
 - **WHEN** 玩家在遊戲介紹頁切換語言
 - **THEN** 保留介紹頁路徑並顯示所選語言，不返回首頁
 
-### Requirement: Mode selection
+### Requirement: 模式選擇
 
 系統 SHALL 提供一般與競速兩種模式的攻擊、防禦入口，每個入口導向對應的模式與題目種類，並保留玩家選擇的語言。
 
-#### Scenario: Basic defense
+#### Scenario: 一般防禦
 
 - **WHEN** 玩家選擇一般模式防禦
 - **THEN** 進入 `basic/defend` 的防禦題
 
-#### Scenario: Speedrun defense
+#### Scenario: 競速防禦
 
 - **WHEN** 玩家從任一語言選單選擇競速防禦
 - **THEN** 進入 `speedrun/defend` 並顯示防禦題幹
 
-#### Scenario: Speedrun attack
+#### Scenario: 競速攻擊
 
 - **WHEN** 玩家從任一語言選單選擇競速攻擊
 - **THEN** 進入 `speedrun/attack` 並顯示攻擊題幹
 
-### Requirement: Confirm leaving an active game
+### Requirement: 離開進行中遊戲前確認
 
-Quiz SHALL 在同一列依序顯示計時、離開遊戲與分數。離開入口 SHALL 開啟本地化確認視窗，優先聚焦繼續遊戲；確認期間計時繼續。取消或關閉視窗 SHALL 保留本場進度並將焦點還給離開入口；確認離開 SHALL 返回目前語言的選單。
+Quiz SHALL 在同一列依序顯示計時、離開遊戲與分數。離開入口 SHALL 開啟目前語言的確認視窗，優先聚焦繼續遊戲；確認期間計時繼續。取消或關閉視窗 SHALL 保留本場進度並將焦點還給離開入口；確認離開 SHALL 返回目前語言的選單。
 
-#### Scenario: Cancel exit
+#### Scenario: 取消離開
 
 - **WHEN** 玩家選擇繼續遊戲或關閉離開確認視窗
 - **THEN** 保留本場進度並繼續答題
 
-### Requirement: Local personal bests
+### Requirement: 本機最佳紀錄
 
 選單 SHALL 在攻擊、防禦入口下分別顯示一般模式最高分及競速模式最短完成秒數，使用目前瀏覽器儲存並跨語言共用。僅正常完成一局 SHALL 更新紀錄；中途離開或直接開啟結果網址 SHALL NOT 寫入紀錄。沒有紀錄時 SHALL 顯示「—」；儲存失敗 SHALL NOT 阻止遊戲完成。
 
-#### Scenario: Completed game
+#### Scenario: 正常完成遊戲
 
 - **WHEN** 玩家正常完成一局，且成績優於該模式及題目種類的既有紀錄
 - **THEN** 更新本機紀錄，返回選單或重新載入後仍可查看

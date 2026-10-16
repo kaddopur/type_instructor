@@ -1,29 +1,27 @@
-# Clarify quiz conditions and questions
+# 釐清答題條件與提問
 
 ## Why
 
-The user approved the attack/defense comparison mockup. The previous stem could
-leave the poison type ambiguous: enemy type or selected attack. Separate the
-known enemy condition from an explicit question in every supported language.
-This is an additional change after the eight UI-refresh commits in PR #6.
+使用者已核准攻防題對照圖。舊題幹可能讓人不確定「毒」代表敵方屬性還是所選攻擊。所有支援語言都應分開顯示已知敵方條件與明確提問。這是 PR #6 的八個介面更新提交完成後，追加的變更。
 
 ## What Changes
 
-- Attack: identify the enemy type, then ask for the most effective attack type.
-- Defense: identify the enemy attack type, then ask which own type takes least damage.
-- Remove parentheses from the given type name and place the instruction below the card.
-- Associate both condition and question with keyboard answer context.
-- Preserve locale layout geometry, 2×2 controls and all gameplay rules.
+- 攻擊題：先標明敵方屬性，再問哪種攻擊最有效。
+- 防禦題：先標明敵方攻擊屬性，再問己方哪種屬性受到傷害最低。
+- 移除已知屬性名稱外的括號，將提問放到卡片下方。
+- 將條件與提問都關聯到鍵盤作答的描述。
+- 保留跨語言版面、2×2 答案控制元件與全部玩法規則。
 
 ## Capabilities
 
 ### New Capabilities
-None.
+
+無。
 
 ### Modified Capabilities
-- refreshed-interface: Explicit, separate condition and instruction for each quiz kind.
+
+- refreshed-interface：每種題型都分開顯示明確條件與提問。
 
 ## Impact
 
-Quiz markup/CSS, en/zh/ja strings, browser assertions and screenshot documentation.
-No changes to damage matrix, correct-answer selection, timers or scoring.
+影響 Quiz 標記與 CSS、en／zh／ja 文字、瀏覽器斷言及截圖文件。不改動傷害表、正解選取、計時與計分。

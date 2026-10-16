@@ -1,26 +1,15 @@
-# Design
+# 設計
 
-A createQuizGenerator(quizType) closure belongs to each store. It shuffles all
-18 types, deals one per generated question and refills only when empty. If the
-first item of a new bag equals the previous target, swap it with the second item.
-This bounded operation also works with a constant random source. Wrong-answer
-retries and timer ticks do not consume targets; completed games do not generate
-another question. New stores have independent bags and defense history.
+每個狀態儲存區擁有自己的 createQuizGenerator(quizType) 閉包。它將 18 種屬性洗牌，每次產生新題取一種，用完才補齊。新一輪第一種屬性若與上一題相同，就與第二種交換。這個操作次數有限，即使亂數來源固定也能運作。答錯重試與計時跳動不消耗屬性；遊戲結束後不再出題。新的狀態儲存區各自擁有屬性順序與防禦偏好紀錄。
 
-getQuiz accepts an explicit target (or picks one for standalone callers) and a
-defense preference. Each target starts with an immunity preference, then toggles
-to resistance on its next appearance. Preference state is per target, so shuffled
-round order cannot starve either category. If immunity is absent, use resistance;
-if resistance is absent, use the existing minimum. All current targets have
-resistance. A resistance question samples its answer from 0.5 matchups and distractors only from 1 or 2 matchups. Immunity
-questions keep 0 as the answer and sample any strictly worse multiplier. Attacks
-continue to choose 2 and exclude all other equally effective answers.
+getQuiz 接受明確指定的題幹屬性與防禦偏好；獨立呼叫時也可自行選取屬性。每種屬性首次優先練習免疫，再次出現時改為抗性。
 
-This balances targets, not answer-type frequency or difficulty. First-round
-immunity questions are intentionally preserved; resistance practice for targets
-with immunity begins in the second round. No adaptive model or persisted history.
+偏好按屬性分別記錄，因此洗牌順序不會使任一類永遠無法練習。沒有免疫則用抗性；沒有抗性則使用既有最低倍率。
 
-Tests cover multiple complete bags, forced boundary collisions, constant RNG,
-all targets and both defense preferences, session isolation, wrong-answer retries,
-and speedrun completion. Browser tests use a separate matchup fixture to select
-the best of the visible options instead of pinning one answer for an entire game.
+目前所有題幹屬性都有抗性。抗性題從 0.5 倍組合選正解，干擾選項只取 1 或 2 倍。
+
+免疫題維持 0 倍正解，其他選項可取任何嚴格較差的倍率。攻擊題仍選 2 倍，排除其他同樣有效的答案。
+
+這個方法平衡題幹屬性的出現次數，不平衡正解屬性頻率或難度。第一輪刻意保留免疫題；有免疫的屬性從第二輪開始練習抗性。不加入適應模型，也不儲存跨場紀錄。
+
+測試涵蓋多輪完整屬性、強制輪次邊界重複、固定亂數、所有題幹屬性與兩種防禦偏好、場次隔離、答錯重試與競速結束。瀏覽器測試用獨立的屬性相剋測試資料，從畫面選項選最佳答案，不再整場固定選同一答案。

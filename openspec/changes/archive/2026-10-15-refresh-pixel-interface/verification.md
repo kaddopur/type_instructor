@@ -1,54 +1,37 @@
-# Verification
+# 驗證紀錄
 
-## Local result
+## 本機結果
 
-The final runtime source, including the updated app icons, passed:
+最終執行時原始碼（含更新圖示）通過以下檢查：
 
-- pnpm lint and pnpm typecheck.
-- pnpm test:unit: 15 tests in four files.
-- CI=1 pnpm test:e2e: 120 tests, two workers, approximately 2.2 minutes.
-- Production Vite/Workbox generation as part of browser validation.
-- OpenSpec strict validation before and after archival.
-- git diff --check before commit.
+- pnpm lint 與 pnpm typecheck。
+- pnpm test:unit：4 個檔案共 15 個測試。
+- CI=1 pnpm test:e2e：120 個測試，兩個工作程序，約 2.2 分鐘。
+- 瀏覽器驗證期間的正式 Vite／Workbox 產生流程。
+- 封存前後的 OpenSpec 嚴格驗證。
+- 提交前的 git diff --check。
 
-The complete matrix covers desktop Chromium, Firefox, WebKit and iPhone-size
-WebKit emulation. It includes all three languages, complete gameplay, keyboard
-flows, axe audits, all 18 type-color contrast checks, offline/update fixtures,
-font delivery and icon URLs/dimensions. Progress assertions verify a negative
-score displays zero progress and each correct score advances toward 20 points;
-the basic mode has no score progress bar.
+完整測試組合涵蓋桌面 Chromium、Firefox、WebKit 與 iPhone 尺寸的 WebKit 模擬。包括三語、完整玩法、鍵盤流程、axe 稽核、全部 18 種屬性配色對比、離線／更新測試資料、字型載入及圖示網址／尺寸。進度測試確認負分顯示零進度，每次答對向 20 分推進；一般模式沒有分數進度條。
 
-Layout checks cover 390×600, 844×390 and 1280×900, comparing positions, sizes,
-font sizes and radii across locales. Safe-area checks verify controls remain
-inside simulated insets without document/inner scrolling. These are automated
-layout checks, not a physical iPhone claim.
+版面測試涵蓋 390×600、844×390 與 1280×900，比對各語言的位置、尺寸、字級與圓角。安全區域測試確認控制元件位於模擬內縮範圍內，文件與頁內都不捲動。這些是自動版面檢查，不代表實體 iPhone 驗證。
 
-## Visual evidence
+## 畫面證據
 
-Actual Chromium screenshots in docs/ui-refresh were inspected for Home, Menu,
-Lang, intro, quiz feedback, results and landscape Menu. The generated concept
-was used as a design reference; runtime screenshots are the review artifact.
-The 32px and 256px pixel-T icons were also visually inspected.
+已檢視 docs/ui-refresh 中 Chromium 的實際截圖：首頁、選單、語言頁、開始說明、答題回饋、結果及橫向選單。生成概念圖只作設計參考，實際執行截圖才是審閱依據。也已檢視 32px 與 256px 像素 T 圖示。
 
-## Commit sequence
+## 提交順序
 
-1. 35a3c12: visual foundations.
-2. 021242b: Home.
-3. b1d6da7: Menu.
-4. 9f7056e: language selection.
-5. 8b5083f: start dialog.
-6. 2b8f90c: Quiz.
-7. 992b3f8: Result.
-8. The archive commit: verification refinements, icons, screenshots and docs.
+1. 35a3c12：視覺基礎。
+2. 021242b：首頁。
+3. b1d6da7：選單。
+4. 9f7056e：語言選擇。
+5. 8b5083f：開始對話框。
+6. 2b8f90c：答題頁。
+7. 992b3f8：結果頁。
+8. 封存提交：驗證調整、圖示、截圖與文件。
 
-## Release limits
+## 發布限制
 
-No physical iPhone expanded/collapsed Liquid Glass chrome, installed iOS mode,
-or manual screen reader was tested. The PR handoff must retain these limits.
-At archival time, checks above are local; remote CI and deployment are not
-claimed. PR creation follows the archive commit. Deployment requires the
-existing master-only workflow after merge.
+未測試實體 iPhone 展開／收合的 Liquid Glass 瀏覽器介面、iOS 安裝模式或手動螢幕閱讀器；PR 交接須保留這些限制。封存時上述檢查皆為本機結果，不代表遠端 CI 或部署。封存提交後才建立 PR；部署須合併後由既有 master 專用工作流程執行。
 
-The user asked whether the original Japanese quiz stem is clear. The response
-recommended separating the enemy condition from the requested choice. That
-copy proposal was not treated as approval for a wording change in this release.
+使用者詢問原日文題幹是否清楚，回覆建議分開敵方條件與玩家要選的答案。此文案建議未視為同意在本次發布更改文字。

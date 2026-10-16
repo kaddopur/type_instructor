@@ -1,48 +1,43 @@
-# offline-updates Specification
+# 離線更新規格
 
 ## Purpose
 
-Define offline gameplay, scope-safe worker upgrades, and failed-install recovery.
+定義正式建置的離線遊玩、舊背景快取程式接替與後續更新行為。更新只清理指定範圍的快取，不中斷目前遊戲；安裝失敗時保留可用舊版。
 
 ## Requirements
 
-### Requirement: Offline game assets
+### Requirement: 離線遊戲資源
 
-The production build SHALL precache all local application resources using Workbox
-and allow the game to open, navigate, and answer questions offline after installation.
-Development SHALL not register a service worker.
+正式建置 SHALL 使用 Workbox 預先快取全部本機應用資源，安裝完成後可離線開啟遊戲、切頁與作答。開發環境 SHALL 不註冊 service worker（背景快取程式）。
 
-#### Scenario: Offline play
+#### Scenario: 離線遊玩
 
-- **WHEN** a player installs the production worker online and then loses connectivity
-- **THEN** reloading the site and playing a localized game work using cached assets
+- **WHEN** 玩家在線上安裝正式背景快取程式後失去連線
+- **THEN** 可用快取資源重新載入網站，並以支援語言遊玩
 
-### Requirement: Legacy worker replacement
+### Requirement: 接替舊背景快取程式
 
-The application SHALL keep the existing service-worker.js URL and scope, bypass
-HTTP script cache on updates, and activate successfully installed updates. Activation
-SHALL delete only this scope's known legacy cache and stale entries in its own Workbox precache.
+應用程式 SHALL 保留既有 service-worker.js 網址與範圍，更新時略過 HTTP 腳本快取，並啟用成功安裝的更新。啟用時 SHALL 只刪除此範圍已知的舊快取，以及自己 Workbox 預快取中的過期項目。
 
-#### Scenario: Legacy upgrade
+#### Scenario: 舊版更新
 
-- **WHEN** a legacy sw-precache worker is controlling the site and the new build is installed
-- **THEN** the new worker takes control, the next reload serves the new app, and another application's cache is preserved
+- **WHEN** 舊 sw-precache 背景快取程式控制網站，而新版建置完成安裝
+- **THEN** 新程式接管，下次重新載入提供新版應用，其他應用的快取保留
 
-### Requirement: Non-disruptive updates
+### Requirement: 不中斷遊戲的更新
 
-Worker activation SHALL NOT automatically reload an open game. A subsequent page
-reload SHALL use the installed new version and its offline cache.
+背景快取程式啟用時 SHALL NOT 自動重新載入開啟中的遊戲。之後重新載入頁面 SHALL 使用已安裝的新版本與其離線快取。
 
-#### Scenario: Update during play
+#### Scenario: 遊玩期間更新
 
-- **WHEN** a new Workbox build activates while a game is running
-- **THEN** the page retains its current game until reload, after which the updated build loads
+- **WHEN** 遊戲進行時，新 Workbox 建置啟用
+- **THEN** 目前遊戲保留至重新載入；重新載入後使用新版
 
-### Requirement: Failed install recovery
+### Requirement: 安裝失敗復原
 
-An unsuccessful worker installation SHALL preserve the active worker and its cache.
+背景快取程式安裝失敗時 SHALL 保留原本啟用的程式與快取。
 
-#### Scenario: Missing new asset
+#### Scenario: 缺少新版資源
 
-- **WHEN** a new worker cannot fetch a required precache resource
-- **THEN** the existing worker remains active and the player can still open its cached game offline
+- **WHEN** 新背景快取程式無法取得必要的預快取資源
+- **THEN** 舊程式仍啟用，玩家仍可離線開啟其快取遊戲

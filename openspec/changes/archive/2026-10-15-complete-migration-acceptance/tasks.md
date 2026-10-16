@@ -1,13 +1,13 @@
-## 1. Acceptance
+## 1. 驗收
 
-- [x] 1.1 Add a complete three-language/four-mode acceptance matrix across desktop and mobile browser engines.
-- [x] 1.2 Verify score/feedback/timer boundaries, complete results/retry/history, and resource/layout visibility.
-- [x] 1.3 Fix demonstrated issues and validate offline/worker migration across browser engines.
-- [x] 1.4 Run clean install, logic/smoke/acceptance tests, audit, workflow and OpenSpec checks; complete evidence and baseline checklist.
+- [x] 1.1 加入桌面與手機瀏覽器引擎的完整三語／四模式驗收組合。
+- [x] 1.2 驗證計分、回饋與計時邊界，以及結算、重玩、瀏覽紀錄、資源與版面可見性。
+- [x] 1.3 修正已重現問題，驗證各瀏覽器引擎的離線使用與背景快取程式遷移。
+- [x] 1.4 執行乾淨安裝、邏輯／冒煙／驗收測試、套件稽核、工作流程及 OpenSpec 檢查；補齊證據與基準清單。
 
-## 2. Release handoff
+## 2. 發布交接
 
-- [x] 2.1 Archive the acceptance change and commit the reviewable result.
-- [x] 2.2 Push and open a PR; resolve remote CI failures before merging.
-- [x] 2.3 Merge the passing PR and verify the Pages deployment and live game.
-- [x] 2.4 Record final release references, results, and remaining operational limitations.
+- [x] 2.1 封存驗收變更，提交可供審閱的成果。
+- [x] 2.2 推送並建立 PR；合併前解決遠端 CI 失敗。
+- [x] 2.3 合併通過檢查的 PR，驗證 Pages 部署與線上遊戲。
+- [x] 2.4 記錄最終發布連結、結果與剩餘操作限制。
