@@ -20,7 +20,7 @@ the unit suite; pnpm test:unit:watch SHALL provide watch mode.
 ### Requirement: Unified browser tests
 
 Browser tests SHALL reside under tests/e2e and use one Playwright configuration.
-The complete suite SHALL cover desktop Chromium, Firefox, WebKit, and mobile
+The player-flow suite SHALL cover desktop Chromium, Firefox, WebKit, and mobile
 WebKit emulation. Tags SHALL support smoke, gameplay, accessibility, and offline selection.
 
 #### Scenario: Complete browser acceptance
@@ -90,3 +90,23 @@ commits using lint-staged's default backup and restore behavior.
 
 - **WHEN** a staged file contains a lint error that ESLint cannot fix
 - **THEN** the commit fails and the contributor's staged and unstaged changes remain available
+
+### Requirement: Player-flow E2E scope
+
+Required E2E checks SHALL cover navigation, gameplay completion/replay, exit
+confirmation, record persistence, keyboard/touch focus and offline use. Pixel
+geometry, font metrics, broad accessibility scans, analytics wiring and exhaustive
+algorithm permutations SHALL NOT be required E2E checks. Existing unit coverage
+SHALL retain game rules, routes, records and analytics validation.
+
+#### Scenario: Representative player journeys
+
+- **WHEN** the required browser suite runs
+- **THEN** all four browser/device projects exercise full basic/speedrun attack/defense games in Traditional Chinese
+- **AND** all three languages exercise switching, starting, answering and leaving a game
+- **AND** keyboard, pointer/touch focus, records and offline worker upgrades remain covered
+
+#### Scenario: Focused accessibility selection
+
+- **WHEN** `pnpm test:a11y` runs
+- **THEN** it checks keyboard and focus journeys, without claiming a broad axe or WCAG audit
