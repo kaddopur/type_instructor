@@ -4,7 +4,8 @@ import I18nLink from './I18nLink.jsx';
 import useGame from '../hooks/useGame.ts';
 import { SCORE_TARGET } from '../lib/gameRules.ts';
 import { savePersonalBest } from '../lib/personalBests.ts';
-import { typeStyles } from '../lib/typeStyles.ts';
+import QuestionPanel from './QuestionPanel.jsx';
+import { useGameCompletion } from './GameRoute.tsx';
 import { cn } from '../lib/utils.ts';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -20,7 +21,8 @@ function Quiz({
     timer,
     scores,
     status,
-    quiz: { enemy, options, answer: correctType },
+    quiz,
+    missedQuestions,
     overlay,
     freeze,
     finish,
@@ -29,54 +31,21 @@ function Quiz({
     answer,
   } = useGame(gameType, quizType);
 
+  const { beginSession, completeGame } = useGameCompletion();
+  const submitted = useRef(false);
+  useEffect(() => beginSession(), [beginSession]);
   useEffect(() => {
-    if (result !== null) {
+    if (result !== null && !submitted.current) {
+      submitted.current = true;
       savePersonalBest(gameType, quizType, result);
-      navigate(`${pathname}/result/${result}`);
+      completeGame({ resultPath: `${pathname}/result/${result}`, questions: missedQuestions });
     }
-  }, [result, gameType, quizType, navigate, pathname]);
+  }, [result, gameType, quizType, completeGame, pathname, missedQuestions]);
 
-  const answerGroup = useRef(null);
   const keyboardInput = useRef(false);
   const exitButton = useRef(null);
   const [exitOpen, setExitOpen] = useState(false);
-  const [announcement, setAnnouncement] = useState('');
-  const {
-    TIMER,
-    SCORES,
-    GOAL,
-    GOAL_BASIC,
-    GOAL_SPEEDRUN,
-    START,
-    MENU,
-    CHOOSE_ANSWER,
-    DAMAGE_MULTIPLIER,
-  } = messages;
-
-  useEffect(() => {
-    if (
-      !overlay &&
-      !exitOpen &&
-      !freeze &&
-      result === null &&
-      options.every((option) => !option.clicked)
-    ) {
-      const target = keyboardInput.current
-        ? answerGroup.current?.querySelector('button:not([aria-disabled="true"])')
-        : answerGroup.current;
-      target?.focus({ preventScroll: true });
-    }
-  }, [overlay, exitOpen, freeze, result, options]);
-
-  function selectAnswer(index) {
-    const option = options[index];
-    if (overlay || exitOpen || freeze || result !== null || option.clicked) return;
-    const outcome = option.type === correctType;
-    answer(index);
-    setAnnouncement(
-      `${messages[option.type.toUpperCase()]}: ${messages[outcome ? 'CORRECT' : 'INCORRECT']}. ${SCORES}: ${scores + (outcome ? 1 : -1)}.`,
-    );
-  }
+  const { TIMER, SCORES, GOAL, GOAL_BASIC, GOAL_SPEEDRUN, START, MENU } = messages;
 
   return (
     <div
@@ -202,90 +171,19 @@ function Quiz({
           ) : null}
         </div>
       </header>
-      <div className="quiz-stem grid min-h-0 grid-rows-[minmax(0,1fr)_64px] gap-3 landscape-short:col-start-1 landscape-short:row-start-2 landscape-short:grid-rows-[minmax(0,1fr)_48px] landscape-short:gap-2">
-        <div
-          id="enemy-condition"
-          className={cn(
-            'stemContainer flex min-h-0 items-center justify-center rounded-2xl border-3 border-ink p-3 text-center landscape-short:p-2',
-            typeStyles[enemy.type],
-            `Bgc-${enemy.type}`,
-          )}
-        >
-          <div className="stemEnemy w-full">
-            <div className="stemEnemyText flex flex-col items-center justify-center">
-              <span className="question-prompt flex h-10 w-full items-center justify-center text-[16px] leading-6 landscape-short:h-7 landscape-short:text-[14px] landscape-short:leading-5">
-                {messages[enemy.title]}
-              </span>
-              <strong className="question-type block text-[28px] leading-10 font-normal landscape-short:text-[24px] landscape-short:leading-8">
-                {messages[enemy.type.toUpperCase()]}
-              </strong>
-            </div>
-          </div>
-        </div>
-        <h1
-          id="quiz-question"
-          className="quiz-instruction flex h-16 items-center justify-center px-1 text-center text-[16px] leading-6 whitespace-pre-line landscape-short:h-12 landscape-short:leading-5"
-        >
-          {messages[quizType === 'attack' ? 'ATTACK_QUESTION' : 'DEFEND_QUESTION']}
-        </h1>
-      </div>
-      <div className="stemStatus flex h-14 items-center justify-center gap-2 text-center text-[14px] leading-5 landscape-short:col-start-1 landscape-short:row-start-3 landscape-short:h-12">
-        {status ? (
-          <>
-            <span className="feedback-symbol font-[sans-serif] text-[24px]" aria-hidden="true">
-              {finish ? '✓' : '✕'}
-            </span>
-            {`${messages[finish ? 'CORRECT' : 'INCORRECT']}: ${messages[status]}`}
-          </>
-        ) : null}
-      </div>
-      <div
-        ref={answerGroup}
-        role="group"
-        tabIndex={-1}
-        aria-label={CHOOSE_ANSWER}
-        aria-describedby="enemy-condition quiz-question"
-        className="optionContainer grid min-h-0 grid-cols-2 grid-rows-2 gap-3 landscape-short:col-start-2 landscape-short:row-span-2 landscape-short:row-start-2"
-      >
-        {options.map(({ type, damage, clicked, correct }, index) => (
-          <Button
-            key={type + index}
-            type="button"
-            variant="answer"
-            size="answer"
-            aria-label={`${messages[type.toUpperCase()]}${clicked ? `, ${DAMAGE_MULTIPLIER}: ${damage}` : ''}`}
-            aria-describedby={index === 0 ? 'enemy-condition quiz-question' : undefined}
-            tabIndex={clicked ? -1 : 0}
-            aria-disabled={overlay || exitOpen || freeze || result !== null || clicked || undefined}
-            className={cn(
-              'optionItem min-h-11 w-full min-w-0 rounded-[18px] border-3 border-ink px-2 py-1 text-[20px] leading-7 focus-visible:outline-offset-[-6px]',
-              clicked && !correct ? typeStyles.wrong : typeStyles[type],
-              `Bgc-${clicked && !correct ? 'wrong' : type}`,
-            )}
-            onClick={() => selectAnswer(index)}
-          >
-            <span className="optionText flex flex-col items-center justify-center">
-              {messages[type.toUpperCase()]}
-              {clicked ? (
-                <>
-                  <span
-                    className="answer-symbol absolute top-1.5 right-2 font-[sans-serif] text-[16px] leading-5"
-                    aria-hidden="true"
-                  >
-                    {correct ? '✓' : '✕'}
-                  </span>
-                  <span className="optionDamage text-[14px] leading-5" aria-hidden="true">
-                    {damage}
-                  </span>
-                </>
-              ) : null}
-            </span>
-          </Button>
-        ))}
-      </div>
-      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-        {announcement}
-      </div>
+      <QuestionPanel
+        messages={messages}
+        quizType={quizType}
+        quiz={quiz}
+        status={status}
+        correct={finish}
+        disabled={overlay || exitOpen || freeze || result !== null}
+        onAnswer={answer}
+        keyboardInput={keyboardInput}
+        announceAnswer={(option, correct) =>
+          `${messages[option.type.toUpperCase()]}: ${messages[correct ? 'CORRECT' : 'INCORRECT']}. ${SCORES}: ${scores + (correct ? 1 : -1)}.`
+        }
+      />
     </div>
   );
 }

@@ -13,6 +13,7 @@ export interface QuizState {
   finishTime: number | null;
   result: number | null;
   quiz: Quiz;
+  missedQuestions: Quiz[];
   overlay: boolean;
   start: () => void;
   tick: () => void;
@@ -31,6 +32,7 @@ export function createQuizStore(gameType: GameType, quizType: QuizType) {
     finishTime: null,
     result: null,
     quiz: nextQuiz(),
+    missedQuestions: [],
     overlay: true,
 
     start: () => set((state) => (state.overlay ? { overlay: false } : state)),
@@ -56,6 +58,17 @@ export function createQuizStore(gameType: GameType, quizType: QuizType) {
           return state;
         const correct = option.type === state.quiz.answer;
         return {
+          missedQuestions:
+            !correct && !state.quiz.options.some((item) => item.clicked && !item.correct)
+              ? [
+                  ...state.missedQuestions,
+                  {
+                    enemy: { ...state.quiz.enemy },
+                    answer: state.quiz.answer,
+                    options: state.quiz.options.map(({ type, damage }) => ({ type, damage })),
+                  },
+                ]
+              : state.missedQuestions,
           scores: state.scores + (correct ? 1 : -1),
           status: getStatus(option.damage),
           freeze: true,

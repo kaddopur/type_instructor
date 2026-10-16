@@ -1,5 +1,6 @@
 schema: spec-driven
 context: |
+  撰寫或修改文件前，先讀取專案根目錄 AGENTS.md 的語言與撰寫規則。
   這是寶可夢單屬性相剋記憶遊戲；目前原始碼基準為 4f1e318。
   證據、已知問題與驗證範圍見 openspec/baseline.md。
   目前技術：Vite、React、hash 路由、Zustand；保留既有玩法。

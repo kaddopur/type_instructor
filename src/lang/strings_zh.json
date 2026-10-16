@@ -62,5 +62,11 @@
   "ATTACK_QUESTION": "哪種攻擊屬性\n最有效？",
   "DEFEND_QUESTION": "自己的哪種屬性\n受到的傷害最少？",
   "ABOUT_GAME": "遊戲介紹",
-  "FAN_NOTICE": "非官方粉絲作品，與 Pokémon 官方無關，亦未獲其授權或贊助。"
+  "FAN_NOTICE": "非官方粉絲作品，與 Pokémon 官方無關，亦未獲其授權或贊助。",
+  "PRACTICE_TITLE": "本場錯題練習",
+  "PRACTICE_DESCRIPTION": "不計分、不計時。答錯的題目會排到最後。",
+  "PRACTICE_REMAINING": "剩餘 {count} 題",
+  "PRACTICE_CLOSE": "關閉",
+  "PRACTICE_COMPLETE": "全部答對了！",
+  "PRACTICE_RETURN": "返回結果"
 }

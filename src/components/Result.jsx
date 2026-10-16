@@ -1,14 +1,23 @@
+import { useRef, useState } from 'react';
+import { useGameCompletion } from './GameRoute.tsx';
+import MistakePractice from './MistakePractice.jsx';
+import { Dialog } from '@/components/ui/dialog';
 import I18nLink from './I18nLink.jsx';
 import I18nPage from './I18nPage.jsx';
 import { Button } from '@/components/ui/button';
 import { pageLayout, pageFooter } from '../lib/pageStyles.ts';
 import { cn } from '../lib/utils.ts';
 
-function Result({
-  messages: { YOUR_SCORES, YOUR_TIME, RETRY, MENU, HOME },
-  lang,
-  params: { value, category, gameType, quizType },
-}) {
+function Result({ messages, location, lang, params: { value, category, gameType, quizType } }) {
+  const { YOUR_SCORES, YOUR_TIME, RETRY, MENU, HOME } = messages;
+  const completion = useGameCompletion()?.completed;
+  const eligible =
+    completion &&
+    completion.resultPath === location.pathname &&
+    location.state?.completedSessionId === completion.id &&
+    completion.questions.length > 0;
+  const [practiceOpen, setPracticeOpen] = useState(false);
+  const practiceButton = useRef(null);
   const summary = gameType === 'basic' ? YOUR_SCORES : YOUR_TIME;
   return (
     <nav className={cn('Result', pageLayout)} aria-label={summary}>
@@ -40,6 +49,28 @@ function Result({
             </I18nLink>
           </Button>
         </div>
+        {eligible ? (
+          <div className="resultItem">
+            <Button
+              ref={practiceButton}
+              className="result-action min-h-12 w-65 max-w-full p-2 text-[16px] whitespace-normal"
+              onClick={() => setPracticeOpen(true)}
+            >
+              {messages.PRACTICE_TITLE}
+            </Button>
+            <Dialog open={practiceOpen} onOpenChange={setPracticeOpen}>
+              {practiceOpen ? (
+                <MistakePractice
+                  questions={completion.questions}
+                  quizType={quizType}
+                  messages={messages}
+                  onClose={() => setPracticeOpen(false)}
+                  onCloseAutoFocus={() => practiceButton.current?.focus({ preventScroll: true })}
+                />
+              ) : null}
+            </Dialog>
+          </div>
+        ) : null}
         <div className="resultItem">
           <Button
             asChild
