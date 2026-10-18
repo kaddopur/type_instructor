@@ -1,0 +1,20 @@
+{
+  "sourceRevision": "8437ed05aea756c9ccf9be6fe72d61a23c80d5ee",
+  "sourceWorktreeDirty": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "engine": "Chromium",
+  "channel": "chromium",
+  "languages": [
+    "en",
+    "zh",
+    "ja"
+  ],
+  "routes": [
+    "quizzes/s/basic/attack/result/-1"
+  ],
+  "resultActions": "Capture only the three result actions with 12px padding after a real missed answer and timeout.",
+  "note": "Unmodified browser screenshots of the built game; fixed randomness and clock for reproducibility."
+}

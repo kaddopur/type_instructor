@@ -64,7 +64,7 @@
   "ABOUT_GAME": "ゲーム紹介",
   "FAN_NOTICE": "非公式のファン作品です。Pokémon 公式とは関係がなく、公認・許諾・協賛を受けていません。",
   "PRACTICE_TITLE": "まちがえた問題を練習",
-  "PRACTICE_DESCRIPTION": "得点・制限時間なし。まちがえた問題は最後に回ります。",
+  "PRACTICE_DESCRIPTION": "得点・制限時間なし。まちがえても同じ問題で続けます。正解したら最後に回し、その回の最初の回答で正解すると完了です。",
   "PRACTICE_REMAINING": "残り {count} 問",
   "PRACTICE_CLOSE": "閉じる",
   "PRACTICE_COMPLETE": "すべて正解！",

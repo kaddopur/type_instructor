@@ -19,9 +19,9 @@ Home 不顯示 GitHub 連結；原始碼連結保留在介紹頁頁尾。
 
 ## 實際遊戲截圖
 
-頁面使用 `src/images/landing/` 內的九張 PNG，英文、繁體中文、日文各有選單、攻擊題及防禦題。
+頁面使用 `src/images/landing/` 內的十二張 PNG，英文、正體中文、日文各有選單、攻擊題、防禦題及結果頁三個按鈕。
 圖片直接擷取遊戲，不合成或修改遊戲畫面，並使用本機資源與本地化替代文字。
-來源版本及擷取設定見同目錄的 `capture.json`。
+來源版本及擷取設定見同目錄的 `capture.json`。結果頁按鈕另有 `capture-results.json`，擷取真實錯答與倒數結束後的畫面，只保留三個按鈕及外圍 12px 內距。
 
 重新擷取：
 
@@ -32,6 +32,7 @@ pnpm screenshots:landing
 指令會建置目前版本，啟動獨立的正式預覽伺服器，以 Chromium 的 390 × 844 viewport 擷取。
 計時器暫停、題目固定為毒屬性，方便比較各語言。需要先安裝 Playwright Chromium。
 本指令更新來源紀錄，因此只應在需要更新遊戲截圖時執行。
+若只需重拍結果頁三語按鈕，可在正式建置後執行 `node scripts/capture-landing-screenshots.mjs --results-only`，不會覆寫其餘九張截圖。
 若使用本機 Chrome，可執行 `PLAYWRIGHT_CHANNEL=chrome pnpm screenshots:landing`。
 來源紀錄會標示擷取時是否包含尚未提交的修改；擷取前等待字型完成載入，並透過一般點擊將焦點移離操作按鈕。
 

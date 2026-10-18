@@ -64,7 +64,7 @@
   "ABOUT_GAME": "遊戲介紹",
   "FAN_NOTICE": "非官方粉絲作品，與 Pokémon 官方無關，亦未獲其授權或贊助。",
   "PRACTICE_TITLE": "本場錯題練習",
-  "PRACTICE_DESCRIPTION": "不計分、不計時。答錯的題目會排到最後。",
+  "PRACTICE_DESCRIPTION": "不計分、不計時。答錯後繼續選，答對後排到最後再練。這一輪一次答對才移除。",
   "PRACTICE_REMAINING": "剩餘 {count} 題",
   "PRACTICE_CLOSE": "關閉",
   "PRACTICE_COMPLETE": "全部答對了！",
